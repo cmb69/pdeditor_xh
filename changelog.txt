@@ -1,0 +1,6 @@
+TODO
+    systemcheck
+    test with xh1.2
+
+Version 1beta1 - released TODO
+cmb	initial release

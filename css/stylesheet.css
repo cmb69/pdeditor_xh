@@ -1,0 +1,44 @@
+/* utf-8-marker: äöüß */
+
+
+#pdeditor {
+    /*overflow: scroll;*/
+}
+
+
+
+#pdeditor ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#pdeditor > form > ul {margin: 1em 0}
+
+#pdeditor li {
+    position:relative;
+    margin: 0;
+    padding: 5px 0 0 0;
+}
+
+
+#pdeditor ul ul {margin-left: 20px}
+
+#pdeditor input[type=text] {
+    position:absolute;
+    right:0px;
+    width:300px;
+}
+
+
+
+
+.expanded {
+    background: url('../images/plus.PNG') no-repeat;
+    width: 16px;
+}
+
+.collapsed {
+    background: url('../images/expand.gif') no-repeat;
+    width: 16px;
+}
