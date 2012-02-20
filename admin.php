@@ -51,7 +51,7 @@ function pdeditor_version() {
 function pdeditor_attr_select($default) {
     global $sn, $pd_router;
 
-    $url = '?pdeditor&amp;normal&amp;admin=plugin_main&amp;action=plugin_text';
+    $url = '?pdeditor&amp;normal&amp;admin=plugin_main&amp;action=plugin_text&amp;pdeditor_attr=';
     $o = '<select id="pdeditor_attr" onchange="pdeditor_selectAttr(\''.$url.'\')">'."\n";
     $attrs = $pd_router->model->params;
     natcasesort($attrs);

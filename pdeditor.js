@@ -10,9 +10,9 @@
 
 
 function pdeditor_selectAttr(baseUrl) {
-    var attr = document.getElementById('pdeditor-attr');
+    var attr = document.getElementById('pdeditor_attr');
     attr = attr.options[attr.options.selectedIndex].value;
-    window.location.href = baseUrl + '&attr=' + attr;
+    window.location.href = baseUrl + attr;
 }
 
 
