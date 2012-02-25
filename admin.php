@@ -20,7 +20,7 @@ define('PDEDITOR_VERSION', '1beta1');
 
 
 /**
- * Returns plugin version information.
+ * Returns the plugin version information view.
  *
  * @return string  The (X)HTML.
  */
@@ -39,6 +39,43 @@ function pdeditor_version() {
 	    .'<p style="text-align: justify">You should have received a copy of the GNU General Public License'
 	    .' along with this program.  If not, see'
 	    .' <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>'."\n";
+}
+
+
+/**
+ * Returns the requirements information view.
+ *
+ * @return string  The (X)HTML.
+ */
+function pdeditor_system_check() { // RELEASE-TODO
+    global $pth, $tx, $plugin_tx;
+
+    define('PDEDITOR_PHP_VERSION', '4.0.7');
+    $ptx =& $plugin_tx['pdeditor'];
+    $imgdir = $pth['folder']['plugins'].'pdeditor/images/';
+    $ok = tag('img src="'.$imgdir.'ok.png" alt="ok"');
+    $warn = tag('img src="'.$imgdir.'warn.png" alt="warning"');
+    $fail = tag('img src="'.$imgdir.'fail.png" alt="failure"');
+    $htm = tag('hr').'<h4>'.$ptx['syscheck_title'].'</h4>'
+	    .(version_compare(PHP_VERSION, PDEDITOR_PHP_VERSION) >= 0 ? $ok : $fail)
+	    .'&nbsp;&nbsp;'.sprintf($ptx['syscheck_phpversion'], PDEDITOR_PHP_VERSION)
+	    .tag('br').tag('br')."\n";
+    foreach (array() as $ext) {
+	$htm .= (extension_loaded($ext) ? $ok : $fail)
+		.'&nbsp;&nbsp;'.sprintf($ptx['syscheck_extension'], $ext).tag('br')."\n";
+    }
+    $htm .= (!get_magic_quotes_runtime() ? $ok : $fail)
+	    .'&nbsp;&nbsp;'.$ptx['syscheck_magic_quotes'].tag('br')."\n";
+    $htm .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
+	    .'&nbsp;&nbsp;'.$ptx['syscheck_encoding'].tag('br').tag('br')."\n";
+    foreach (array('config/', 'css/', 'languages/') as $folder) {
+	$folders[] = $pth['folder']['plugins'].'pdeditor/'.$folder;
+    }
+    foreach ($folders as $folder) {
+	$htm .= (is_writable($folder) ? $ok : $warn)
+		.'&nbsp;&nbsp;'.sprintf($ptx['syscheck_writable'], $folder).tag('br')."\n";
+    }
+    return $htm;
 }
 
 
@@ -202,7 +239,7 @@ if (isset($pdeditor)) {
     $o .= print_plugin_admin('on');
     switch ($admin) {
 	case '':
-	    $o .= pdeditor_version();
+	    $o .= pdeditor_version().pdeditor_system_check();
 	    break;
 	case 'plugin_main':
 	    switch ($action) {
