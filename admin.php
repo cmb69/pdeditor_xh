@@ -172,8 +172,6 @@ function pdeditor_admin_main() {
     global $hjs, $pth, $h, $l, $cl, $sn, $tx, $pd_router, $plugin_tx;
 
     $ptx = $plugin_tx['pdeditor'];
-    include_once $pth['folder']['plugins'].'jquery/jquery.inc.php';
-    include_jQuery();
     $hjs .= '<script type="text/javascript" src="'.$pth['folder']['plugins'].'pdeditor/pdeditor.js"></script>'."\n";
     $attr = isset($_GET['pdeditor_attr']) ? $_GET['pdeditor_attr'] : 'url';
     $o = '';
