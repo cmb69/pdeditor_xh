@@ -159,7 +159,7 @@ function pdeditor_page_list($pages, $attr) {
 	$o .= '<li>'
 		.($attr == 'url' && uenc($h[$i]) != $pd[$i]['url'] ? $warn : '')
 		.$h[$i]
-		.tag('input type="text" name="value[]" value="'.$pd[$i][$attr].'"')
+		.tag('input type="text" name="value[]" value="'.htmlspecialchars($pd[$i][$attr]).'"')
 		.pdeditor_page_list(pdeditor_child_pages($i), $attr)
 		.'</li>'."\n";
     }
