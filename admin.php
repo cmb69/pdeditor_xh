@@ -228,7 +228,8 @@ function pdeditor_admin_main() {
 		.$ptx['label_delete'].'</a></td>'."\n"
 	    .'</tr>'."\n".'</table>'."\n"
 	    .'<form action="?pdeditor&amp;admin=plugin_main&amp;action=save&amp;pdeditor_attr='
-		.$attr.'" method="POST" accept-charset="UTF-8">';
+		.$attr.'" method="POST" accept-charset="UTF-8"'
+		.' onsubmit="return confirm(\''.addcslashes($ptx['warning_save'], "\n\r\'\"\\").'\')">';
     $o .= pdeditor_page_list(pdeditor_toplevel_pages(), $attr)
 	    .tag('input type="submit" class="submit" value="'.ucfirst($tx['action']['save']).'"')."\n"
 	    .'</form>'."\n"
