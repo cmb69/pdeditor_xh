@@ -168,30 +168,6 @@ function pdeditor_page_list($pages, $attr) {
 }
 
 
-function pdeditor_admin_main() {
-    global $hjs, $pth, $h, $l, $cl, $sn, $tx, $pd_router, $plugin_tx;
-
-    $ptx = $plugin_tx['pdeditor'];
-    $hjs .= '<script type="text/javascript" src="'.$pth['folder']['plugins'].'pdeditor/pdeditor.js"></script>'."\n";
-    $attr = isset($_GET['pdeditor_attr']) ? $_GET['pdeditor_attr'] : 'url';
-    $o = '';
-    $o .= '<div id="pdeditor">'."\n"
-	    .'<table class="edit" style="width:100%">'."\n".'<tr>'."\n".'<td>'."\n".'<strong>Attribute</strong>: '."\n"
-	    .pdeditor_attr_select($attr).'</td>'."\n"
-	    .'<td><a href="?pdeditor&amp;admin=plugin_main&amp;action=delete&amp;pdeditor_attr='
-		.$attr.'" onclick="return confirm(\''.addcslashes($ptx['warning_delete'], "\n\r\'\\").'\')">'
-		.$ptx['label_delete'].'</a></td>'."\n"
-	    .'</tr>'."\n".'</table>'."\n"
-	    .'<form action="?pdeditor&amp;admin=plugin_main&amp;action=save&amp;pdeditor_attr='
-		.$attr.'" method="POST" accept-charset="UTF-8">';
-    $o .= pdeditor_page_list(pdeditor_toplevel_pages(), $attr)
-	    .tag('input type="submit" class="submit" value="'.ucfirst($tx['action']['save']).'"')."\n"
-	    .'</form>'."\n"
-	    .'</div>'."\n";
-    return $o;
-}
-
-
 /**
  * Saves the posted page data. Returns the main admin view.
  *
@@ -229,6 +205,37 @@ function pdeditor_delete_attr() {
     $pd_router->model->save();
     return pdeditor_admin_main();
 }
+
+
+/**
+ * Returns the main administration view.
+ *
+ * @return string  The (X)HTML.
+ */
+function pdeditor_admin_main() {
+    global $hjs, $pth, $h, $l, $cl, $sn, $tx, $pd_router, $plugin_tx;
+
+    $ptx = $plugin_tx['pdeditor'];
+    $hjs .= '<script type="text/javascript" src="'.$pth['folder']['plugins'].'pdeditor/pdeditor.js"></script>'."\n";
+    $attr = isset($_GET['pdeditor_attr']) ? $_GET['pdeditor_attr'] : 'url';
+    $o = '';
+    $o .= '<div id="pdeditor">'."\n"
+	    .'<table class="edit" style="width:100%">'."\n".'<tr>'."\n".'<td>'."\n"
+	    .'<strong>'.$ptx['label_attributes'].'</strong> '."\n"
+	    .pdeditor_attr_select($attr).'</td>'."\n"
+	    .'<td><a href="?pdeditor&amp;admin=plugin_main&amp;action=delete&amp;pdeditor_attr='
+		.$attr.'" onclick="return confirm(\''.addcslashes($ptx['warning_delete'], "\n\r\'\"\\").'\')">'
+		.$ptx['label_delete'].'</a></td>'."\n"
+	    .'</tr>'."\n".'</table>'."\n"
+	    .'<form action="?pdeditor&amp;admin=plugin_main&amp;action=save&amp;pdeditor_attr='
+		.$attr.'" method="POST" accept-charset="UTF-8">';
+    $o .= pdeditor_page_list(pdeditor_toplevel_pages(), $attr)
+	    .tag('input type="submit" class="submit" value="'.ucfirst($tx['action']['save']).'"')."\n"
+	    .'</form>'."\n"
+	    .'</div>'."\n";
+    return $o;
+}
+
 
 /**
  * Handle plugin administration.

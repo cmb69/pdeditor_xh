@@ -1,11 +1,6 @@
 /* utf-8-marker: äöüß */
 
-
-#pdeditor {
-    /*overflow: scroll;*/
-}
-
-
+#pdeditor {}
 
 #pdeditor ul {
     list-style: none;
@@ -21,24 +16,10 @@
     padding: 5px 0 0 0;
 }
 
-
 #pdeditor ul ul {margin-left: 20px}
 
-#pdeditor input[type=text] {
+#pdeditor ul input {
     position:absolute;
     right:0px;
     width:300px;
-}
-
-
-
-
-.expanded {
-    background: url('../images/plus.PNG') no-repeat;
-    width: 16px;
-}
-
-.collapsed {
-    background: url('../images/expand.gif') no-repeat;
-    width: 16px;
 }

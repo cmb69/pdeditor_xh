@@ -7,6 +7,11 @@
 /* utf-8-marker: äöüß */
 
 
+/**
+ * Handles navigation for attribute selectbox.
+ *
+ * @return void
+ */
 function pdeditor_selectAttr(baseUrl) {
     var attr = document.getElementById('pdeditor_attr');
     attr = attr.options[attr.options.selectedIndex].value;
