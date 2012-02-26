@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<!-- utf8-marker: äöüß -->
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="content-language" content="de">
+<title>Pdeditor_XH - Manual</title>
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
+
+<body>
+
+<h1>Pdeditor_XH - a CMSimple_XH Plugin</h1>
+<img src="../pdeditor.png" style="display:block; float:left; margin-right:10px">
+<p style="text-align:justify">Pdeditor_XH facilitates viewing and editing
+your pagedata file from the back-end. It also provides some diagnostics
+regarding possible desynchronisation of content and pagedata.
+It's meant as an alternative to editing pagedata.php manually,
+so it should be used by experienced users only,
+who do exactly know, what they are doing.
+<strong>It's not a tool for unexperienced users!</strong>
+Those should manipulate the pagedata via the interface provided by the respective plugins
+(often a tab above the editor).</p>
+
+<ul id="nav">
+<li><a href="#notice">Important Notice</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#settings">Settings</a></li>
+<li><a href="#usage">Usage</a></li>
+<!--<li><a href="#limitations">Limitations</a></li>-->
+<li><a href="#license">License</a></li>
+<li><a href="#credits">Credits</a></li>
+</ul>
+
+<div id="body">
+
+<p><strong>Please do read this documentation! Support might not be given otherwise.
+It's generally a good idea to read the documentation,
+<em>before</em> you encounter any problems!</strong></p>
+
+<h2><a name="notice">Important Notice</a></h2>
+<p><strong>Pdeditor_XH couldn't be tested so far in various environments.
+It is a so called BETA version. Use with caution!</strong></p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2><a name="requirements">Requirements</a></h2>
+<p>Pdeditor_XH is a plugin for CMSimple_XH.
+It requires a UTF-8 encoded version.</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2><a name="installation">Installation</a></h2>
+<p>The installation is done as with many other CMSimple_XH plugins.
+See the <a href="http://www.cmsimple-xh.com/wiki/doku.php/manuals:users_manual:plugins:installation">
+CMSimple_XH wiki</a> for further details.</p>
+<ol>
+<li><strong>Backup the data on your server.</strong></li>
+<li>Unzip the distribution on your computer.</li>
+<li>Upload the whole directory pdeditor/ to your server into CMSimple_XH's plugins directory.</li>
+<li>Set write permissions to the subdirectories config/, css/ and languages/.</li>
+<li><strong>Switch to "Pdeditor" in the back-end to check if all requirements are fulfilled.</strong></li>
+</ol>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2><a name="settings">Settings</a></h2>
+<p>The plugin's configuration is done as with many other
+CMSimple_XH plugins in the website's back-end.
+Select "Pdeditor" from "Plugins".</p>
+<p>You can change the default settings of Pdeditor_XH in "Plugin Config".
+Hints for the options will be displayed
+when hovering over the help icon with your mouse.</p>
+<p>Localization is done in "Plugin Language".
+You can translate the character strings to your own language,
+or customize them according to your needs.</p>
+<p>The look of the Pdeditor_XH can be customized in "Plugin Stylesheet".</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2><a name="usage">Usage</a></h2>
+<p>Pdeditor_XH is used exclusively from the back-end.
+Open it via Pdeditor &rarr; Pagedata.</p>
+<p style="text-align:center"><img src="admin.png" alt="administration"></p>
+<p>Directly below the plugin menu you find the attribute selectbox
+and a link to delete the selected attribute with all its values from the pagedata.</p>
+<p>The default attribute is "url", which will trigger a check,
+if the URLs stored in the pagedata correlate to the respective pages in the content.
+If not, a warning icon will be displayed.
+Note that this warning doesn't mean that there is an error in the pagedata.
+If rather points out <em>a possible corruption</em> of the pagedata file,
+particularly if <em>all</em> pages below any page are marked,
+as shown in the screenshot above.
+Indeed the screenshot was made on an intentionally corrupted pagedata file.
+If you compare the page headings and URLs, you see that the pagedata were shifted on page down.
+In this case you have to check and repair the pagedata file manually or restore the latest working backup.</p>
+<p>After selecting an attribute you can view and edit the values of this attribute of all pages.</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<!--<h2><a name="limitations">Limitations</a></h2>
+<div class="toplink"><a href="#">back to top</a></div>
+-->
+<h2><a name="license">License</a></h2>
+<p>Pdeditor_XH is licensed under
+<a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
+<p>&copy; 2012 Christoph M. Becker</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+<h2><a name="credits">Credits</a></h2>
+<p>The plugin icon is designed by <a href="http://schollidesign.deviantart.com/">schollidesign</a>.
+Many thanks for publishing this icon under GPL.</p>
+<p>This plugin uses free applications icons from <a href="http://www.aha-soft.com/">Aha-Soft</a>.
+Many thanks for making these icons freely available.</p>
+<!--<p>Many thanks to the community at the <a href="http://www.cmsimpleforum.com">CMSimple forum</a>-->
+<!--for tips, suggestions and testing.</p>-->
+<p>And last but not least many thanks to all developers of
+<a href="http://www.cmsimple-xh.com">CMSimple_XH</a>
+without whom this amazing CMS wouldn't exist.</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
+</div>
+
+</body>
+
+</html>
