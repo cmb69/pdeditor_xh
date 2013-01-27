@@ -203,6 +203,8 @@ function pdeditor_delete_attr() {
     }
     unset($pd_router->model->temp_data[$attr]);
     $pd_router->model->save();
+    header('Location: ?&pdeditor&admin=plugin_main&action=plugin_text');
+    exit;
     return pdeditor_admin_main();
 }
 
