@@ -108,12 +108,12 @@
                 </replacetokens>
             </filterchain>
         </move>
-<!--        <jsMin targetDir="dist" suffix="" failonerror="true">
+        <jsMin targetDir="dist" suffix="" failonerror="true">
             <fileset dir="export">
-                <include name="translator.js"/>
+                <include name="pdeditor.js"/>
             </fileset>
         </jsMin>
--->        <move todir="dist">
+        <move todir="dist">
             <fileset dir="export">
                 <exclude name="tests/**"/>
                 <exclude name="build.xml"/>
