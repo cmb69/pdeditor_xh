@@ -74,7 +74,7 @@ function Pdeditor_systemCheck()
 {
     global $pth, $tx, $plugin_tx;
 
-    $phpVersion = '4.0.7';
+    $phpVersion = '4.3.10';
     $ptx = $plugin_tx['pdeditor'];
     $imgdir = $pth['folder']['plugins'] . 'pdeditor/images/';
     $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
