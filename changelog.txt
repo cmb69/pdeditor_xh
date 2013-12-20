@@ -1,5 +1,0 @@
-TODO
-    shift pagedata up/down
-
-Version 1beta1 - released 2012-02-26
-cmb	initial release
