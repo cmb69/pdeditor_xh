@@ -104,7 +104,7 @@
             </fileset>
             <filterchain>
                 <replacetokens>
-                    <token key="PEDITOR_VERSION" value="${version}"/>
+                    <token key="PDEDITOR_VERSION" value="${version}"/>
                 </replacetokens>
             </filterchain>
         </move>
