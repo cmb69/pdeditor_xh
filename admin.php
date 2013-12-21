@@ -61,37 +61,30 @@ EOT;
  */
 function Pdeditor_systemCheck()
 {
-    global $pth, $tx, $plugin_tx;
+    global $pth, $tx, $plugin_tx, $_Pdeditor_views;
 
     $phpVersion = '4.3.10';
-    $ptx = $plugin_tx['pdeditor'];
-    $imgdir = $pth['folder']['plugins'] . 'pdeditor/images/';
-    $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
-    $warn = tag('img src="' . $imgdir . 'warn.png" alt="warning"');
-    $fail = tag('img src="' . $imgdir . 'fail.png" alt="failure"');
-    $o = tag('hr') . '<h4>' . $ptx['syscheck_title'] . '</h4>'
-        . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
-        . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
-        . tag('br') . tag('br')  . PHP_EOL;
-    foreach (array() as $ext) {
-        $o .= (extension_loaded($ext) ? $ok : $fail)
-            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
-            . tag('br') . PHP_EOL;
+    $ptx = $plugin_tx['pfw'];
+    $checks = array();
+    $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
+        = version_compare(PHP_VERSION, $phpVersion) >= 0 ? 'ok' : 'fail';
+    foreach (array() as $extension) {
+        $checks[sprintf($ptx['syscheck_extension'], $ext)]
+            = extension_loaded($extension) ? 'ok' : 'fail';
     }
-    $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
-        . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . PHP_EOL;
-    $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-        . '&nbsp;&nbsp;' . $ptx['syscheck_encoding']
-        . tag('br') . tag('br') . PHP_EOL;
+    $checks[$ptx['syscheck_magic_quotes']]
+        = !get_magic_quotes_runtime() ? 'ok' : 'fail';
+    $checks[$ptx['syscheck_encoding']]
+        = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'ok' : 'warn';
+    $folders = array();
     foreach (array('config/', 'css/', 'languages/') as $folder) {
         $folders[] = $pth['folder']['plugins'] . 'pdeditor/' . $folder;
     }
     foreach ($folders as $folder) {
-        $o .= (is_writable($folder) ? $ok : $warn)
-            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
-            . tag('br') . PHP_EOL;
+        $checks[sprintf($ptx['syscheck_writable'], $folder)]
+            = is_writable($folder) ? 'ok' : 'warn';
     }
-    return $o;
+    return $_Pdeditor_views->systemCheck($checks);
 }
 
 /**
