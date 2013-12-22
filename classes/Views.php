@@ -143,10 +143,13 @@ EOT;
      */
     public function about()
     {
-        $version = PDEDITOR_VERSION;
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['pdeditor'];
         $iconPath = $this->model->pluginIconPath();
+        $version = PDEDITOR_VERSION;
         $o = <<<EOT
-<h1><a href="http://3-magi.net/?CMSimple_XH/Pdeditor_XH">Pdeditor_XH</a></h1>
+<h4>$ptx[info_about]</h4>
 <img src="$iconPath" width="128" height="128" alt="Plugin Icon"
      style="float: left; margin-right: 16px">
 <p>Version: $version</p>

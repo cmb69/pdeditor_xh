@@ -90,12 +90,22 @@ class Pdeditor_Controller
      * Returns the plugin info view.
      *
      * @return string (X)HTML.
+     *
+     * @global array The localization of the core.
      */
     public function info()
     {
-        return $this->views->about()
-            . $this->views->systemCheck($this->systemChecks());
-    }
+        global $plugin_tx;
+
+        $ptx = $plugin_tx['pdeditor'];
+        $o = <<<EOT
+<h1>Pdeditor &ndash; $ptx[info_heading]</h1>
+
+EOT;
+        $o .= $this->views->systemCheck($this->systemChecks())
+            . $this->views->about();
+        return $o;
+}
 
     /**
      * Saves the submitted page data and returns the main admin view.

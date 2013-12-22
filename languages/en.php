@@ -2,6 +2,9 @@
 
 $plugin_tx['pdeditor']['menu_main']="Pagedata";
 
+$plugin_tx['pdeditor']['info_about']="About";
+$plugin_tx['pdeditor']['info_heading']="Info";
+
 $plugin_tx['pdeditor']['label_delete']="Delete this attribute";
 $plugin_tx['pdeditor']['label_attributes']="Attributes:";
 $plugin_tx['pdeditor']['warning_delete']="Deleting an attribute might cause malfunctions of the system!";
