@@ -28,6 +28,8 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
  */
 define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
 
+require_once $pth['folder']['plugin_classes'] . 'Views.php';
+
 /**
  * Returns the plugin about information view.
  *
@@ -64,7 +66,7 @@ function Pdeditor_systemCheck()
     global $pth, $tx, $plugin_tx, $_Pdeditor_views;
 
     $phpVersion = '4.3.10';
-    $ptx = $plugin_tx['pfw'];
+    $ptx = $plugin_tx['pdeditor'];
     $checks = array();
     $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
         = version_compare(PHP_VERSION, $phpVersion) >= 0 ? 'ok' : 'fail';
