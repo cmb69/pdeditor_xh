@@ -28,44 +28,9 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
  */
 define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
 
+require_once $pth['folder']['plugin_classes'] . 'Controller.php';
 require_once $pth['folder']['plugin_classes'] . 'Views.php';
 
-/**
- * Returns the system check view.
- *
- * @return string (X)HTML.
- *
- * @global array The paths of system files and folders.
- * @global array The localization of the core.
- * @global array The localization of the plugins.
- */
-function Pdeditor_systemCheck()
-{
-    global $pth, $tx, $plugin_tx, $_Pdeditor_views;
-
-    $phpVersion = '4.3.10';
-    $ptx = $plugin_tx['pdeditor'];
-    $checks = array();
-    $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
-        = version_compare(PHP_VERSION, $phpVersion) >= 0 ? 'ok' : 'fail';
-    foreach (array() as $extension) {
-        $checks[sprintf($ptx['syscheck_extension'], $ext)]
-            = extension_loaded($extension) ? 'ok' : 'fail';
-    }
-    $checks[$ptx['syscheck_magic_quotes']]
-        = !get_magic_quotes_runtime() ? 'ok' : 'fail';
-    $checks[$ptx['syscheck_encoding']]
-        = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'ok' : 'warn';
-    $folders = array();
-    foreach (array('css/', 'languages/') as $folder) {
-        $folders[] = $pth['folder']['plugins'] . 'pdeditor/' . $folder;
-    }
-    foreach ($folders as $folder) {
-        $checks[sprintf($ptx['syscheck_writable'], $folder)]
-            = is_writable($folder) ? 'ok' : 'warn';
-    }
-    return $_Pdeditor_views->systemCheck($checks);
-}
 
 /**
  * Returns an attribute selectbox.
@@ -287,7 +252,7 @@ function Pdeditor_adminMain()
     return $o;
 }
 
-$_Pdeditor_views = new Pdeditor_Views();
+$_Pdeditor = new Pdeditor_Controller();
 
 /*
  * Handle the plugin administration.
@@ -296,7 +261,7 @@ if (isset($pdeditor) && $pdeditor == 'true') {
     $o .= print_plugin_admin('on');
     switch ($admin) {
     case '':
-        $o .= $_Pdeditor_views->about() . Pdeditor_systemCheck();
+        $o .= $_Pdeditor->info();
         break;
     case 'plugin_main':
         switch ($action) {
