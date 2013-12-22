@@ -62,7 +62,7 @@ class Pdeditor_Controller
     {
         global $pth, $tx, $plugin_tx;
 
-        $phpVersion = '4.3.10';
+        $phpVersion = '5.0.0';
         $ptx = $plugin_tx['pdeditor'];
         $checks = array();
         $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]

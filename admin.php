@@ -3,7 +3,7 @@
 /**
  * Back-end functionality of Pdeditor_XH.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * @category  CMSimple_XH
  * @package   Pdeditor
@@ -31,9 +31,6 @@ define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
 require_once $pth['folder']['plugin_classes'] . 'Model.php';
 require_once $pth['folder']['plugin_classes'] . 'Controller.php';
 require_once $pth['folder']['plugin_classes'] . 'Views.php';
-
-
-
 
 $_Pdeditor = new Pdeditor_Controller();
 
