@@ -117,6 +117,22 @@ class Pdeditor_Controller
         }
         return Pdeditor_adminMain();
     }
+
+    /**
+     * Deletes a page data attribute and returns the main admin view.
+     *
+     * @return string (X)HTML.
+     *
+     * @todo Stick with redirect or return adminMain()?
+     */
+    function deleteAttribute()
+    {
+        $attribute = stsl($_GET['pdeditor_attr']); // TODO: sanitize
+        $this->model->deletePageDataAttribute($attribute);
+        header('Location: ?&pdeditor&admin=plugin_main&action=plugin_text');
+        exit;
+        return Pdeditor_adminMain();
+    }
 }
 
 ?>

@@ -62,34 +62,6 @@ function Pdeditor_attrSelect($default)
 }
 
 /**
- * Deletes a page data attribute and returns the main admin view.
- *
- * @return string (X)HTML.
- *
- * @global object The page data router.
- *
- * @todo Stick with redirect or return adminMain()?
- */
-function Pdeditor_deleteAttr()
-{
-    global $pd_router;
-
-    $attr = stsl($_GET['pdeditor_attr']);
-    $key = array_search($attr, $pd_router->model->params);
-    if ($key !== false) {
-        unset($pd_router->model->params[$key]);
-    }
-    for ($i = 0; $i < count($pd_router->model->data); $i++) {
-        unset($pd_router->model->data[$i][$attr]);
-    }
-    unset($pd_router->model->temp_data[$attr]);
-    $pd_router->model->save();
-    header('Location: ?&pdeditor&admin=plugin_main&action=plugin_text');
-    exit;
-    return Pdeditor_adminMain();
-}
-
-/**
  * Returns the main administration view.
  *
  * @return string (X)HTML.
@@ -153,7 +125,7 @@ if (isset($pdeditor) && $pdeditor == 'true') {
     case 'plugin_main':
         switch ($action) {
         case 'delete':
-            $o .= Pdeditor_deleteAttr();
+            $o .= $_Pdeditor->deleteAttribute();
             break;
         case 'save':
             $o .= $_Pdeditor->save();
