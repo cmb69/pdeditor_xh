@@ -29,19 +29,15 @@ class Pdeditor_Controller
      * The model.
      *
      * @var Pdeditor_Model
-     *
-     * @todo Make protected.
      */
-    public $model;
+    protected $model;
 
     /**
      * The views.
      *
      * @var Pdeditor_Views
-     *
-     * @todo Make protected.
      */
-    public $views;
+    protected $views;
 
     /**
      * Initializes a new instance.
@@ -139,8 +135,8 @@ class Pdeditor_Controller
      *
      * @return string (X)HTML.
      *
-     * @global string              The document fragment to insert into the head element.
-     * @global array               The paths of system files and folders.
+     * @global string The document fragment to insert into the head element.
+     * @global array  The paths of system files and folders.
      */
     public function administration()
     {

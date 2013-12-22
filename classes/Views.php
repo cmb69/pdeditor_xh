@@ -164,7 +164,7 @@ EOT;
      *
      * @return string (X)HTML.
      */
-    function attributeSelect($default)
+    protected function attributeSelect($default)
     {
         $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
             . '&pdeditor_attr=';
@@ -192,7 +192,7 @@ EOT;
      * @global object The page data router.
      * @global array  The localization of the plugins.
      */
-    public function pageList($pages, $attribute)
+    protected function pageList($pages, $attribute)
     {
         global $h, $pth, $pd_router, $plugin_tx;
 

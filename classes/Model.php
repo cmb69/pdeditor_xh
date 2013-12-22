@@ -121,6 +121,8 @@ class Pdeditor_Model
     }
 
     /**
+     * Updates the page data with new values.
+     *
      * @param string $attribute An attribute name.
      * @param array  $values    An array of new values.
      *
@@ -142,13 +144,15 @@ class Pdeditor_Model
     /**
      * Deletes a page data attribute.
      *
+     * @param string $attribute An attribute name.
+     *
      * @return string (X)HTML.
      *
      * @global object The page data router.
      *
      * @todo Make XH 1.6 compatible.
      */
-    function deletePageDataAttribute($attribute)
+    public function deletePageDataAttribute($attribute)
     {
         global $pd_router;
 
