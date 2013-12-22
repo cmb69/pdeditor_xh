@@ -115,7 +115,7 @@ class Pdeditor_Controller
             $values = array_map('stsl', $_POST['value']);
             $this->model->updatePageData($attribute, $values);
         }
-        return Pdeditor_adminMain();
+        return $this->administration();
     }
 
     /**
@@ -125,13 +125,38 @@ class Pdeditor_Controller
      *
      * @todo Stick with redirect or return adminMain()?
      */
-    function deleteAttribute()
+    public function deleteAttribute()
     {
         $attribute = stsl($_GET['pdeditor_attr']); // TODO: sanitize
         $this->model->deletePageDataAttribute($attribute);
         header('Location: ?&pdeditor&admin=plugin_main&action=plugin_text');
         exit;
-        return Pdeditor_adminMain();
+        return $this->administration();
+    }
+
+    /**
+     * Returns the main administration view.
+     *
+     * @return string (X)HTML.
+     *
+     * @global string              The document fragment to insert into the head element.
+     * @global array               The paths of system files and folders.
+     */
+    public function administration()
+    {
+        global $hjs, $pth;
+
+        $filename = $pth['folder']['plugins'] . 'pdeditor/pdeditor.js';
+        $hjs .= <<<EOT
+<script type="text/javascript" src="$filename"></script>
+
+EOT;
+        $attribute = isset($_GET['pdeditor_attr'])
+            ? $_GET['pdeditor_attr']
+            : 'url';
+        $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
+        $action = '?&pdeditor&admin=plugin_main&action=save&pdeditor_attr=';
+        return $this->views->administration($attribute, $deleteUrl, $action);
     }
 }
 

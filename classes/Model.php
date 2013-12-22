@@ -105,6 +105,22 @@ class Pdeditor_Model
     }
 
     /**
+     * Returns the registered page data attributes.
+     *
+     * @return array
+     *
+     * @global object The page data router.
+     */
+    public function pageDataAttributes()
+    {
+        global $pd_router;
+
+        $attributes = $pd_router->model->params;
+        natcasesort($attributes);
+        return $attributes;
+    }
+
+    /**
      * @param string $attribute An attribute name.
      * @param array  $values    An array of new values.
      *

@@ -158,6 +158,28 @@ EOT;
     }
 
     /**
+     * Returns an attribute selectbox.
+     *
+     * @param string $default An attribute name.
+     *
+     * @return string (X)HTML.
+     */
+    function attributeSelect($default)
+    {
+        $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
+            . '&pdeditor_attr=';
+        $o = '<select id="pdeditor_attr" onchange="pdeditor_selectAttr(\''
+            . $this->hsc($url) . '\')">' . PHP_EOL;
+        $attributes = $this->model->pageDataAttributes();
+        foreach ($attributes as $attribute) {
+            $sel = ($attribute == $default) ? ' selected="selected"' : '';
+            $o .= '<option' . $sel . '>' . $attribute . '</option>' . PHP_EOL;
+        }
+        $o .= '</select>' . PHP_EOL;
+        return $o;
+    }
+
+    /**
      * Returns the view of all $pages displaying the attribute $attr.
      *
      * @param array  $pages     An array of page indexes.
@@ -200,6 +222,57 @@ $warning$h[$i]<input type="text" name="value[]" value="$value" />$subpages
 EOT;
         }
         $o .= '</ul>' . PHP_EOL;
+        return $this->xhtml($o);
+    }
+
+    /**
+     * Returns the main administration view.
+     *
+     * @param string $attribute An attribute name.
+     * @param string $deleteUrl A URL.
+     * @param string $action    A URL.
+     *
+     * @return string (X)HTML.
+     *
+     * @global array The localization of the core.
+     * @global array The localization of the plugins.
+     */
+    public function administration($attribute, $deleteUrl, $action)
+    {
+        global $tx, $plugin_tx;
+
+        $ptx = $plugin_tx['pdeditor'];
+        $select = $this->attributeSelect($attribute);
+        $deleteUrl = $this->hsc($deleteUrl);
+        $deleteWarning = addcslashes($ptx['warning_delete'], "\n\r\'\"\\");
+        $action = $this->hsc($action);
+        $saveWarning = addcslashes($ptx['warning_save'], "\n\r\'\"\\");
+        $toplevelPages = $this->model->toplevelPages();
+        $pageList = $this->pageList($toplevelPages, $attribute);
+        $saveLabel = ucfirst($tx['action']['save']);
+        $o = <<<EOT
+<div id="pdeditor">
+    <table class="edit" style="width:100%">
+        <tr>
+            <td>
+                <strong>$ptx[label_attributes]</strong>$select
+            </td>
+            <td>
+                <a href="$deleteUrl$attribute"
+                   onclick="return confirm('$deleteWarning')">
+                $ptx[label_delete]</a>
+            </td>
+        </tr>
+    </table>
+    <form action="$action$attribute" method="post" accept-charset="UTF-8"
+          onsubmit="return confirm('$saveWarning')">
+        <input type="submit" class="submit" value="$saveLabel" />
+        $pageList
+        <input type="submit" class="submit" value="$saveLabel" />
+    </form>
+</div>
+
+EOT;
         return $this->xhtml($o);
     }
 }
