@@ -73,7 +73,7 @@ class Pdeditor_Views
      *
      * @since 0.1.0
      */
-    public function license()
+    protected function license()
     {
         return <<<EOT
 <p class="pdeditor_license">This program is free software: you can redistribute it
@@ -125,6 +125,24 @@ EOT;
 
 EOT;
         return $this->xhtml($o);
+    }
+
+    /**
+     * Returns the plugin about information view.
+     *
+     * @return string (X)HTML.
+     */
+    public function about()
+    {
+        $version = PDEDITOR_VERSION;
+        $o = <<<EOT
+<h1><a href="http://3-magi.net/?CMSimple_XH/Pdeditor_XH">Pdeditor_XH</a></h1>
+<p>Version: $version</p>
+<p>Copyright &copy; 2012-2013 <a href="http://3-magi.net">Christoph M. Becker</a></p>
+
+EOT;
+        $o .= $this->license();
+        return $o;
     }
 
 }

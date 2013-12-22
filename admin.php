@@ -31,28 +31,6 @@ define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
 require_once $pth['folder']['plugin_classes'] . 'Views.php';
 
 /**
- * Returns the plugin about information view.
- *
- * @return string (X)HTML.
- *
- * @global Pdeditor_Views The pdeditor views.
- */
-function Pdeditor_version()
-{
-    global $_Pdeditor_views;
-
-    $version = PDEDITOR_VERSION;
-    $o = <<<EOT
-<h1><a href="http://3-magi.net/?CMSimple_XH/Pdeditor_XH">Pdeditor_XH</a></h1>
-<p>Version: $version</p>
-<p>Copyright &copy; 2012-2013 <a href="http://3-magi.net">Christoph M. Becker</a></p>
-
-EOT;
-    $o .= $_Pdeditor_views->license();
-    return $o;
-}
-
-/**
  * Returns the system check view.
  *
  * @return string (X)HTML.
@@ -79,7 +57,7 @@ function Pdeditor_systemCheck()
     $checks[$ptx['syscheck_encoding']]
         = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'ok' : 'warn';
     $folders = array();
-    foreach (array('config/', 'css/', 'languages/') as $folder) {
+    foreach (array('css/', 'languages/') as $folder) {
         $folders[] = $pth['folder']['plugins'] . 'pdeditor/' . $folder;
     }
     foreach ($folders as $folder) {
@@ -318,7 +296,7 @@ if (isset($pdeditor) && $pdeditor == 'true') {
     $o .= print_plugin_admin('on');
     switch ($admin) {
     case '':
-        $o .= Pdeditor_version() . Pdeditor_systemCheck();
+        $o .= $_Pdeditor_views->about() . Pdeditor_systemCheck();
         break;
     case 'plugin_main':
         switch ($action) {
