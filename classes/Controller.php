@@ -93,7 +93,7 @@ class Pdeditor_Controller
     /**
      * Returns the plugin info view.
      *
-     * return string (X)HTML.
+     * @return string (X)HTML.
      */
     public function info()
     {
