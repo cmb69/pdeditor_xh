@@ -28,6 +28,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
  */
 define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
 
+require_once $pth['folder']['plugin_classes'] . 'Model.php';
 require_once $pth['folder']['plugin_classes'] . 'Controller.php';
 require_once $pth['folder']['plugin_classes'] . 'Views.php';
 

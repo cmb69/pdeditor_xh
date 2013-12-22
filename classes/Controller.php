@@ -26,6 +26,13 @@
 class Pdeditor_Controller
 {
     /**
+     * The model.
+     *
+     * @var Pdeditor_Model
+     */
+    protected $model;
+
+    /**
      * The views.
      *
      * @var Pdeditor_Views
@@ -37,7 +44,9 @@ class Pdeditor_Controller
      */
     public function __construct()
     {
-        $this->views = new Pdeditor_Views();
+        $this->model = new Pdeditor_Model();
+        $this->views = new Pdeditor_Views($this->model);
+
     }
 
     /**

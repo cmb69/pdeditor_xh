@@ -26,13 +26,28 @@
 class Pdeditor_Views
 {
     /**
+     * The model.
+     *
+     * @var Pdeditor_Model
+     */
+    protected $model;
+
+    /**
+     * Initializes a new instance.
+     *
+     * @param Pdeditor_Model $model The model.
+     */
+    public function __construct(Pdeditor_Model $model)
+    {
+        $this->model = $model;
+    }
+
+    /**
      * Returns a string with special (X)HTML characters escaped as entities.
      *
      * @param string $string A string.
      *
      * @return string (X)HTML.
-     *
-     * @since 0.1.0
      *
      * @todo Make that independent of XH 1.6.
      */
@@ -53,8 +68,6 @@ class Pdeditor_Views
      * @return string (X)HTML.
      *
      * @global array The configuration of the core.
-     *
-     * @since 0.1.0
      */
     protected function xhtml($string)
     {
@@ -70,8 +83,6 @@ class Pdeditor_Views
      * Returns summarized GPLv3 license information.
      *
      * @return string (X)HTML.
-     *
-     * @since 0.1.0
      */
     protected function license()
     {
@@ -100,8 +111,6 @@ EOT;
      *
      * @global array The paths of system files and folders.
      * @global array The localization of the plugins.
-     *
-     * @since 0.1.0
      */
     public function systemCheck($checks)
     {
@@ -135,8 +144,11 @@ EOT;
     public function about()
     {
         $version = PDEDITOR_VERSION;
+        $iconPath = $this->model->pluginIconPath();
         $o = <<<EOT
 <h1><a href="http://3-magi.net/?CMSimple_XH/Pdeditor_XH">Pdeditor_XH</a></h1>
+<img src="$iconPath" width="128" height="128" alt="Plugin Icon"
+     style="float: left; margin-right: 16px">
 <p>Version: $version</p>
 <p>Copyright &copy; 2012-2013 <a href="http://3-magi.net">Christoph M. Becker</a></p>
 
