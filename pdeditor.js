@@ -4,8 +4,6 @@
  * Copyright (c) 2012 Christoph M. Becker (see license.txt)
  */
 
-/* utf-8-marker: äöüß */
-
 
 /**
  * Handles navigation for attribute selectbox.
