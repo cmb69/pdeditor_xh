@@ -100,6 +100,23 @@ class Pdeditor_Controller
         return $this->views->about()
             . $this->views->systemCheck($this->systemChecks());
     }
+
+    /**
+     * Saves the submitted page data and returns the main admin view.
+     *
+     * @return string (X)HTML.
+     *
+     * @todo Redirect instead of return main admin view?
+     */
+    public function save()
+    {
+        if (isset($_POST['value'])) {
+            $attribute = $_GET['pdeditor_attr']; // TODO: sanitize
+            $values = array_map('stsl', $_POST['value']);
+            $this->model->updatePageData($attribute, $values);
+        }
+        return Pdeditor_adminMain();
+    }
 }
 
 ?>

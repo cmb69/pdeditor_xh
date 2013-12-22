@@ -62,28 +62,6 @@ function Pdeditor_attrSelect($default)
 }
 
 /**
- * Saves the posted page data and returns the main admin view.
- *
- * @return string (X)HTML.
- *
- * @global int    The number of pages.
- * @global object The page data router.
- */
-function Pdeditor_adminSave()
-{
-    global $cl, $pd_router;
-
-    if (isset($_POST['value'])) {
-        $pd = $pd_router->find_all();
-        foreach ($_POST['value'] as $id => $value) {
-            $pd[$id][$_GET['pdeditor_attr']] = stsl($value);
-        }
-        $pd_router->model->refresh($pd);
-    }
-    return Pdeditor_adminMain();
-}
-
-/**
  * Deletes a page data attribute and returns the main admin view.
  *
  * @return string (X)HTML.
@@ -178,7 +156,7 @@ if (isset($pdeditor) && $pdeditor == 'true') {
             $o .= Pdeditor_deleteAttr();
             break;
         case 'save':
-            $o .= Pdeditor_adminSave();
+            $o .= $_Pdeditor->save();
             break;
         default:
             $o .= Pdeditor_adminMain();
