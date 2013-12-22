@@ -62,54 +62,6 @@ function Pdeditor_attrSelect($default)
 }
 
 /**
- * Returns the view of all $pages displaying the attribute $attr.
- *
- * @param array  $pages An array of page indexes.
- * @param string $attr  A page data attribute name.
- *
- * @return string (X)HTML.
- *
- * @global array               The page headings.
- * @global int                 The number of pages.
- * @global array               The page levels.
- * @global array               The paths of system files and folders.
- * @global object              The page data router.
- * @global array               The localization of the plugins.
- * @global Pdeditor_Controller The controller.
- */
-function Pdeditor_pageList($pages, $attr)
-{
-    global $h, $cl, $l, $pth, $pd_router, $plugin_tx, $_Pdeditor;
-
-    if (empty($pages)) {
-        return '';
-    }
-    $ptx = $plugin_tx['pdeditor'];
-    $warn = tag(
-        'img src="' . $pth['folder']['plugins'] . 'pdeditor/images/warn.png"'
-        . ' alt="' . $ptx['message_headings'] . '" title="'
-        . $ptx['message_headings'] . '"'
-    ) .' ';
-    $o = PHP_EOL . '<ul>' . PHP_EOL;
-    $pd = $pd_router->find_all();
-    foreach ($pages as $i) {
-        //$has_children = $i+1 < $cl && $l[$i+1] > $l[$i];
-        $level = 'level' . $l[$i];
-        $o .= '<li>'
-            . ($attr == 'url' && uenc($h[$i]) != $pd[$i]['url'] ? $warn : '')
-            . $h[$i]
-            . tag(
-                'input type="text" name="value[]" value="'
-                . htmlspecialchars($pd[$i][$attr]) . '"'
-            )
-            . Pdeditor_pageList($_Pdeditor->model->childPages($i), $attr)
-            . '</li>' . PHP_EOL;
-    }
-    $o .= '</ul>' . PHP_EOL;
-    return $o;
-}
-
-/**
  * Saves the posted page data and returns the main admin view.
  *
  * @return string (X)HTML.
@@ -199,7 +151,7 @@ function Pdeditor_adminMain()
         . '&amp;pdeditor_attr=' .$attr . '" method="POST" accept-charset="UTF-8"'
         . ' onsubmit="return confirm(\''
         . addcslashes($ptx['warning_save'], "\n\r\'\"\\") . '\')">';
-    $o .= Pdeditor_pageList($_Pdeditor->model->toplevelPages(), $attr)
+    $o .= $_Pdeditor->views->pageList($_Pdeditor->model->toplevelPages(), $attr)
         . tag(
             'input type="submit" class="submit" value="'
             . ucfirst($tx['action']['save']) . '"'

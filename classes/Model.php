@@ -40,6 +40,24 @@ class Pdeditor_Model
     }
 
     /**
+     * Returns whether the URL stored in the page data is up-to-date.
+     *
+     * @param int $index The page index.
+     *
+     * @return bool
+     *
+     * @global array  The headings of the pages.
+     * @global object The page data router.
+     */
+    public function isPagedataUrlUpToDate($index)
+    {
+        global $h, $pd_router;
+
+        $pageData = $pd_router->find_page($index);
+        return $pageData['url'] == uenc($h[$index]);
+    }
+
+    /**
      * Returns an array of indexes of the toplevel pages.
      *
      * @return array

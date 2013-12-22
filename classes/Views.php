@@ -157,6 +157,51 @@ EOT;
         return $o;
     }
 
+    /**
+     * Returns the view of all $pages displaying the attribute $attr.
+     *
+     * @param array  $pages     An array of page indexes.
+     * @param string $attribute A page data attribute name.
+     *
+     * @return string (X)HTML.
+     *
+     * @global array  The page headings.
+     * @global array  The paths of system files and folders.
+     * @global object The page data router.
+     * @global array  The localization of the plugins.
+     */
+    public function pageList($pages, $attribute)
+    {
+        global $h, $pth, $pd_router, $plugin_tx;
+
+        if (empty($pages)) {
+            return '';
+        }
+        $ptx = $plugin_tx['pdeditor'];
+        $o = PHP_EOL . '<ul>' . PHP_EOL;
+        foreach ($pages as $i) {
+            $pageData = $pd_router->find_page($i);
+            if ($attribute == 'url' && !$this->model->isPagedataUrlUpToDate($i)) {
+                $warning = <<<EOT
+img src="{$pth['folder']['plugins']}pdeditor/images/warn.png"
+    alt="$ptx[message_headings]" title="$ptx[message_headings]" />
+
+EOT;
+            } else {
+                $warning = '';
+            }
+            $value = $this->hsc($pageData[$attribute]);
+            $subpages = $this->pageList($this->model->childPages($i), $attribute);
+            $o .= <<<EOT
+<li>
+$warning$h[$i]<input type="text" name="value[]" value="$value" />$subpages
+</li>
+
+EOT;
+        }
+        $o .= '</ul>' . PHP_EOL;
+        return $this->xhtml($o);
+    }
 }
 
 ?>

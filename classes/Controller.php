@@ -38,8 +38,10 @@ class Pdeditor_Controller
      * The views.
      *
      * @var Pdeditor_Views
+     *
+     * @todo Make protected.
      */
-    protected $views;
+    public $views;
 
     /**
      * Initializes a new instance.
