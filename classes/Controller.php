@@ -29,8 +29,10 @@ class Pdeditor_Controller
      * The model.
      *
      * @var Pdeditor_Model
+     *
+     * @todo Make protected.
      */
-    protected $model;
+    public $model;
 
     /**
      * The views.

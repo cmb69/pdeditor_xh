@@ -62,52 +62,6 @@ function Pdeditor_attrSelect($default)
 }
 
 /**
- * Returns an array of indexes of the toplevel pages.
- *
- * @return array
- *
- * @global int   The number of pages.
- * @global array The page levels.
- */
-function Pdeditor_toplevelPages()
-{
-    global $cl, $l;
-
-    for ($i = 0; $i < $cl; $i++) {
-        if ($l[$i] == 1) {
-            $ta[] = $i;
-        }
-    }
-    return $ta;
-}
-
-/**
- * Returns an array of indexes of child pages of a page.
- *
- * @param int $i A page index.
- *
- * @return array
- *
- * @global int   The number of pages.
- * @global array The page levels.
- * @global arras The configuration of the core.
- */
-function Pdeditor_childPages($i)
-{
-    global $cl, $l, $cf;
-
-    $ta = array();
-    $lc = $cf['menu']['levelcatch'];
-    for ($j = $i+1; $j < $cl && $l[$j] > $l[$i]; $j++) {
-        if ($l[$j] <= $lc) {
-            $ta[] = $j;
-            $lc = $l[$j];
-        }
-    }
-    return $ta;
-}
-
-/**
  * Returns the view of all $pages displaying the attribute $attr.
  *
  * @param array  $pages An array of page indexes.
@@ -115,16 +69,17 @@ function Pdeditor_childPages($i)
  *
  * @return string (X)HTML.
  *
- * @global array  The page headings.
- * @global int    The number of pages.
- * @global array  The page levels.
- * @global array  The paths of system files and folders.
- * @global object The page data router.
- * @global array  The localization of the plugins.
+ * @global array               The page headings.
+ * @global int                 The number of pages.
+ * @global array               The page levels.
+ * @global array               The paths of system files and folders.
+ * @global object              The page data router.
+ * @global array               The localization of the plugins.
+ * @global Pdeditor_Controller The controller.
  */
 function Pdeditor_pageList($pages, $attr)
 {
-    global $h, $cl, $l, $pth, $pd_router, $plugin_tx;
+    global $h, $cl, $l, $pth, $pd_router, $plugin_tx, $_Pdeditor;
 
     if (empty($pages)) {
         return '';
@@ -147,7 +102,7 @@ function Pdeditor_pageList($pages, $attr)
                 'input type="text" name="value[]" value="'
                 . htmlspecialchars($pd[$i][$attr]) . '"'
             )
-            . Pdeditor_pageList(Pdeditor_childPages($i), $attr)
+            . Pdeditor_pageList($_Pdeditor->model->childPages($i), $attr)
             . '</li>' . PHP_EOL;
     }
     $o .= '</ul>' . PHP_EOL;
@@ -209,19 +164,20 @@ function Pdeditor_deleteAttr()
  *
  * @return string (X)HTML.
  *
- * @global string The document fragment to insert into the head element.
- * @global array  The paths of system files and folders.
- * @global array  The page headings.
- * @global array  The page levels.
- * @global int    The number of pages.
- * @global string The script name.
- * @global array  The localization of the core.
- * @global object The page data router.
- * @global array  The localization of the plugins.
+ * @global string              The document fragment to insert into the head element.
+ * @global array               The paths of system files and folders.
+ * @global array               The page headings.
+ * @global array               The page levels.
+ * @global int                 The number of pages.
+ * @global string              The script name.
+ * @global array               The localization of the core.
+ * @global object              The page data router.
+ * @global array               The localization of the plugins.
+ * @global Pdeditor_Controller The controller.
  */
 function Pdeditor_adminMain()
 {
-    global $hjs, $pth, $h, $l, $cl, $sn, $tx, $pd_router, $plugin_tx;
+    global $hjs, $pth, $h, $l, $cl, $sn, $tx, $pd_router, $plugin_tx, $_Pdeditor;
 
     $ptx = $plugin_tx['pdeditor'];
     $hjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
@@ -243,7 +199,7 @@ function Pdeditor_adminMain()
         . '&amp;pdeditor_attr=' .$attr . '" method="POST" accept-charset="UTF-8"'
         . ' onsubmit="return confirm(\''
         . addcslashes($ptx['warning_save'], "\n\r\'\"\\") . '\')">';
-    $o .= Pdeditor_pageList(Pdeditor_toplevelPages(), $attr)
+    $o .= Pdeditor_pageList($_Pdeditor->model->toplevelPages(), $attr)
         . tag(
             'input type="submit" class="submit" value="'
             . ucfirst($tx['action']['save']) . '"'

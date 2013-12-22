@@ -25,11 +25,65 @@
  */
 class Pdeditor_Model
 {
+    /**
+     * Returns the path of the plugin icon.
+     *
+     * @return string
+     *
+     * @global array The paths of system files and folders.
+     */
     public function pluginIconPath()
     {
         global $pth;
 
         return $pth['folder']['plugins'] . 'pdeditor/pdeditor.png';
+    }
+
+    /**
+     * Returns an array of indexes of the toplevel pages.
+     *
+     * @return array
+     *
+     * @global int   The number of pages.
+     * @global array The page levels.
+     */
+    public function toplevelPages()
+    {
+        global $cl, $l;
+
+        $toplevels = array();
+        for ($i = 0; $i < $cl; $i++) {
+            if ($l[$i] == 1) {
+                $toplevels[] = $i;
+            }
+        }
+        return $toplevels;
+    }
+
+    /**
+     * Returns an array of indexes of child pages of a page.
+     *
+     * @param int $i A page index.
+     *
+     * @return array
+     *
+     * @global int   The number of pages.
+     * @global array The page levels.
+     * @global arras The configuration of the core.
+     */
+    public function childPages($i)
+    {
+        global $cl, $l, $cf;
+
+        $children = array();
+        $level = $cf['menu']['levelcatch'];
+        for ($j = $i + 1; $j < $cl && $l[$j] > $l[$i]; $j++) {
+            if ($l[$j] <= $level) {
+                $children[] = $j;
+                $level = $l[$j];
+            }
+        }
+        return $children;
     }
 }
 
