@@ -8,7 +8,7 @@
  * @category  CMSimple_XH
  * @package   Pdeditor
  * @author    Christoph M. Becker <cmbecker69@gmx.de>
- * @copyright 2011-2013 Christoph M. Becker <http://3-magi.net/>
+ * @copyright 2012-2013 Christoph M. Becker <http://3-magi.net/>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @version   SVN: $Id$
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
@@ -46,7 +46,58 @@ class Pdeditor_Controller
     {
         $this->model = new Pdeditor_Model();
         $this->views = new Pdeditor_Views($this->model);
+        $this->dispatch();
+    }
 
+    /**
+     * Dispatches on current request.
+     *
+     * @return void
+     *
+     * @global string Whether the administration of the plugin is requested.
+     */
+    protected function dispatch()
+    {
+        global $adm, $pdeditor;
+
+        if ($adm && isset($pdeditor) && $pdeditor == 'true') {
+            $this->administration();
+        }
+    }
+
+    /**
+     * Handles the plugin administration.
+     *
+     * @return void
+     *
+     * @global string The document fragment to use for the contents area.
+     * @global string The value of the admin GP parameter.
+     * @global string The value of the action GP parameter.
+     */
+    protected function administration()
+    {
+        global $o, $admin, $action;
+
+        $o .= print_plugin_admin('on');
+        switch ($admin) {
+        case '':
+            $o .= $this->info();
+            break;
+        case 'plugin_main':
+            switch ($action) {
+            case 'delete':
+                $o .= $this->deleteAttribute();
+                break;
+            case 'save':
+                $o .= $this->save();
+                break;
+            default:
+                $o .= $this->editor();
+            }
+            break;
+        default:
+            $o .= plugin_admin_common($action, $admin, 'pdeditor');
+        }
     }
 
     /**
@@ -121,7 +172,7 @@ EOT;
             $values = array_map('stsl', $_POST['value']);
             $this->model->updatePageData($attribute, $values);
         }
-        return $this->administration();
+        return $this->editor();
     }
 
     /**
@@ -137,7 +188,7 @@ EOT;
         $this->model->deletePageDataAttribute($attribute);
         header('Location: ?&pdeditor&admin=plugin_main&action=plugin_text');
         exit;
-        return $this->administration();
+        return $this->editor();
     }
 
     /**
@@ -148,7 +199,7 @@ EOT;
      * @global string The document fragment to insert into the head element.
      * @global array  The paths of system files and folders.
      */
-    public function administration()
+    public function editor()
     {
         global $hjs, $pth;
 

@@ -17,7 +17,6 @@
 /*
  * Prevent direct access.
  */
-
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
     exit;
@@ -28,36 +27,24 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
  */
 define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
 
+/**
+ * The model class.
+ */
 require_once $pth['folder']['plugin_classes'] . 'Model.php';
+
+/**
+ * The controller class.
+ */
 require_once $pth['folder']['plugin_classes'] . 'Controller.php';
+
+/**
+ * The views class.
+ */
 require_once $pth['folder']['plugin_classes'] . 'Views.php';
 
-$_Pdeditor = new Pdeditor_Controller();
-
-/*
- * Handle the plugin administration.
+/**
+ * Create a controller instance.
  */
-if (isset($pdeditor) && $pdeditor == 'true') {
-    $o .= print_plugin_admin('on');
-    switch ($admin) {
-    case '':
-        $o .= $_Pdeditor->info();
-        break;
-    case 'plugin_main':
-        switch ($action) {
-        case 'delete':
-            $o .= $_Pdeditor->deleteAttribute();
-            break;
-        case 'save':
-            $o .= $_Pdeditor->save();
-            break;
-        default:
-            $o .= $_Pdeditor->administration();
-        }
-        break;
-    default:
-        $o .= plugin_admin_common($action, $admin, $plugin);
-    }
-}
+new Pdeditor_Controller();
 
 ?>
