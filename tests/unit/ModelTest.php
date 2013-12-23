@@ -20,9 +20,26 @@
 require_once 'vfsStream/vfsStream.php';
 
 /**
+ * The page data router.
+ */
+require_once '../pluginloader/page_data/page_data_router.php';
+
+/**
  * The class under test.
  */
 require_once './classes/Model.php';
+
+/**
+ * Provides fallback for CMSimple_XH's uenc().
+ *
+ * @param string $string A string.
+ *
+ * @return string
+ */
+function uenc($string)
+{
+    return urlencode($string);
+}
 
 /**
  * A test case for the model class.
@@ -70,15 +87,28 @@ class ModelTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      *
+     * @global The page headings.
      * @global The levels of the pages.
      * @global The number of pages.
+     * @global The page data router.
      */
     protected function setUpContents()
     {
-        global $l, $cl;
+        global $h, $l, $cl, $pd_router;
 
+        $h = array('Welcome', 'About', 'Contact');
         $l = array('1', '2', '1');
         $cl = count($l);
+
+        $pd_router = $this->getMockBuilder('PL_Page_Data_Router')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $map = array(
+            array(0, array('url' => 'Welcome'))
+        );
+        $pd_router->expects($this->any())
+            ->method('find_page')
+            ->will($this->returnValueMap($map));
     }
 
     /**
@@ -119,6 +149,12 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testIsPagedataUrlUpToDate()
+    {
+        $actual = $this->model->isPagedataUrlUpToDate(0);
+        $this->assertTrue($actual);
+    }
+
     /**
      * Tests ::topLevelPages().
      *
@@ -140,6 +176,18 @@ class ModelTest extends PHPUnit_Framework_TestCase
     {
         $expected = array(1);
         $actual = $this->model->childPages(0);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Tests ::pageDataAttribute().
+     *
+     * @return void
+     */
+    public function testPageDataAttribute()
+    {
+        $expected = 'Welcome';
+        $actual = $this->model->pageDataAttribute(0, 'url');
         $this->assertEquals($expected, $actual);
     }
 }

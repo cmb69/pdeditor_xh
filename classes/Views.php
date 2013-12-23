@@ -205,7 +205,7 @@ EOT;
         $ptx = $plugin_tx['pdeditor'];
         $o = PHP_EOL . '<ul>' . PHP_EOL;
         foreach ($pages as $i) {
-            $pageData = $pd_router->find_page($i);
+            $pageDataAttribute = $this->model->pageDataAttribute($i, $attribute);
             if ($attribute == 'url' && !$this->model->isPagedataUrlUpToDate($i)) {
                 $warning = <<<EOT
 img src="{$pth['folder']['plugins']}pdeditor/images/warn.png"
@@ -215,7 +215,7 @@ EOT;
             } else {
                 $warning = '';
             }
-            $value = $this->hsc($pageData[$attribute]);
+            $value = $this->hsc($pageDataAttribute);
             $subpages = $this->pageList($this->model->childPages($i), $attribute);
             $o .= <<<EOT
 <li>

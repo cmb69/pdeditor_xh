@@ -40,20 +40,41 @@ define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
  */
 class ViewsTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * The views.
+     *
+     * @var Pdeditor_Views
+     */
     protected $views;
 
+    /**
+     * Sets up the test fixture.
+     *
+     * @return void
+     */
     public function setUp()
     {
         $model = $this->getMockBuilder('Pdeditor_Model')
             ->disableOriginalConstructor()
             ->getMock();
         $model->expects($this->any())
-             ->method('pluginIconPath')
-             ->will($this->returnValue('foo'));
+            ->method('pluginIconPath')
+            ->will($this->returnValue('foo'));
+        $model->expects($this->any())
+            ->method('pageDataAttributes')
+            ->will($this->returnValue(array('url', 'description')));
+        $model->expects($this->any())
+            ->method('toplevelPages')
+            ->will($this->returnValue(array(0, 2)));
 
         $this->views = new Pdeditor_Views($model);
     }
 
+    /**
+     * Tests whether ::about() shows the version.
+     *
+     * @return void
+     */
     public function testAboutShowsVersion()
     {
         $matcher = array('tag' => 'p', 'content' => '@PDEDITOR_VERSION@');
@@ -61,6 +82,11 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->assertTag($matcher, $actual);
     }
 
+    /**
+     * Tests whether ::about() shows the current year.
+     *
+     * @return void
+     */
     public function testAboutShowsCurrentYear()
     {
         $currentYear = date('Y');
@@ -69,6 +95,11 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $this->assertTag($matcher, $actual);
     }
 
+    /**
+     * Tests whether ::systemCheck() shows the desired structure.
+     *
+     * @return void
+     */
     public function testSystemCheckHasDesiredStructure()
     {
         $checks = array('one' => 'ok');
@@ -78,6 +109,20 @@ class ViewsTest extends PHPUnit_Framework_TestCase
             'children' => array('count' => count($checks))
         );
         $actual = $this->views->systemCheck($checks);
+        $this->assertTag($matcher, $actual);
+    }
+
+    /**
+     * Tests whether ::administration() returns a form.
+     *
+     * @return void
+     */
+    public function testAdministrationHasForm()
+    {
+        $matcher = array(
+            'tag' => 'form'
+        );
+        $actual = $this->views->administration('', '', '');
         $this->assertTag($matcher, $actual);
     }
 }

@@ -121,6 +121,24 @@ class Pdeditor_Model
     }
 
     /**
+     * Returns a page data attribute.
+     *
+     * @param int    $index     A page index.
+     * @param string $attribute An attribute name.
+     *
+     * @return string
+     *
+     * @global object The page data router.
+     */
+    public function pageDataAttribute($index, $attribute)
+    {
+        global $pd_router;
+
+        $pageData = $pd_router->find_page($index);
+        return $pageData[$attribute];
+    }
+
+    /**
      * Updates the page data with new values.
      *
      * @param string $attribute An attribute name.
