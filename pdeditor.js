@@ -8,10 +8,23 @@ if (typeof window.addEventListener != "undefined") {
     window.addEventListener("load", function () {
         var attribute, attributes, select;
 
-        attribute = location.search.split("=").pop();
-        if (attribute == "plugin_text") {
-            attribute = "url";
-        }
+        /*
+         * Returns the current attribute from the query string.
+         */
+        var getAttribute = function () {
+            var parts, i, pair;
+
+            parts = window.location.search.substr(1).split("&");
+            for (i = 0; i < parts.length; i++) {
+                pair = parts[i].split("=");
+                if (pair[0] == "pdeditor_attr") {
+                    return pair[1];
+                }
+            }
+            return "url";
+        };
+
+        attribute = getAttribute();
         select = document.createElement("select");
         attributes = document.querySelectorAll("#pdeditor_attr > li");
         attributes = Array.prototype.slice.call(attributes);

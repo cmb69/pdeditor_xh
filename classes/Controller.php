@@ -183,13 +183,12 @@ class Pdeditor_Controller
             $attribute = stsl($_GET['pdeditor_attr']);
             $values = array_map('stsl', $_POST['value']);
             $this->model->updatePageData($attribute, $values);
-            $url = $this->baseUrl()
-                . '?&pdeditor&admin=plugin_main&action=plugin_text&pdeditor_attr='
-                . $attribute;
-            header('Location: ' . $url);
-            exit;
         }
-        return $this->editor();
+        $url = $this->baseUrl()
+            . '?&pdeditor&admin=plugin_main&action=plugin_text&pdeditor_attr='
+            . $attribute . '&normal';
+        header('Location: ' . $url);
+        exit;
     }
 
     /**
@@ -202,7 +201,7 @@ class Pdeditor_Controller
         $attribute = stsl($_GET['pdeditor_attr']);
         $this->model->deletePageDataAttribute($attribute);
         $url = $this->baseUrl()
-            . '?&pdeditor&admin=plugin_main&action=plugin_text';
+            . '?&pdeditor&admin=plugin_main&action=plugin_text&normal';
         header('Location: ' . $url);
         exit;
     }
