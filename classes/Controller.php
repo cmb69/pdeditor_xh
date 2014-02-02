@@ -166,11 +166,8 @@ class Pdeditor_Controller
         global $plugin_tx;
 
         $ptx = $plugin_tx['pdeditor'];
-        $o = <<<EOT
-<h1>Pdeditor &ndash; $ptx[info_heading]</h1>
-
-EOT;
-        $o .= $this->views->systemCheck($this->systemChecks())
+        $o = '<h1>Pdeditor &ndash; ' . $ptx['info_heading'] . '</h1>'
+            . $this->views->systemCheck($this->systemChecks())
             . $this->views->about();
         return $o;
     }
@@ -223,10 +220,7 @@ EOT;
         global $hjs, $pth;
 
         $filename = $pth['folder']['plugins'] . 'pdeditor/pdeditor.js';
-        $hjs .= <<<EOT
-<script type="text/javascript" src="$filename"></script>
-
-EOT;
+        $hjs .= '<script type="text/javascript" src="' . $filename . '"></script>';
         $attribute = isset($_GET['pdeditor_attr'])
             ? $_GET['pdeditor_attr']
             : 'url';

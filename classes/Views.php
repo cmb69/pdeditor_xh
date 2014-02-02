@@ -82,7 +82,7 @@ class Pdeditor_Views
     /**
      * Returns summarized GPLv3 license information.
      *
-     * @return string (X)HTML.
+     * @return string XHTML.
      */
     protected function license()
     {
@@ -98,7 +98,26 @@ GNU General Public License for more details.</p>
 <p class="pdeditor_license">You should have received a copy of the GNU General Public
 License along with this program. If not, see <a
 href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>.</p>
+EOT;
+    }
 
+    /**
+     * Returns a single system check list item.
+     *
+     * @param string $check A label.
+     * @param string $state A state.
+     *
+     * @return string XHTML.
+     *
+     * @global array The paths of system files and folders.
+     */
+    protected function systemCheckItem($check, $state)
+    {
+        global $pth;
+
+        $imageFolder = $pth['folder']['plugins'] . 'pdeditor/images/';
+        return <<<EOT
+<li><img src="$imageFolder$state.png" alt="$state" /> $check</li>
 EOT;
     }
 
@@ -109,29 +128,23 @@ EOT;
      *
      * @return string (X)HTML.
      *
-     * @global array The paths of system files and folders.
      * @global array The localization of the plugins.
      */
     public function systemCheck($checks)
     {
-        global $pth, $plugin_tx;
+        global $plugin_tx;
 
         $ptx = $plugin_tx['pdeditor'];
-        $imageFolder = $pth['folder']['plugins'] . 'pdeditor/images/';
+        $items = array();
+        foreach ($checks as $check => $state) {
+            $items[] = $this->systemCheckItem($check, $state);
+        }
+        $items = implode('', $items);
         $o = <<<EOT
 <h4>$ptx[syscheck_title]</h4>
 <ul class="pdeditor_system_check">
-
-EOT;
-        foreach ($checks as $check => $state) {
-            $o .= <<<EOT
-    <li><img src="$imageFolder$state.png" alt="$state" /> $check</li>
-
-EOT;
-        }
-        $o .= <<<EOT
+    $items
 </ul>
-
 EOT;
         return $this->xhtml($o);
     }
@@ -148,16 +161,32 @@ EOT;
         $ptx = $plugin_tx['pdeditor'];
         $iconPath = $this->model->pluginIconPath();
         $version = PDEDITOR_VERSION;
+        $license = $this->license();
         $o = <<<EOT
 <h4>$ptx[info_about]</h4>
 <img src="$iconPath" width="128" height="128" alt="Plugin Icon"
-     style="float: left; margin-right: 16px">
+     style="float: left; margin-right: 16px" />
 <p>Version: $version</p>
 <p>Copyright &copy; 2012-2014 <a href="http://3-magi.net">Christoph M. Becker</a></p>
-
+$license
 EOT;
-        $o .= $this->license();
-        return $o;
+        return $this->xhtml($o);
+    }
+
+    /**
+     * Returns an attribute list item.
+     *
+     * @param string $url       A partial URL.
+     * @param string $attribute An attribute name.
+     *
+     * @return string XHTML.
+     */
+    protected function attributeListItem($url, $attribute)
+    {
+        $url = $this->hsc($url . $attribute);
+        return <<<EOT
+<li><a href="$url">$attribute</a></li>
+EOT;
     }
 
     /**
@@ -169,14 +198,65 @@ EOT;
     {
         $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
             . '&pdeditor_attr=';
-        $o = '<ul id="pdeditor_attr">' . PHP_EOL;
         $attributes = $this->model->pageDataAttributes();
+        $items = '';
         foreach ($attributes as $attribute) {
-            $o .= '<li><a href="' . $this->hsc($url . $attribute) . '">'
-                . $attribute . '</a></li>' . PHP_EOL;
+            $items .= $this->attributeListItem($url, $attribute);
         }
-        $o .= '</ul>' . PHP_EOL;
-        return $o;
+        $o = <<<EOT
+<ul id="pdeditor_attr">
+    $items
+</ul>
+EOT;
+        return $this->xhtml($o);
+    }
+
+    /**
+     * Returns a warning icon.
+     *
+     * @return string XHTML.
+     *
+     * @global array The paths of system files and folders.
+     * @global array The localization of the plugins.
+     */
+    protected function warningIcon()
+    {
+        global $pth, $plugin_tx;
+
+        $ptx = $plugin_tx['pdeditor'];
+        return <<<EOT
+img src="{$pth['folder']['plugins']}pdeditor/images/warn.png"
+    alt="$ptx[message_headings]" title="$ptx[message_headings]" />
+EOT;
+    }
+
+    /**
+     * Returns a page list item.
+     *
+     * @param string $attribute An attribute name.
+     * @param int    $i         A page index.
+     *
+     * @return string XHTML.
+     *
+     * @global array The headings of the pages.
+     */
+    protected function pageListItem($attribute, $i)
+    {
+        global $h;
+
+        $pageDataAttribute = $this->model->pageDataAttribute($i, $attribute);
+        if ($attribute == 'url' && !$this->model->isPagedataUrlUpToDate($i)) {
+            $warning = $this->warningIcon();
+        } else {
+            $warning = '';
+        }
+        $value = $this->hsc($pageDataAttribute);
+        $subpages = $this->pageList($this->model->childPages($i), $attribute);
+        return <<<EOT
+<li>
+$warning$h[$i]<input type="text" name="value[]" value="$value" />$subpages
+</li>
+EOT;
     }
 
     /**
@@ -185,44 +265,29 @@ EOT;
      * @param array  $pages     An array of page indexes.
      * @param string $attribute A page data attribute name.
      *
-     * @return string (X)HTML.
+     * @return string XHTML.
      *
-     * @global array  The page headings.
      * @global array  The paths of system files and folders.
      * @global object The page data router.
      * @global array  The localization of the plugins.
      */
     protected function pageList($pages, $attribute)
     {
-        global $h, $pth, $pd_router, $plugin_tx;
+        global $pth, $pd_router, $plugin_tx;
 
         if (empty($pages)) {
             return '';
         }
         $ptx = $plugin_tx['pdeditor'];
-        $o = PHP_EOL . '<ul>' . PHP_EOL;
+        $items = '';
         foreach ($pages as $i) {
-            $pageDataAttribute = $this->model->pageDataAttribute($i, $attribute);
-            if ($attribute == 'url' && !$this->model->isPagedataUrlUpToDate($i)) {
-                $warning = <<<EOT
-img src="{$pth['folder']['plugins']}pdeditor/images/warn.png"
-    alt="$ptx[message_headings]" title="$ptx[message_headings]" />
-
-EOT;
-            } else {
-                $warning = '';
-            }
-            $value = $this->hsc($pageDataAttribute);
-            $subpages = $this->pageList($this->model->childPages($i), $attribute);
-            $o .= <<<EOT
-<li>
-$warning$h[$i]<input type="text" name="value[]" value="$value" />$subpages
-</li>
-
-EOT;
+            $items .= $this->pageListItem($attribute, $i);
         }
-        $o .= '</ul>' . PHP_EOL;
-        return $this->xhtml($o);
+        return <<<EOT
+<ul>
+    $items
+</ul>
+EOT;
     }
 
     /**
@@ -267,7 +332,6 @@ EOT;
         <input type="submit" class="submit" value="$saveLabel" />
     </form>
 </div>
-
 EOT;
         return $this->xhtml($o);
     }
