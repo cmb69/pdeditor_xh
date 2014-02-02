@@ -173,22 +173,25 @@ class Pdeditor_Model
      * @return string (X)HTML.
      *
      * @global object The page data router.
-     *
-     * @todo Make XH 1.6 compatible.
      */
     public function deletePageDataAttribute($attribute)
     {
         global $pd_router;
 
-        $key = array_search($attribute, $pd_router->model->params);
-        if ($key !== false) {
-            unset($pd_router->model->params[$key]);
+        if (method_exists($pd_router, 'removeInterest')) {
+            $pd_router->removeInterest($attribute);
+            XH_saveContents();
+        } else {
+            $key = array_search($attribute, $pd_router->model->params);
+            if ($key !== false) {
+                unset($pd_router->model->params[$key]);
+            }
+            for ($i = 0; $i < count($pd_router->model->data); $i++) {
+                unset($pd_router->model->data[$i][$attribute]);
+            }
+            unset($pd_router->model->temp_data[$attribute]);
+            $pd_router->model->save();
         }
-        for ($i = 0; $i < count($pd_router->model->data); $i++) {
-            unset($pd_router->model->data[$i][$attribute]);
-        }
-        unset($pd_router->model->temp_data[$attribute]);
-        $pd_router->model->save();
     }
 }
 
