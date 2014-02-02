@@ -1,2 +1,3 @@
-* fix bug reported by snafu <http://cmsimpleforum.com/viewtopic.php?f=16&t=5248>
-* shift pagedata up/down?
+* port to XH 1.6
+* add CSRF protection
+* translate to German (localization and manual)
