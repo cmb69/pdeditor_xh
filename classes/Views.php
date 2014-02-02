@@ -321,11 +321,12 @@ EOT;
 <h4 class="pdeditor_heading">$ptx[label_attributes]</h4>
 $attributes
 <h4 class="pdeditor_heading">$attributeLabel</h4>
-<form id="pdeditor_delete" action="$deleteUrl$attribute&amp;edit" method="post">
+<form id="pdeditor_delete" action="$deleteUrl$attribute&amp;edit" method="post"
+      onsubmit="return window.confirm('$deleteWarning')">
     <button type="submit">$ptx[label_delete]</button>
 </form>
 <form id="pdeditor_attributes" action="$action$attribute&amp;edit" method="post"
-      onsubmit="return confirm('$saveWarning')">
+      onsubmit="return window.confirm('$saveWarning')">
     <input type="submit" class="submit" value="$saveLabel" />
     $pageList
     <input type="submit" class="submit" value="$saveLabel" />
