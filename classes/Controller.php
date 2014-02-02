@@ -156,7 +156,7 @@ EOT;
         $o .= $this->views->systemCheck($this->systemChecks())
             . $this->views->about();
         return $o;
-}
+    }
 
     /**
      * Saves the submitted page data and returns the main admin view.

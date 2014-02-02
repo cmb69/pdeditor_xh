@@ -165,7 +165,7 @@ EOT;
      *
      * @return string (X)HTML.
      */
-    protected function attributeList($default)
+    protected function attributeList()
     {
         $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
             . '&pdeditor_attr=';
