@@ -1,26 +1,31 @@
-#pdeditor {}
-
-#pdeditor ul {
+#pdeditor_attributes {
+    margin: 2em 0;
+}
+#pdeditor_attributes ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-
-#pdeditor > form > ul {margin: 1em 0}
-
-#pdeditor li {
-    position:relative;
+#pdeditor_attributes > ul {
+    margin: 1em 0;
+}
+#pdeditor_attributes li {
+    position: relative;
     margin: 0;
     padding: 5px 0 0 0;
 }
-
-#pdeditor ul ul {margin-left: 20px}
-
-#pdeditor ul input {
-    position:absolute;
-    right:0px;
-    width:300px;
+#pdeditor_attributes ul ul {
+    margin-left: 20px;
+}
+#pdeditor_attributes ul input {
+    position: absolute;
+    right: 0px;
+    width: 300px;
 }
 
-.pdeditor_license {text-align: justify}
-.pdeditor_system_check {list-style: none}
+.pdeditor_license {
+    text-align: justify;
+}
+.pdeditor_system_check {
+    list-style: none;
+}

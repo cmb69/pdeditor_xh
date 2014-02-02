@@ -317,21 +317,19 @@ EOT;
         $saveLabel = ucfirst($tx['action']['save']);
         $attributeLabel = sprintf($ptx['label_attribute'], $attribute);
         $o = <<<EOT
-<div id="pdeditor">
-    <h1>Pdeditor &ndash; $ptx[menu_main]</h1>
-    <h4>$ptx[label_attributes]</h4>
-    $attributes
-    <h4>$attributeLabel</h4>
-    <form id="pdeditor_delete" action="$deleteUrl$attribute" method="post">
-        <button type="submit">$ptx[label_delete]</button>
-    </form>
-    <form action="$action$attribute" method="post" accept-charset="UTF-8"
-          onsubmit="return confirm('$saveWarning')">
-        <input type="submit" class="submit" value="$saveLabel" />
-        $pageList
-        <input type="submit" class="submit" value="$saveLabel" />
-    </form>
-</div>
+<h1>Pdeditor &ndash; $ptx[menu_main]</h1>
+<h4 class="pdeditor_heading">$ptx[label_attributes]</h4>
+$attributes
+<h4 class="pdeditor_heading">$attributeLabel</h4>
+<form id="pdeditor_delete" action="$deleteUrl$attribute" method="post">
+    <button type="submit">$ptx[label_delete]</button>
+</form>
+<form id="pdeditor_attributes" action="$action$attribute" method="post"
+      onsubmit="return confirm('$saveWarning')">
+    <input type="submit" class="submit" value="$saveLabel" />
+    $pageList
+    <input type="submit" class="submit" value="$saveLabel" />
+</form>
 EOT;
         return $this->xhtml($o);
     }

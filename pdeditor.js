@@ -32,7 +32,7 @@ if (typeof window.addEventListener != "undefined") {
         });
         document.getElementById("pdeditor_attr").parentNode.replaceChild(
                 select, document.getElementById("pdeditor_attr"));
-        headings = document.querySelectorAll("#pdeditor h4");
+        headings = document.querySelectorAll(".pdeditor_heading");
         headings = Array.prototype.slice.call(headings);
         headings.forEach(function (el) {
             el.parentNode.removeChild(el);
