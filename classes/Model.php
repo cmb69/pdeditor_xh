@@ -115,7 +115,11 @@ class Pdeditor_Model
     {
         global $pd_router;
 
-        $attributes = $pd_router->model->params;
+        if (method_exists($pd_router, 'storedFields')) {
+            $attributes = $pd_router->storedFields();
+        } else {
+            $attributes = $pd_router->model->params;
+        }
         natcasesort($attributes);
         return $attributes;
     }
