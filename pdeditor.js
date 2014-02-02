@@ -1,7 +1,7 @@
 /**
  * JS of Pdeditor_XH.
  *
- * Copyright (c) 2012 Christoph M. Becker (see license.txt)
+ * Copyright (c) 2012-2014 Christoph M. Becker (see license.txt)
  */
 
 if (typeof window.addEventListener != "undefined") {
