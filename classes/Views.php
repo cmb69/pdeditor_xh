@@ -161,24 +161,21 @@ EOT;
     }
 
     /**
-     * Returns an attribute selectbox.
-     *
-     * @param string $default An attribute name.
+     * Returns a list of attributes.
      *
      * @return string (X)HTML.
      */
-    protected function attributeSelect($default)
+    protected function attributeList($default)
     {
         $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
             . '&pdeditor_attr=';
-        $o = '<select id="pdeditor_attr" onchange="pdeditor_selectAttr(\''
-            . $this->hsc($url) . '\')">' . PHP_EOL;
+        $o = '<ul id="pdeditor_attr">' . PHP_EOL;
         $attributes = $this->model->pageDataAttributes();
         foreach ($attributes as $attribute) {
-            $sel = ($attribute == $default) ? ' selected="selected"' : '';
-            $o .= '<option' . $sel . '>' . $attribute . '</option>' . PHP_EOL;
+            $o .= '<li><a href="' . $this->hsc($url . $attribute) . '">'
+                . $attribute . '</a></li>' . PHP_EOL;
         }
-        $o .= '</select>' . PHP_EOL;
+        $o .= '</ul>' . PHP_EOL;
         return $o;
     }
 
@@ -245,7 +242,7 @@ EOT;
         global $tx, $plugin_tx;
 
         $ptx = $plugin_tx['pdeditor'];
-        $select = $this->attributeSelect($attribute);
+        $attributes = $this->attributeList($attribute);
         $deleteUrl = $this->hsc($deleteUrl);
         $deleteWarning = addcslashes($ptx['warning_delete'], "\n\r\'\"\\");
         $action = $this->hsc($action);
@@ -253,20 +250,16 @@ EOT;
         $toplevelPages = $this->model->toplevelPages();
         $pageList = $this->pageList($toplevelPages, $attribute);
         $saveLabel = ucfirst($tx['action']['save']);
+        $attributeLabel = sprintf($ptx['label_attribute'], $attribute);
         $o = <<<EOT
 <div id="pdeditor">
-    <table class="edit" style="width:100%">
-        <tr>
-            <td>
-                <strong>$ptx[label_attributes]</strong>$select
-            </td>
-            <td>
-                <a href="$deleteUrl$attribute"
-                   onclick="return confirm('$deleteWarning')">
-                $ptx[label_delete]</a>
-            </td>
-        </tr>
-    </table>
+    <h1>Pdeditor &ndash; $ptx[menu_main]</h1>
+    <h4>$ptx[label_attributes]</h4>
+    $attributes
+    <h4>$attributeLabel</h4>
+    <form id="pdeditor_delete" action="$deleteUrl$attribute" method="post">
+        <button type="submit">$ptx[label_delete]</button>
+    </form>
     <form action="$action$attribute" method="post" accept-charset="UTF-8"
           onsubmit="return confirm('$saveWarning')">
         <input type="submit" class="submit" value="$saveLabel" />
