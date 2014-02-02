@@ -41,7 +41,7 @@
         </phpunit>
     </target>
 
-<!--    <target name="attack-tests">
+    <target name="attack-tests">
         <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
@@ -52,7 +52,7 @@
             </batchtest>
         </phpunit>
     </target>
--->
+
     <!-- Code coverage -->
 
     <target name="coverage">

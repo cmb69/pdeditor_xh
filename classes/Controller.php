@@ -176,10 +176,15 @@ class Pdeditor_Controller
      * Saves the submitted page data and returns the main admin view.
      *
      * @return string (X)HTML.
+     *
+     * @global object The CSRF protector.
      */
     public function save()
     {
+        global $_XH_csrfProtection;
+
         if (isset($_POST['value'])) {
+            $_XH_csrfProtection->check();
             $attribute = stsl($_GET['pdeditor_attr']);
             $values = array_map('stsl', $_POST['value']);
             $this->model->updatePageData($attribute, $values);
@@ -195,9 +200,14 @@ class Pdeditor_Controller
      * Deletes a page data attribute and returns the main admin view.
      *
      * @return string (X)HTML.
+     *
+     * @global object The CSRF protector.
      */
     public function deleteAttribute()
     {
+        global $_XH_csrfProtection;
+
+        $_XH_csrfProtection->check();
         $attribute = stsl($_GET['pdeditor_attr']);
         $this->model->deletePageDataAttribute($attribute);
         $url = $this->baseUrl()

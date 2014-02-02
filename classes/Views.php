@@ -301,10 +301,11 @@ EOT;
      *
      * @global array The localization of the core.
      * @global array The localization of the plugins.
+     * @global object The CSRF protector.
      */
     public function administration($attribute, $deleteUrl, $action)
     {
-        global $tx, $plugin_tx;
+        global $tx, $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['pdeditor'];
         $attributes = $this->attributeList($attribute);
@@ -316,6 +317,7 @@ EOT;
         $pageList = $this->pageList($toplevelPages, $attribute);
         $saveLabel = ucfirst($tx['action']['save']);
         $attributeLabel = sprintf($ptx['label_attribute'], $attribute);
+        $tokenInput = $_XH_csrfProtection->tokenInput();
         $o = <<<EOT
 <h1>Pdeditor &ndash; $ptx[menu_main]</h1>
 <h4 class="pdeditor_heading">$ptx[label_attributes]</h4>
@@ -323,10 +325,12 @@ $attributes
 <h4 class="pdeditor_heading">$attributeLabel</h4>
 <form id="pdeditor_delete" action="$deleteUrl$attribute&amp;edit" method="post"
       onsubmit="return window.confirm('$deleteWarning')">
+    $tokenInput
     <button type="submit">$ptx[label_delete]</button>
 </form>
 <form id="pdeditor_attributes" action="$action$attribute&amp;edit" method="post"
       onsubmit="return window.confirm('$saveWarning')">
+    $tokenInput
     <input type="submit" class="submit" value="$saveLabel" />
     $pageList
     <input type="submit" class="submit" value="$saveLabel" />
