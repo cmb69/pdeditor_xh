@@ -45,11 +45,11 @@ class Pdeditor_Views
     /**
      * Returns a string with special (X)HTML characters escaped as entities.
      *
+     * Uses a simplified fallback for CMSimple_XH < 1.6.
+     *
      * @param string $string A string.
      *
      * @return string (X)HTML.
-     *
-     * @todo Make that independent of XH 1.6.
      */
     protected function hsc($string)
     {

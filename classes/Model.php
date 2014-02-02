@@ -145,13 +145,15 @@ class Pdeditor_Model
      * @param array  $values    An array of new values.
      *
      * @return void
-     *
-     * @todo Check that attribute is registered!
      */
     public function updatePageData($attribute, $values)
     {
         global $pd_router;
 
+        $attributes = $this->pageDataAttributes();
+        if (!in_array($attribute, $attributes)) {
+            return;
+        }
         $pageData = $pd_router->find_all();
         foreach ($values as $index => $value) {
             $pageData[$index][$attribute] = $value;

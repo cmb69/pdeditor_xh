@@ -50,6 +50,23 @@ class Pdeditor_Controller
     }
 
     /**
+     * Returns the fully qualified URL of the CMSimple_XH installation folder.
+     *
+     * @return string
+     *
+     * @global string The script name.
+     */
+    protected function baseUrl()
+    {
+        global $sn;
+
+        return 'http'
+            . (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 's' : '')
+            . '://' . $_SERVER['HTTP_HOST']
+            . preg_replace('/index\.php$/', '', $sn);
+    }
+
+    /**
      * Dispatches on current request.
      *
      * @return void
@@ -162,15 +179,18 @@ EOT;
      * Saves the submitted page data and returns the main admin view.
      *
      * @return string (X)HTML.
-     *
-     * @todo Redirect instead of return main admin view?
      */
     public function save()
     {
         if (isset($_POST['value'])) {
-            $attribute = $_GET['pdeditor_attr']; // TODO: sanitize
+            $attribute = stsl($_GET['pdeditor_attr']);
             $values = array_map('stsl', $_POST['value']);
             $this->model->updatePageData($attribute, $values);
+            $url = $this->baseUrl()
+                . '?&pdeditor&admin=plugin_main&action=plugin_text&pdeditor_attr='
+                . $attribute;
+            header('Location: ' . $url);
+            exit;
         }
         return $this->editor();
     }
@@ -179,16 +199,15 @@ EOT;
      * Deletes a page data attribute and returns the main admin view.
      *
      * @return string (X)HTML.
-     *
-     * @todo Stick with redirect or return adminMain()?
      */
     public function deleteAttribute()
     {
-        $attribute = stsl($_GET['pdeditor_attr']); // TODO: sanitize
+        $attribute = stsl($_GET['pdeditor_attr']);
         $this->model->deletePageDataAttribute($attribute);
-        header('Location: ?&pdeditor&admin=plugin_main&action=plugin_text');
+        $url = $this->baseUrl()
+            . '?&pdeditor&admin=plugin_main&action=plugin_text';
+        header('Location: ' . $url);
         exit;
-        return $this->editor();
     }
 
     /**
