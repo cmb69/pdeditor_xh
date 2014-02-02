@@ -22,7 +22,11 @@ require_once 'vfsStream/vfsStream.php';
 /**
  * The page data router.
  */
-require_once '../pluginloader/page_data/page_data_router.php';
+if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
+    require_once '../../cmsimple/classes/PageDataRouter.php';
+} else {
+    require_once '../pluginloader/page_data/page_data_router.php';
+}
 
 /**
  * The class under test.
@@ -40,6 +44,8 @@ function uenc($string)
 {
     return urlencode($string);
 }
+
+function XH_saveContents() {}
 
 /**
  * A test case for the model class.
@@ -100,7 +106,10 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $l = array('1', '2', '1');
         $cl = count($l);
 
-        $pd_router = $this->getMockBuilder('PL_Page_Data_Router')
+        $class = class_exists('XH_PageDataRouter')
+            ? 'XH_PageDataRouter'
+            : 'PL_Page_Data_Router';
+        $pd_router = $this->getMockBuilder($class)
             ->disableOriginalConstructor()
             ->getMock();
         $map = array(
@@ -179,6 +188,22 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testPageDataAttributes()
+    {
+        global $pd_router;
+
+        if (method_exists($pd_router, 'storedFields')) {
+            $pd_router->expects($this->any())
+                ->method('storedFields')
+                ->will($this->returnValue(array('bar', 'foo')));
+            $expected = array('bar', 'foo');
+            $actual = $this->model->pageDataAttributes();
+            $this->assertEquals($expected, $actual);
+        } else {
+            $this->markTestSkipped();
+        }
+    }
+
     /**
      * Tests ::pageDataAttribute().
      *
@@ -189,6 +214,21 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $expected = 'Welcome';
         $actual = $this->model->pageDataAttribute(0, 'url');
         $this->assertEquals($expected, $actual);
+    }
+
+    public function testDeletePageDataAttribute()
+    {
+        global $pd_router;
+
+        if (method_exists($pd_router, 'removeInterest')) {
+            $attribute = 'foo';
+            $pd_router->expects($this->once())
+                ->method('removeInterest')
+                ->with($this->equalTo($attribute));
+            $this->model->deletePageDataAttribute($attribute);
+        } else {
+            $this->markTestSkipped();
+        }
     }
 }
 
