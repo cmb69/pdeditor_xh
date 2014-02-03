@@ -1,2 +1,13 @@
+Version 1beta2 - released 2014-02-03
+* (hopefully) fixed non-reproducible bug, where attributes were not completely
+  removed from pagedata (reported by snafu)
+* lifted requirements to PHP 5
+* adapted for CMSimple_XH 1.6
+* added CSRF protection (if available by CMSimple_XH)
+* added German localization and manual
+* added version.nfo
+* improved QA: Phing, PHPCS, PHPCI, PHPUnit
+* refactored to MVC architecture
+
 Version 1beta1 - released 2012-02-26
-cmb	initial release
+* initial release
