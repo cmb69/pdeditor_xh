@@ -15,6 +15,7 @@
             <directory name="help"/>
             <directory name="images"/>
             <directory name="languages"/>
+            <directory name="tests"/>
         </exclude>
     </excludes>
 </phpcompatinfo>
