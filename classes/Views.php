@@ -317,7 +317,11 @@ EOT;
         $pageList = $this->pageList($toplevelPages, $attribute);
         $saveLabel = ucfirst($tx['action']['save']);
         $attributeLabel = sprintf($ptx['label_attribute'], $attribute);
-        $tokenInput = $_XH_csrfProtection->tokenInput();
+        if (isset($_XH_csrfProtection)) {
+            $tokenInput = $_XH_csrfProtection->tokenInput();
+        } else {
+            $tokenInput = '';
+        }
         $o = <<<EOT
 <h1>Pdeditor &ndash; $ptx[menu_main]</h1>
 <h4 class="pdeditor_heading">$ptx[label_attributes]</h4>
