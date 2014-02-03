@@ -1,6 +1,6 @@
 body {
     font-family: Verdana, sans-serif;
-    line-height: 150%;
+    line-height: 1.5;
     margin-left: 2em;
     margin-right: 2em;
     background: #ffffe1;
@@ -10,14 +10,14 @@ body {
     margin-left: 17em;
 }
 
-#body p {
+p {
     text-align: justify;
 }
 
 #nav {
+    clear: both;
     margin-left: 0;
     float: left;
-    clear: both;
     width: 15em;
     list-style: none;
     padding-left: 0;
@@ -28,7 +28,6 @@ body {
     list-style: none;
     font-size: small;
     padding-left: 1em;
-    clear: both;
 }
 
 .image-right {
@@ -40,4 +39,16 @@ body {
 
 .toplink {
     text-align: right;
+}
+
+@media screen and (max-width: 50em) {
+
+    #body {
+        margin-left: 0;
+    }
+
+    #nav {
+        float: none;
+    }
+
 }
