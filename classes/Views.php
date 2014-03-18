@@ -225,7 +225,7 @@ EOT;
 
         $ptx = $plugin_tx['pdeditor'];
         return <<<EOT
-img src="{$pth['folder']['plugins']}pdeditor/images/warn.png"
+<img src="{$pth['folder']['plugins']}pdeditor/images/warn.png"
     alt="$ptx[message_headings]" title="$ptx[message_headings]" />
 EOT;
     }

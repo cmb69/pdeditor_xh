@@ -122,7 +122,19 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $matcher = array(
             'tag' => 'form'
         );
-        $actual = $this->views->administration('', '', '');
+        $actual = $this->views->administration('url', '', '');
+        $this->assertTag($matcher, $actual);
+    }
+
+    /**
+     * Checks for bug, where img tag missed < (reported by learnandcode)
+     */
+    public function testAdministrationShowsWarningIcon()
+    {
+        $matcher = array(
+            'tag' => 'img'
+        );
+        $actual = $this->views->administration('url', '', '');
         $this->assertTag($matcher, $actual);
     }
 }
