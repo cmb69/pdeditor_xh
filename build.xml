@@ -121,7 +121,6 @@
                 <exclude name="tests/**"/>
                 <exclude name="build.xml"/>
                 <exclude name="pdeditor.js"/>
-                <exclude name="pdeditor.komodoproject"/>
                 <exclude name="phpcompatinfo.xml"/>
                 <exclude name="TODO"/>
             </fileset>
