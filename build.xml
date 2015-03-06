@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Pdeditor" default="default">
-
-    <!-- Properties -->
-
-    <property name="styledir" value="C:\xampp\php\data\phing\etc"/>
-
-    <!-- Filesets -->
+<project name="Pdeditor" default="help">
 
     <fileset id="php-sources" dir=".">
         <include name="admin.php"/>
         <include name="classes/*.php"/>
     </fileset>
 
-    <!-- Checks -->
+    <target name="help" description="lists available targets">
+        <exec command="phing -l" outputProperty="help"/>
+        <echo>${help}</echo>
+    </target>
 
-    <target name="sniff">
+    <target name="sniff" description="checks adherence to PEAR CS">
         <phpcodesniffer standard="PEAR">
             <fileset refid="php-sources"/>
         </phpcodesniffer>
     </target>
 
-    <target name="compat">
+    <target name="compat" description="checks PHP requirements">
         <exec command="phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern pdeditor ."
               logoutput="true"/>
     </target>
 
-    <!-- Tests -->
-
-    <target name="unit-tests">
+    <target name="unit-tests" description="runs all unit tests">
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <batchtest>
@@ -39,7 +34,7 @@
         </phpunit>
     </target>
 
-    <target name="attack-tests">
+    <target name="attack-tests" description="runs all attack tests">
         <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
@@ -51,11 +46,7 @@
         </phpunit>
     </target>
 
-    <target name="all-tests" depends="unit-tests,attack-tests"/>
-
-    <!-- Code coverage -->
-
-    <target name="coverage">
+    <target name="coverage" description="generates coverage report">
         <coverage-setup database="tests/coverage/coverage.db">
             <fileset dir="classes">
                 <include name="*.php"/>
@@ -73,12 +64,10 @@
         </coverage-report>
     </target>
 
-    <!-- Documentation -->
-
-    <target name="php-doc">
-        <phpdoc title="Pdeditor_XH Developer Documentation" destdir="doc/php"
+    <target name="doc" description="generates developer documentation">
+        <phpdoc title="Pdeditor_XH Developer Documentation" destdir="doc"
                 output="HTML:frames:default" defaultpackagename="Pdeditor"
-                defaultcategoryname="CMSimple_XH">
+                defaultcategoryname="CMSimple_XH" parseprivate="true">
             <fileset refid="php-sources"/>
             <projdocfileset dir=".">
                <include name="README"/>
@@ -87,17 +76,11 @@
         </phpdoc>
     </target>
 
-<!--    <target name="js-doc">
-        <exec command="jsdoc -d doc/js translator.js" checkreturn="true"/>
-    </target>
--->
-    <target name="doc" depends="php-doc"/>
-
-    <!-- Build -->
-
-    <target name="build">
+    <target name="build" description="builds distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
-        <svnexport revision="" repositoryurl="." todir="export"/>
+        <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
+        <untar file="export.tar" todir="export"/>
+        <delete file="export.tar"/>
         <move todir="dist">
             <fileset dir="export">
                 <include name="admin.php"/>
@@ -123,9 +106,10 @@
             </fileset>
         </move>
         <delete dir="export"/>
-        <!--<copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/>-->
-        <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
-        <zip destfile="Pdeditor_XH-${version}.zip" basedir="dist" prefix="pdeditor/"/>
+        <copy file="dist/languages/en.php"
+              tofile="dist/languages/default.php"/>
+        <zip destfile="Pdeditor_XH-${version}.zip"
+             basedir="dist" prefix="pdeditor/"/>
         <delete dir="dist"/>
     </target>
 
