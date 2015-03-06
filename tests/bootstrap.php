@@ -16,6 +16,11 @@
 require_once './vendor/autoload.php';
 require_once '../../cmsimple/functions.php';
 require_once '../../cmsimple/adminfuncs.php';
+if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
+    include_once '../../cmsimple/classes/PageDataRouter.php';
+} else {
+    include_once '../pluginloader/page_data/page_data_router.php';
+}
 
 spl_autoload_register(
     function ($class) {

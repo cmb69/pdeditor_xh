@@ -86,27 +86,6 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns the data for the attack tests.
-     *
-     * @return array
-     */
-    public function dataForAttack()
-    {
-        return array(
-            array( // edit
-                array('value' => 'foo'),
-                '&pdeditor&admin=plugin_main&action=save'
-                . '&pdeditor_attr=description&edit'
-            ),
-            array( // delete
-                array(),
-                '&pdeditor&admin=plugin_main&action=delete'
-                . '&pdeditor_attr=description&edit'
-            )
-        );
-    }
-
-    /**
      * Tests CSRF attacks.
      *
      * @param array  $fields      An associative array of fields.
@@ -125,6 +104,27 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
         $actual = curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
         curl_close($this->curlHandle);
         $this->assertEquals(403, $actual);
+    }
+
+    /**
+     * Returns the data for the attack tests.
+     *
+     * @return array
+     */
+    public function dataForAttack()
+    {
+        return array(
+            array( // edit
+                array('value' => 'foo'),
+                '&pdeditor&admin=plugin_main&action=save'
+                . '&pdeditor_attr=description&edit'
+            ),
+            array( // delete
+                array(),
+                '&pdeditor&admin=plugin_main&action=delete'
+                . '&pdeditor_attr=description&edit'
+            )
+        );
     }
 }
 

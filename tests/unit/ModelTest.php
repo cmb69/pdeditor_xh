@@ -18,15 +18,6 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 
 /**
- * The page data router.
- */
-if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
-    include_once '../../cmsimple/classes/PageDataRouter.php';
-} else {
-    include_once '../pluginloader/page_data/page_data_router.php';
-}
-
-/**
  * A test case for the model class.
  *
  * @category CMSimple_XH
@@ -49,7 +40,36 @@ class ModelTest extends PHPUnit_Framework_TestCase
      *
      * @var Pdeditor_Model
      */
-    protected $model;
+    protected $subject;
+
+    /**
+     * Sets up the test fixture.
+     *
+     * @return void
+     *
+     * @global array The paths of system files and folder.
+     */
+    public function setUp()
+    {
+        global $pth;
+
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
+
+        $this->pluginsFolder = vfsStream::url('test/plugins/');
+        mkdir($this->pluginsFolder, 0777, true);
+        $pth = array(
+            'folder' => array('plugins' => $this->pluginsFolder)
+        );
+
+        $this->setUpConfig();
+        $this->setUpContents();
+
+        $this->subject = new Pdeditor_Model();
+        $uencMock = new PHPUnit_Extensions_MockFunction('uenc', $this->subject);
+        $uencMock->expects($this->any())->will($this->returnCallback('urlencode'));
+        new PHPUnit_Extensions_MockFunction('XH_saveContents', $this->subject);
+    }
 
     /**
      * Sets up the configuration of the test fixture.
@@ -100,35 +120,6 @@ class ModelTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets up the test fixture.
-     *
-     * @return void
-     *
-     * @global array The paths of system files and folder.
-     */
-    public function setUp()
-    {
-        global $pth;
-
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
-
-        $this->pluginsFolder = vfsStream::url('test/plugins/');
-        mkdir($this->pluginsFolder, 0777, true);
-        $pth = array(
-            'folder' => array('plugins' => $this->pluginsFolder)
-        );
-
-        $this->setUpConfig();
-        $this->setUpContents();
-
-        $this->model = new Pdeditor_Model();
-        $uencMock = new PHPUnit_Extensions_MockFunction('uenc', $this->model);
-        $uencMock->expects($this->any())->will($this->returnCallback('urlencode'));
-        new PHPUnit_Extensions_MockFunction('XH_saveContents', $this->model);
-    }
-
-    /**
      * Tests ::pluginIconPath().
      *
      * @return void
@@ -136,7 +127,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
     public function testPluginIconPath()
     {
         $expected = $this->pluginsFolder . 'pdeditor/pdeditor.png';
-        $actual = $this->model->pluginIconPath();
+        $actual = $this->subject->pluginIconPath();
         $this->assertEquals($expected, $actual);
     }
 
@@ -147,7 +138,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
      */
     public function testIsPagedataUrlUpToDate()
     {
-        $actual = $this->model->isPagedataUrlUpToDate(0);
+        $actual = $this->subject->isPagedataUrlUpToDate(0);
         $this->assertTrue($actual);
     }
 
@@ -159,7 +150,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
     public function testTopLevelPages()
     {
         $expected = array(0, 2);
-        $actual = $this->model->toplevelPages();
+        $actual = $this->subject->toplevelPages();
         $this->assertEquals($expected, $actual);
     }
 
@@ -171,7 +162,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
     public function testChildPages()
     {
         $expected = array(1);
-        $actual = $this->model->childPages(0);
+        $actual = $this->subject->childPages(0);
         $this->assertEquals($expected, $actual);
     }
 
@@ -191,7 +182,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
                 ->method('storedFields')
                 ->will($this->returnValue(array('bar', 'foo')));
             $expected = array('bar', 'foo');
-            $actual = $this->model->pageDataAttributes();
+            $actual = $this->subject->pageDataAttributes();
             $this->assertEquals($expected, $actual);
         } else {
             $this->markTestSkipped();
@@ -206,7 +197,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
     public function testPageDataAttribute()
     {
         $expected = 'Welcome';
-        $actual = $this->model->pageDataAttribute(0, 'url');
+        $actual = $this->subject->pageDataAttribute(0, 'url');
         $this->assertEquals($expected, $actual);
     }
 
@@ -226,7 +217,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
             $pd_router->expects($this->once())
                 ->method('removeInterest')
                 ->with($this->equalTo($attribute));
-            $this->model->deletePageDataAttribute($attribute);
+            $this->subject->deletePageDataAttribute($attribute);
         } else {
             $this->markTestSkipped();
         }
