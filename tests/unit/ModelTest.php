@@ -22,9 +22,9 @@ require_once 'vfsStream/vfsStream.php';
  * The page data router.
  */
 if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
-    require_once '../../cmsimple/classes/PageDataRouter.php';
+    include_once '../../cmsimple/classes/PageDataRouter.php';
 } else {
-    require_once '../pluginloader/page_data/page_data_router.php';
+    include_once '../pluginloader/page_data/page_data_router.php';
 }
 
 /**
@@ -39,7 +39,14 @@ function uenc($string)
     return urlencode($string);
 }
 
-function XH_saveContents() {}
+/**
+ * Test stub for XH_saveContents().
+ *
+ * @return void
+ */
+function XH_saveContents()
+{
+}
 
 /**
  * A test case for the model class.
@@ -152,6 +159,11 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Tests ::isPagedataUrlUpToDate().
+     *
+     * @return void
+     */
     public function testIsPagedataUrlUpToDate()
     {
         $actual = $this->model->isPagedataUrlUpToDate(0);
@@ -182,6 +194,13 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Tests ::pageDataAttributes().
+     *
+     * @return void
+     *
+     * @global object The page data router.
+     */
     public function testPageDataAttributes()
     {
         global $pd_router;
@@ -210,6 +229,13 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Tests ::deletePageDataAttribute().
+     *
+     * @return void
+     *
+     * @global object The page data router.
+     */
     public function testDeletePageDataAttribute()
     {
         global $pd_router;

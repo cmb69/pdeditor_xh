@@ -117,6 +117,8 @@ class ViewsTest extends PHPUnit_Framework_TestCase
 
     /**
      * Checks for bug, where img tag missed < (reported by learnandcode)
+     *
+     * @return void
      */
     public function testAdministrationShowsWarningIcon()
     {

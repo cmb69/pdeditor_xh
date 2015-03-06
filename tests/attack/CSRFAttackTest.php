@@ -27,14 +27,33 @@
  */
 class CSRFAttackTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * The base URL of the installation under test.
+     *
+     * @var string
+     */
     protected $url;
 
+    /**
+     * The cURL handle.
+     *
+     * @var resource
+     */
     protected $curlHandle;
 
+    /**
+     * The path of the cookie file.
+     *
+     * @var string
+     */
     protected $cookieFile;
 
     /**
-     * Log in to back-end and store cookies in a temp file.
+     * Sets up the test fixture.
+     *
+     * Logs in to back-end and stores cookies in a temp file.
+     *
+     * @return void
      */
     public function setUp()
     {
@@ -48,6 +67,13 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
         curl_close($this->curlHandle);
     }
 
+    /**
+     * Sets the cURL options.
+     *
+     * @param array $fields An array of fields.
+     *
+     * @return void
+     */
     protected function setCurlOptions($fields)
     {
         $options = array(
@@ -59,21 +85,35 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
         curl_setopt_array($this->curlHandle, $options);
     }
 
+    /**
+     * Returns the data for the attack tests.
+     *
+     * @return array
+     */
     public function dataForAttack()
     {
         return array(
             array( // edit
                 array('value' => 'foo'),
-                '&pdeditor&admin=plugin_main&action=save&pdeditor_attr=description&edit'
+                '&pdeditor&admin=plugin_main&action=save'
+                . '&pdeditor_attr=description&edit'
             ),
             array( // delete
                 array(),
-                '&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=description&edit'
+                '&pdeditor&admin=plugin_main&action=delete'
+                . '&pdeditor_attr=description&edit'
             )
         );
     }
 
     /**
+     * Tests CSRF attacks.
+     *
+     * @param array  $fields      An associative array of fields.
+     * @param string $queryString A query string.
+     *
+     * @return void
+     *
      * @dataProvider dataForAttack
      */
     public function testAttack($fields, $queryString = null)
