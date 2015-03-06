@@ -78,7 +78,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
     {
         $matcher = array('tag' => 'p', 'content' => '@PDEDITOR_VERSION@');
         $actual = $this->views->about();
-        $this->assertTag($matcher, $actual);
+        @$this->assertTag($matcher, $actual);
     }
 
     /**
@@ -91,7 +91,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
         $currentYear = date('Y');
         $matcher = array('tag' => 'p', 'content' => $currentYear);
         $actual = $this->views->about();
-        $this->assertTag($matcher, $actual);
+        @$this->assertTag($matcher, $actual);
     }
 
     /**
@@ -108,7 +108,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
             'children' => array('count' => count($checks))
         );
         $actual = $this->views->systemCheck($checks);
-        $this->assertTag($matcher, $actual);
+        @$this->assertTag($matcher, $actual);
     }
 
     /**
@@ -122,7 +122,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
             'tag' => 'form'
         );
         $actual = $this->views->administration('url', '', '');
-        $this->assertTag($matcher, $actual);
+        @$this->assertTag($matcher, $actual);
     }
 
     /**
@@ -134,7 +134,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
             'tag' => 'img'
         );
         $actual = $this->views->administration('url', '', '');
-        $this->assertTag($matcher, $actual);
+        @$this->assertTag($matcher, $actual);
     }
 }
 
