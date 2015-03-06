@@ -65,7 +65,7 @@
             </batchtest>
         </phpunit>
         <coverage-report outfile="tests/coverage/coverage.xml">
-            <report todir="tests/coverage" styledir="${styledir}"/>
+            <report todir="tests/coverage" styledir="vendor/phing/phing/etc"/>
         </coverage-report>
     </target>
 
