@@ -28,11 +28,6 @@ if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
 }
 
 /**
- * The class under test.
- */
-require_once './classes/Model.php';
-
-/**
  * Provides fallback for CMSimple_XH's uenc().
  *
  * @param string $string A string.

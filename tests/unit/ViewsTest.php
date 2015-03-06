@@ -14,16 +14,6 @@
  */
 
 /**
- * The model class.
- */
-require_once './classes/Model.php';
-
-/**
- * The class under test.
- */
-require_once './classes/Views.php';
-
-/**
  * The version number of the plugin.
  */
 define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');

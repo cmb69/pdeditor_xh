@@ -27,21 +27,6 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
 
 /**
- * The model class.
- */
-require_once $pth['folder']['plugin_classes'] . 'Model.php';
-
-/**
- * The controller class.
- */
-require_once $pth['folder']['plugin_classes'] . 'Controller.php';
-
-/**
- * The views class.
- */
-require_once $pth['folder']['plugin_classes'] . 'Views.php';
-
-/**
  * Create a controller instance.
  */
 new Pdeditor_Controller();
