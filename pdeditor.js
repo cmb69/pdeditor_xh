@@ -1,28 +1,35 @@
-/**
- * JS of Pdeditor_XH.
+/*!
+ * Pdeditor_XH
  *
- * Copyright (c) 2012-2015 Christoph M. Becker (see license.txt)
+ * @author  Christoph M. Becker <cmbecker69@gmx.de>
+ * @license GPL-3.0+
  */
 
-if (typeof window.addEventListener != "undefined") {
+/*jslint browser: true, maxlen: 80 */
+
+if (typeof window.addEventListener !== "undefined") {
     window.addEventListener("load", function () {
-        var attribute, attributes, select;
+        "use strict";
+
+        var attribute, attributes, select, headings;
 
         /*
-         * Returns the current attribute from the query string.
+         * Returns the current page data attribute from the query string.
+         *
+         * @returns {string}
          */
-        var getAttribute = function () {
+        function getAttribute() {
             var parts, i, pair;
 
             parts = window.location.search.substr(1).split("&");
-            for (i = 0; i < parts.length; i++) {
+            for (i = 0; i < parts.length; i += 1) {
                 pair = parts[i].split("=");
-                if (pair[0] == "pdeditor_attr") {
+                if (pair[0] === "pdeditor_attr") {
                     return pair[1];
                 }
             }
             return "url";
-        };
+        }
 
         attribute = getAttribute();
         select = document.createElement("select");
@@ -34,7 +41,7 @@ if (typeof window.addEventListener != "undefined") {
             anchor = el.getElementsByTagName("a")[0];
             option = document.createElement("option");
             option.text = anchor.textContent;
-            if (option.text == attribute) {
+            if (option.text === attribute) {
                 option.selected = true;
             }
             option.value = anchor.href;
@@ -44,7 +51,9 @@ if (typeof window.addEventListener != "undefined") {
             window.location = event.target.value;
         });
         document.getElementById("pdeditor_attr").parentNode.replaceChild(
-                select, document.getElementById("pdeditor_attr"));
+            select,
+            document.getElementById("pdeditor_attr")
+        );
         headings = document.querySelectorAll(".pdeditor_heading");
         headings = Array.prototype.slice.call(headings);
         headings.forEach(function (el) {
