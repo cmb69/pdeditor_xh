@@ -2,7 +2,6 @@
 
 $plugin_tx['pdeditor']['menu_main']="Pagedata";
 
-$plugin_tx['pdeditor']['info_about']="About Pdeditor_XH";
 $plugin_tx['pdeditor']['info_heading']="Info";
 
 $plugin_tx['pdeditor']['label_delete']="Delete this attribute";
@@ -11,6 +10,8 @@ $plugin_tx['pdeditor']['label_attributes']="Attributes";
 $plugin_tx['pdeditor']['warning_delete']="Deleting an attribute may cause malfunctions of the system!";
 $plugin_tx['pdeditor']['warning_save']="Modifying the pagedata may cause malfunctions of the system!";
 $plugin_tx['pdeditor']['message_headings']="The headings of the content and the pagedata don't match!";
+
+$plugin_tx['pdeditor']['alt_logo']="Sheet with database icon";
 
 $plugin_tx['pdeditor']['syscheck_title']="System check";
 $plugin_tx['pdeditor']['syscheck_phpversion']="PHP version &ge; %s";

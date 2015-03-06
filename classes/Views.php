@@ -162,9 +162,7 @@ EOT;
         $version = PDEDITOR_VERSION;
         $license = $this->license();
         $o = <<<EOT
-<h4>$ptx[info_about]</h4>
-<img src="$iconPath" width="128" height="128" alt="Plugin Icon"
-     style="float: left; margin-right: 16px" />
+<img src="$iconPath" class="pdeditor_logo" alt="$ptx[alt_logo]" />
 <p>Version: $version</p>
 <p>Copyright &copy; 2012-2015 <a href="http://3-magi.net">Christoph M. Becker</a></p>
 $license

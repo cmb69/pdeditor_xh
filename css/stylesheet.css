@@ -1,3 +1,7 @@
+/*
+ * Page data editor
+ */
+
 #pdeditor_attributes {
     margin: 2em 0;
 }
@@ -23,6 +27,16 @@
     width: 300px;
 }
 
+/*
+ * Info view
+ */
+
+.pdeditor_logo {
+    float: left;
+    width: 128px;
+    height: 128px;
+    margin-right: 16px
+}
 .pdeditor_license {
     text-align: justify;
 }

@@ -187,8 +187,8 @@ class Pdeditor_Controller
 
         $ptx = $plugin_tx['pdeditor'];
         $o = '<h1>Pdeditor &ndash; ' . $ptx['info_heading'] . '</h1>'
-            . $this->views->systemCheck($this->systemChecks())
-            . $this->views->about();
+            . $this->views->about()
+            . $this->views->systemCheck($this->systemChecks());
         return $o;
     }
 
