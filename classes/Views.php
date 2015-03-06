@@ -265,19 +265,12 @@ EOT;
      * @param string $attribute A page data attribute name.
      *
      * @return string XHTML.
-     *
-     * @global array  The paths of system files and folders.
-     * @global object The page data router.
-     * @global array  The localization of the plugins.
      */
     protected function pageList($pages, $attribute)
     {
-        global $pth, $pd_router, $plugin_tx;
-
         if (empty($pages)) {
             return '';
         }
-        $ptx = $plugin_tx['pdeditor'];
         $items = '';
         foreach ($pages as $i) {
             $items .= $this->pageListItem($attribute, $i);
