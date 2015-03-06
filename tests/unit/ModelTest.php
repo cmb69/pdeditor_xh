@@ -27,27 +27,6 @@ if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
 }
 
 /**
- * Provides fallback for CMSimple_XH's uenc().
- *
- * @param string $string A string.
- *
- * @return string
- */
-function uenc($string)
-{
-    return urlencode($string);
-}
-
-/**
- * Test stub for XH_saveContents().
- *
- * @return void
- */
-function XH_saveContents()
-{
-}
-
-/**
  * A test case for the model class.
  *
  * @category CMSimple_XH
@@ -144,6 +123,9 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->setUpContents();
 
         $this->model = new Pdeditor_Model();
+        $uencMock = new PHPUnit_Extensions_MockFunction('uenc', $this->model);
+        $uencMock->expects($this->any())->will($this->returnCallback('urlencode'));
+        new PHPUnit_Extensions_MockFunction('XH_saveContents', $this->model);
     }
 
     /**
