@@ -104,10 +104,11 @@
         </jsMin>
         <move todir="dist">
             <fileset dir="export">
-                <exclude name="tests/**"/>
                 <exclude name="build.xml"/>
+                <exclude name="composer.*"/>
                 <exclude name="pdeditor.js"/>
                 <exclude name="phpcompatinfo.json"/>
+                <exclude name="tests/**"/>
             </fileset>
         </move>
         <delete dir="export"/>
