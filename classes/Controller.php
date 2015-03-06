@@ -70,15 +70,36 @@ class Pdeditor_Controller
      *
      * @return void
      *
-     * @global string Whether the administration of the plugin is requested.
+     * @global bool Whether we're in admin mode.
      */
     protected function dispatch()
     {
-        global $adm, $pdeditor;
+        global $adm;
 
-        if ($adm && isset($pdeditor) && $pdeditor == 'true') {
-            $this->administration();
+        if ($adm) {
+            if (function_exists('XH_registerStandardPluginMenuItems')) {
+                XH_registerStandardPluginMenuItems('true');
+            }
+            if ($this->isAdministrationRequested()) {
+                $this->administration();
+            }
         }
+    }
+
+    /**
+     * Returns whether the plugin administration is requested.
+     *
+     * @return bool
+     *
+     * @global string Whether the administration of the plugin is requested.
+     */
+    protected function isAdministrationRequested()
+    {
+        global $pdeditor;
+
+        return function_exists('XH_wantsPluginAdministration')
+            && XH_wantsPluginAdministration('pdeditor')
+            || isset($pdeditor) && $pdeditor == 'true';
     }
 
     /**
