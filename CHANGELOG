@@ -1,3 +1,8 @@
+Version 1rc2 - released 2015-03-07
+* lifted requirements to PHP >= 5.1.2
+* improved JavaScript to suppport also older browsers (such as IE8)
+* added support for "integrated" plugin menu
+
 Version 1rc1 - released 2014-03-18
 * fixed bug, where an img tag was missing the < (reported by learnandcode)
 
