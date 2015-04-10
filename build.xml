@@ -66,6 +66,7 @@
     </target>
 
     <target name="coverage" description="generates coverage report">
+        <mkdir dir="tests/coverage"/>
         <coverage-setup database="tests/coverage/coverage.db">
             <fileset dir="classes">
                 <include name="*.php"/>
