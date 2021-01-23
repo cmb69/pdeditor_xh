@@ -16,7 +16,7 @@
 /**
  * The version number of the plugin.
  */
-define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
+define('PDEDITOR_VERSION', '1.0');
 
 /**
  * A test case for the views class.
@@ -66,7 +66,7 @@ class ViewsTest extends PHPUnit_Framework_TestCase
      */
     public function testAboutShowsVersion()
     {
-        $matcher = array('tag' => 'p', 'content' => '@PDEDITOR_VERSION@');
+        $matcher = array('tag' => 'p', 'content' => '1.0');
         $actual = $this->views->about();
         @$this->assertTag($matcher, $actual);
     }

@@ -24,7 +24,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 /**
  * The version number of the plugin.
  */
-define('PDEDITOR_VERSION', '@PDEDITOR_VERSION@');
+define('PDEDITOR_VERSION', '1.0');
 
 /**
  * Create a controller instance.

@@ -101,17 +101,6 @@
         <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
         <untar file="export.tar" todir="export"/>
         <delete file="export.tar"/>
-        <move todir="dist">
-            <fileset dir="export">
-                <include name="admin.php"/>
-                <include name="version.nfo"/>
-            </fileset>
-            <filterchain>
-                <replacetokens>
-                    <token key="PDEDITOR_VERSION" value="${version}"/>
-                </replacetokens>
-            </filterchain>
-        </move>
         <jsMin targetDir="dist" suffix="" failonerror="true">
             <fileset dir="export">
                 <include name="pdeditor.js"/>
