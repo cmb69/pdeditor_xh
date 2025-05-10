@@ -21,14 +21,20 @@
 
 namespace Pdeditor;
 
+use Plib\CsrfProtector;
+
 class Views
 {
     /** @var Model */
     private $model;
 
-    public function __construct(Model $model)
+    /** @var CsrfProtector */
+    private $csrfProtector;
+
+    public function __construct(Model $model, CsrfProtector $csrfProtector)
     {
         $this->model = $model;
+        $this->csrfProtector = $csrfProtector;
     }
 
     private function hsc(string $string): string
@@ -103,7 +109,7 @@ EOT;
 
     public function administration(string $attribute, string $deleteUrl, string $action): string
     {
-        global $tx, $plugin_tx, $_XH_csrfProtection;
+        global $tx, $plugin_tx;
 
         $ptx = $plugin_tx['pdeditor'];
         $attributes = $this->attributeList();
@@ -115,11 +121,7 @@ EOT;
         $pageList = $this->pageList($toplevelPages, $attribute);
         $saveLabel = ucfirst($tx['action']['save']);
         $attributeLabel = sprintf($ptx['label_attribute'], $attribute);
-        if (isset($_XH_csrfProtection)) {
-            $tokenInput = $_XH_csrfProtection->tokenInput();
-        } else {
-            $tokenInput = '';
-        }
+        $token = $this->csrfProtector->token();
         $o = <<<EOT
 <h1>Pdeditor &ndash; $ptx[menu_main]</h1>
 <h4 class="pdeditor_heading">$ptx[label_attributes]</h4>
@@ -127,12 +129,12 @@ $attributes
 <h4 class="pdeditor_heading">$attributeLabel</h4>
 <form id="pdeditor_delete" action="$deleteUrl$attribute&amp;edit" method="post"
       onsubmit="return window.confirm('$deleteWarning')">
-    $tokenInput
+    <input type="hidden" name="pdeditor_token" value="$token">
     <button type="submit">$ptx[label_delete]</button>
 </form>
 <form id="pdeditor_attributes" action="$action$attribute&amp;edit" method="post"
       onsubmit="return window.confirm('$saveWarning')">
-    $tokenInput
+    <input type="hidden" name="pdeditor_token" value="$token">
     <input type="submit" class="submit" value="$saveLabel" />
     $pageList
     <input type="submit" class="submit" value="$saveLabel" />

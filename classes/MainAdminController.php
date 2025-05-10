@@ -21,6 +21,7 @@
 
 namespace Pdeditor;
 
+use Plib\CsrfProtector;
 use Plib\Request;
 
 class MainAdminController
@@ -28,22 +29,24 @@ class MainAdminController
     /** @var Model */
     private $model;
 
+    /** @var CsrfProtector */
+    private $csrfProtector;
+
     /** @var Views */
     private $views;
 
-    public function __construct(Model $model, Views $views)
+    public function __construct(Model $model, CsrfProtector $csrfProtector, Views $views)
     {
         $this->model = $model;
+        $this->csrfProtector = $csrfProtector;
         $this->views = $views;
     }
 
     public function save(Request $request): string
     {
-        global $_XH_csrfProtection;
-
         if (isset($_POST['value'])) {
-            if (isset($_XH_csrfProtection)) {
-                $_XH_csrfProtection->check();
+            if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
+                return "not authorized"; // TODO i18n
             }
             $attribute = $request->get("pdeditor_attr");
             $values = $request->postArray("value");
@@ -60,10 +63,8 @@ class MainAdminController
 
     public function deleteAttribute(Request $request): string
     {
-        global $_XH_csrfProtection;
-
-        if (isset($_XH_csrfProtection)) {
-            $_XH_csrfProtection->check();
+        if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
+            return "not authorized"; // TODO i18n
         }
         $attribute = $request->get("pdeditor_attr");
         $this->model->deletePageDataAttribute($attribute);

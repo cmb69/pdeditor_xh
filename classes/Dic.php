@@ -21,6 +21,7 @@
 
 namespace Pdeditor;
 
+use Plib\CsrfProtector;
 use Plib\SystemChecker;
 use Plib\View;
 use XH\Pages;
@@ -29,7 +30,12 @@ class Dic
 {
     public static function mainAdminController(): MainAdminController
     {
-        return new MainAdminController(self::model(), new Views(self::model()));
+        $csrfProtector = new CsrfProtector();
+        return new MainAdminController(
+            self::model(),
+            $csrfProtector,
+            new Views(self::model(), $csrfProtector)
+        );
     }
 
     public static function infoController(): InfoController
