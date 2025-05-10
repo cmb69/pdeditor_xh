@@ -27,11 +27,7 @@ class Views
 
     private function hsc(string $string): string
     {
-        if (function_exists('XH_hsc')) {
-            return XH_hsc($string);
-        } else {
-            return htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
-        }
+        return XH_hsc($string);
     }
 
     private function xhtml(string $string): string
