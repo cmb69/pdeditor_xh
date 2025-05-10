@@ -78,7 +78,7 @@ class Pdeditor_Controller
 
         if ($adm) {
             if (function_exists('XH_registerStandardPluginMenuItems')) {
-                XH_registerStandardPluginMenuItems('true');
+                XH_registerStandardPluginMenuItems(true);
             }
             if ($this->isAdministrationRequested()) {
                 $this->administration();
@@ -133,7 +133,7 @@ class Pdeditor_Controller
             }
             break;
         default:
-            $o .= plugin_admin_common($action, $admin, 'pdeditor');
+            $o .= plugin_admin_common($action, $admin, 'pdeditor'); // @phpstan-ignore-line
         }
     }
 
@@ -208,6 +208,8 @@ class Pdeditor_Controller
             $attribute = $_GET['pdeditor_attr'];
             $values = $_POST['value'];
             $this->model->updatePageData($attribute, $values);
+        } else {
+            $attribute = "";
         }
         $url = $this->baseUrl()
             . '?&pdeditor&admin=plugin_main&action=plugin_text&pdeditor_attr='

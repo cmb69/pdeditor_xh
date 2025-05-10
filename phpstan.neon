@@ -1,0 +1,11 @@
+parameters:
+  level: 5
+  paths:
+    - classes/
+    - admin.php
+  bootstrapFiles:
+    - phpstan.php
+  scanFiles:
+    - ../../cmsimple/classes/PageDataRouter.php
+    - ../../cmsimple/adminfuncs.php
+    - ../../cmsimple/functions.php

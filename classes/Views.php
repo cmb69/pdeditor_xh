@@ -298,7 +298,7 @@ EOT;
         global $tx, $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['pdeditor'];
-        $attributes = $this->attributeList($attribute);
+        $attributes = $this->attributeList();
         $deleteUrl = $this->hsc($deleteUrl);
         $deleteWarning = addcslashes($ptx['warning_delete'], "\n\r\'\"\\");
         $action = $this->hsc($action);

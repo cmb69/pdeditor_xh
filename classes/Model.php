@@ -169,7 +169,7 @@ class Pdeditor_Model
      *
      * @param string $attribute An attribute name.
      *
-     * @return string (X)HTML.
+     * @return void
      *
      * @global object The page data router.
      */
