@@ -22,51 +22,54 @@
 namespace Pdeditor;
 
 use Plib\SystemChecker;
+use Plib\View;
 
 class InfoController
 {
-    /** @var Views */
-    private $views;
+    /** @var string */
+    private $pluginFolder;
 
     /** @var SystemChecker */
     private $systemChecker;
 
-    public function __construct(Views $views, SystemChecker $systemChecker)
+    /** @var View */
+    private $view;
+
+    public function __construct(string $pluginFolder, SystemChecker $systemChecker, View $view)
     {
-        $this->views = $views;
+        $this->pluginFolder = $pluginFolder;
         $this->systemChecker = $systemChecker;
+        $this->view = $view;
     }
 
     public function __invoke(): string
     {
-        return '<h1>Pdeditor ' . PDEDITOR_VERSION . '</h1>'
-            . $this->views->systemCheck($this->systemChecks());
+        return "<h1>Pdeditor " . PDEDITOR_VERSION . "</h1>\n"
+            . "<h2>{$this->view->text("syscheck_title")}</h2>\n"
+            . $this->systemChecks();
     }
 
-    private function systemChecks(): array
+    private function systemChecks(): string
     {
-        global $pth, $plugin_tx;
-
         $phpVersion = '7.1.0';
-        $ptx = $plugin_tx['pdeditor'];
-        $checks = array();
-        $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
-            = $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) ? 'success' : 'fail';
+        $checks = [];
+        $state = $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) ? 'success' : 'fail';
+        $checks[] = $this->view->message($state, "syscheck_phpversion", $phpVersion);
         foreach (array('pcre', 'spl') as $extension) {
-            $checks[sprintf($ptx['syscheck_extension'], $extension)]
-                = $this->systemChecker->checkExtension($extension) ? 'success' : 'fail';
+            $state = $this->systemChecker->checkExtension($extension) ? 'success' : 'fail';
+            $checks[] = $this->view->message($state, "syscheck_extension", $extension);
         }
         $xhVersion = "1.7.0";
-        $checks[sprintf($ptx['syscheck_xhversion'], $xhVersion)]
-            = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion") ? 'success' : 'warning';
+        $state = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion") ? 'success' : 'warning';
+        $checks[] = $this->view->message($state, "syscheck_xhversion", $xhVersion);
         $folders = array();
         foreach (array('css/', 'languages/') as $folder) {
-            $folders[] = $pth['folder']['plugins'] . 'pdeditor/' . $folder;
+            $folders[] = $this->pluginFolder . $folder;
         }
         foreach ($folders as $folder) {
-            $checks[sprintf($ptx['syscheck_writable'], $folder)]
-                = $this->systemChecker->checkWritability($folder) ? 'success' : 'warning';
+            $state = $this->systemChecker->checkWritability($folder) ? 'success' : 'warning';
+            $checks[] = $this->view->message($state, "syscheck_writable", $folder);
         }
-        return $checks;
+        return implode("", $checks);
     }
 }

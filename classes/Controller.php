@@ -22,6 +22,7 @@
 namespace Pdeditor;
 
 use Plib\SystemChecker;
+use Plib\View;
 use XH\Pages;
 
 class Controller
@@ -64,19 +65,18 @@ class Controller
 
     private function isAdministrationRequested(): bool
     {
-        global $pdeditor;
-
         return XH_wantsPluginAdministration('pdeditor');
     }
 
     private function administration(): void
     {
-        global $o, $admin, $action;
+        global $o, $admin, $action, $pth, $plugin_tx;
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
-                $o .= (new InfoController($this->views, new SystemChecker()))();
+                $view = new View($pth["folder"]["plugins"] . "pdeditor/views/", $plugin_tx["pdeditor"]);
+                $o .= (new InfoController($pth["folder"]["plugins"] . "pdeditor/", new SystemChecker(), $view))();
                 break;
             case 'plugin_main':
                 switch ($action) {

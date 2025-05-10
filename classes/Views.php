@@ -36,30 +36,6 @@ class Views
         return XH_hsc($string);
     }
 
-    private function systemCheckItem(string $check, string $state): string
-    {
-        return XH_message($state, $check);
-    }
-
-    public function systemCheck(array $checks): string
-    {
-        global $plugin_tx;
-
-        $ptx = $plugin_tx['pdeditor'];
-        $items = array();
-        foreach ($checks as $check => $state) {
-            $items[] = $this->systemCheckItem($check, $state);
-        }
-        $items = implode('', $items);
-        $o = <<<EOT
-<h4>$ptx[syscheck_title]</h4>
-<ul class="pdeditor_system_check">
-    $items
-</ul>
-EOT;
-        return $o;
-    }
-
     private function attributeListItem(string $url, string $attribute): string
     {
         $url = $this->hsc($url . $attribute);

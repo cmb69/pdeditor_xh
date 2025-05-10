@@ -31,13 +31,6 @@ class ViewsTest extends TestCase
         $this->views = new Views($model);
     }
 
-    public function testSystemCheckHasDesiredStructure(): void
-    {
-        $checks = array('one' => 'success');
-        $actual = $this->views->systemCheck($checks);
-        Approvals::verifyHtml($actual);
-    }
-
     public function testAdministrationHasForm(): void
     {
         $actual = $this->views->administration('url', '', '');
