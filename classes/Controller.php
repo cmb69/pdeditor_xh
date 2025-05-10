@@ -77,9 +77,7 @@ class Pdeditor_Controller
         global $adm;
 
         if ($adm) {
-            if (function_exists('XH_registerStandardPluginMenuItems')) {
-                XH_registerStandardPluginMenuItems(true);
-            }
+            XH_registerStandardPluginMenuItems(true);
             if ($this->isAdministrationRequested()) {
                 $this->administration();
             }
@@ -97,9 +95,7 @@ class Pdeditor_Controller
     {
         global $pdeditor;
 
-        return function_exists('XH_wantsPluginAdministration')
-            && XH_wantsPluginAdministration('pdeditor')
-            || isset($pdeditor) && $pdeditor == 'true';
+        return XH_wantsPluginAdministration('pdeditor');
     }
 
     /**
@@ -133,7 +129,7 @@ class Pdeditor_Controller
             }
             break;
         default:
-            $o .= plugin_admin_common($action, $admin, 'pdeditor'); // @phpstan-ignore-line
+            $o .= plugin_admin_common();
         }
     }
 
