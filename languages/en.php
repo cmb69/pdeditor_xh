@@ -17,7 +17,6 @@ $plugin_tx['pdeditor']['syscheck_title']="System check";
 $plugin_tx['pdeditor']['syscheck_phpversion']="PHP version &ge; %s";
 $plugin_tx['pdeditor']['syscheck_extension']="Extension \"%s\" loaded";
 $plugin_tx['pdeditor']['syscheck_encoding']="UTF-8 encoding configured";
-$plugin_tx['pdeditor']['syscheck_magic_quotes']="magic_quotes_runtime off";
 $plugin_tx['pdeditor']['syscheck_writable']="Folder \"%s\" writable";
 
 ?>

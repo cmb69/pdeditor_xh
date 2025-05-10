@@ -159,8 +159,6 @@ class Pdeditor_Controller
             $checks[sprintf($ptx['syscheck_extension'], $extension)]
                 = extension_loaded($extension) ? 'ok' : 'fail';
         }
-        $checks[$ptx['syscheck_magic_quotes']]
-            = !get_magic_quotes_runtime() ? 'ok' : 'fail';
         $checks[$ptx['syscheck_encoding']]
             = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'ok' : 'warn';
         $folders = array();
@@ -207,8 +205,8 @@ class Pdeditor_Controller
             if (isset($_XH_csrfProtection)) {
                 $_XH_csrfProtection->check();
             }
-            $attribute = stsl($_GET['pdeditor_attr']);
-            $values = array_map('stsl', $_POST['value']);
+            $attribute = $_GET['pdeditor_attr'];
+            $values = $_POST['value'];
             $this->model->updatePageData($attribute, $values);
         }
         $url = $this->baseUrl()
@@ -232,7 +230,7 @@ class Pdeditor_Controller
         if (isset($_XH_csrfProtection)) {
             $_XH_csrfProtection->check();
         }
-        $attribute = stsl($_GET['pdeditor_attr']);
+        $attribute = $_GET['pdeditor_attr'];
         $this->model->deletePageDataAttribute($attribute);
         $url = $this->baseUrl()
             . '?&pdeditor&admin=plugin_main&action=plugin_text&normal';
