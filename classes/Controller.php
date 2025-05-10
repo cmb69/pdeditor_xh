@@ -116,11 +116,7 @@ class Controller
 
     public function info(): string
     {
-        global $plugin_tx;
-
-        $ptx = $plugin_tx['pdeditor'];
-        $o = '<h1>Pdeditor &ndash; ' . $ptx['info_heading'] . '</h1>'
-            . $this->views->about()
+        $o = '<h1>Pdeditor ' . PDEDITOR_VERSION . '</h1>'
             . $this->views->systemCheck($this->systemChecks());
         return $o;
     }

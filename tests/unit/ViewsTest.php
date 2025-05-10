@@ -35,12 +35,6 @@ class ViewsTest extends TestCase
         $this->views = new Views($model);
     }
 
-    public function testAboutShowsVersion(): void
-    {
-        $actual = $this->views->about();
-        $this->assertStringContainsString("<p>Version: 1.0</p>", $actual);
-    }
-
     public function testSystemCheckHasDesiredStructure(): void
     {
         $checks = array('one' => 'ok');
