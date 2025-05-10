@@ -2,118 +2,118 @@
 
 <project name="Pdeditor" default="help">
 
-    <fileset id="php-sources" dir=".">
-        <include name="admin.php"/>
-        <include name="classes/*.php"/>
-    </fileset>
+  <fileset id="php-sources" dir=".">
+    <include name="admin.php"/>
+    <include name="classes/*.php"/>
+  </fileset>
 
-    <fileset id="unit-tests" dir="tests/unit">
-        <include name="*Test.php"/>
-    </fileset>
+  <fileset id="unit-tests" dir="tests/unit">
+    <include name="*Test.php"/>
+  </fileset>
 
-    <fileset id="attack-tests" dir="tests/attack">
-        <include name="*Test.php"/>
-    </fileset>
+  <fileset id="attack-tests" dir="tests/attack">
+    <include name="*Test.php"/>
+  </fileset>
 
-    <target name="help" description="lists available targets">
-        <exec executable="phing" outputProperty="help">
-            <arg line="-l"/>
-        </exec>
-        <echo>${help}</echo>
-    </target>
-
-  <target name="sniff" description="checks adherence to coding standard">
-    <exec executable="phpcs" passthru="true" checkreturn="true">
-      <arg value="--standard=PEAR"/>
-      <arg line="--runtime-set ignore_warnings_on_exit true"/>
-      <arg file="classes"/>
-      <arg file="tests"/>
-      <arg file="admin.php"/>
+  <target name="help" description="lists available targets">
+    <exec executable="phing" outputProperty="help">
+      <arg line="-l"/>
     </exec>
+    <echo>${help}</echo>
   </target>
 
-    <target name="unit-tests" description="runs all unit tests">
-        <phpunit bootstrap="tests/bootstrap.php"
-                 haltonerror="true" haltonfailure="true">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset dir="tests/unit">
-                    <include name="*Test.php"/>
-                </fileset>
-            </batchtest>
-        </phpunit>
-    </target>
+  <target name="sniff" description="checks adherence to coding standard">
+  <exec executable="phpcs" passthru="true" checkreturn="true">
+    <arg value="--standard=PEAR"/>
+    <arg line="--runtime-set ignore_warnings_on_exit true"/>
+    <arg file="classes"/>
+    <arg file="tests"/>
+    <arg file="admin.php"/>
+  </exec>
+  </target>
 
-    <target name="attack-tests" description="runs all attack tests">
-        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
-        <phpunit bootstrap="tests/bootstrap.php"
-                 haltonerror="true" haltonfailure="true">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset dir="tests/attack">
-                    <include name="*Test.php"/>
-                </fileset>
-            </batchtest>
-        </phpunit>
-    </target>
+  <target name="unit-tests" description="runs all unit tests">
+    <phpunit bootstrap="tests/bootstrap.php"
+         haltonerror="true" haltonfailure="true">
+      <formatter type="plain" usefile="false"/>
+      <batchtest>
+        <fileset dir="tests/unit">
+          <include name="*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+  </target>
 
-    <target name="coverage" description="generates coverage report">
-        <mkdir dir="tests/coverage"/>
-        <coverage-setup database="tests/coverage/coverage.db">
-            <fileset dir="classes">
-                <include name="*.php"/>
-            </fileset>
-        </coverage-setup>
-        <phpunit bootstrap="tests/bootstrap.php" codecoverage="true">
-            <batchtest>
-                <fileset dir="tests/unit">
-                    <include name="*Test.php"/>
-                </fileset>
-            </batchtest>
-        </phpunit>
-        <coverage-report outfile="tests/coverage/coverage.xml">
-            <report todir="tests/coverage" styledir="vendor/phing/phing/etc"/>
-        </coverage-report>
-    </target>
+  <target name="attack-tests" description="runs all attack tests">
+    <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
+    <phpunit bootstrap="tests/bootstrap.php"
+         haltonerror="true" haltonfailure="true">
+      <formatter type="plain" usefile="false"/>
+      <batchtest>
+        <fileset dir="tests/attack">
+          <include name="*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+  </target>
 
-    <target name="doc" description="generates developer documentation">
-        <phpdoc title="Pdeditor_XH Developer Documentation" destdir="doc"
-                output="HTML:Smarty:HandS" defaultpackagename="Pdeditor"
-                defaultcategoryname="CMSimple_XH" parseprivate="true">
-            <fileset refid="php-sources"/>
-            <projdocfileset dir=".">
-               <include name="README"/>
-               <include name="CHANGELOG"/>
-            </projdocfileset>
-        </phpdoc>
-    </target>
+  <target name="coverage" description="generates coverage report">
+    <mkdir dir="tests/coverage"/>
+    <coverage-setup database="tests/coverage/coverage.db">
+      <fileset dir="classes">
+        <include name="*.php"/>
+      </fileset>
+    </coverage-setup>
+    <phpunit bootstrap="tests/bootstrap.php" codecoverage="true">
+      <batchtest>
+        <fileset dir="tests/unit">
+          <include name="*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+    <coverage-report outfile="tests/coverage/coverage.xml">
+      <report todir="tests/coverage" styledir="vendor/phing/phing/etc"/>
+    </coverage-report>
+  </target>
 
-    <target name="build" description="builds distributable ZIP archive">
-        <fail unless="version" message="version is not defined!"/>
-        <exec executable="git" checkreturn="true">
-            <arg line="archive -o export.tar HEAD"/>
-        </exec>
-        <untar file="export.tar" todir="export"/>
-        <delete file="export.tar"/>
-        <jsMin targetDir="dist" suffix="" failonerror="true">
-            <fileset dir="export">
-                <include name="pdeditor.js"/>
-            </fileset>
-        </jsMin>
-        <move todir="dist">
-            <fileset dir="export">
-                <exclude name="build.xml"/>
-                <exclude name="composer.*"/>
-                <exclude name="pdeditor.js"/>
-                <exclude name="tests/**"/>
-            </fileset>
-        </move>
-        <delete dir="export"/>
-        <copy file="dist/languages/en.php"
-              tofile="dist/languages/default.php"/>
-        <zip destfile="Pdeditor_XH-${version}.zip"
-             basedir="dist" prefix="pdeditor/"/>
-        <delete dir="dist"/>
-    </target>
+  <target name="doc" description="generates developer documentation">
+    <phpdoc title="Pdeditor_XH Developer Documentation" destdir="doc"
+        output="HTML:Smarty:HandS" defaultpackagename="Pdeditor"
+        defaultcategoryname="CMSimple_XH" parseprivate="true">
+      <fileset refid="php-sources"/>
+      <projdocfileset dir=".">
+         <include name="README"/>
+         <include name="CHANGELOG"/>
+      </projdocfileset>
+    </phpdoc>
+  </target>
+
+  <target name="build" description="builds distributable ZIP archive">
+    <fail unless="version" message="version is not defined!"/>
+    <exec executable="git" checkreturn="true">
+      <arg line="archive -o export.tar HEAD"/>
+    </exec>
+    <untar file="export.tar" todir="export"/>
+    <delete file="export.tar"/>
+    <jsMin targetDir="dist" suffix="" failonerror="true">
+      <fileset dir="export">
+        <include name="pdeditor.js"/>
+      </fileset>
+    </jsMin>
+    <move todir="dist">
+      <fileset dir="export">
+        <exclude name="build.xml"/>
+        <exclude name="composer.*"/>
+        <exclude name="pdeditor.js"/>
+        <exclude name="tests/**"/>
+      </fileset>
+    </move>
+    <delete dir="export"/>
+    <copy file="dist/languages/en.php"
+        tofile="dist/languages/default.php"/>
+    <zip destfile="Pdeditor_XH-${version}.zip"
+       basedir="dist" prefix="pdeditor/"/>
+    <delete dir="dist"/>
+  </target>
 
 </project>
