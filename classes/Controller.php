@@ -15,6 +15,8 @@
 
 namespace Pdeditor;
 
+use XH\Pages;
+
 class Controller
 {
     /** @var Model */
@@ -25,7 +27,8 @@ class Controller
 
     public function __construct()
     {
-        $this->model = new Model();
+        global $pd_router;
+        $this->model = new Model(new Pages(), $pd_router);
         $this->views = new Views($this->model);
         $this->dispatch();
     }

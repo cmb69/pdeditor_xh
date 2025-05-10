@@ -5,20 +5,25 @@ namespace Pdeditor;
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use XH\PageDataRouter;
+use XH\Pages;
 
 class ModelTest extends TestCase
 {
     /** @var string  */
     private $pluginsFolder;
 
+    /** @var Pages&Stub */
+    private $pages;
+
     /** @var Model */
     private $subject;
 
     public function setUp(): void
     {
-        global $pth;
+        global $pth, $pd_router;
 
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
@@ -32,7 +37,7 @@ class ModelTest extends TestCase
         $this->setUpConfig();
         $this->setUpContents();
 
-        $this->subject = new Model();
+        $this->subject = new Model($this->pages, $pd_router);
         uopz_set_return("uenc", fn ($url) => urlencode($url), true);
     }
 
@@ -52,12 +57,25 @@ class ModelTest extends TestCase
 
     private function setUpContents(): void
     {
-        global $h, $l, $cl, $pd_router;
+        global $pd_router;
 
-        $h = array('Welcome', 'About', 'Contact');
-        $l = array('1', '2', '1');
-        $cl = count($l);
-
+        $this->pages = $this->createStub(Pages::class);
+        $this->pages->method("heading")->willReturnMap([
+            [0, "Welcome"],
+            [1, "About"],
+            [2, "Contact"],
+        ]);
+        $this->pages->method("level")->willReturnMap([
+            [0, 1],
+            [1, 2],
+            [2, 1],
+        ]);
+        $this->pages->method("toplevels")->willReturn([0, 2]);
+        $this->pages->method("children")->willReturnMap([
+            [0, false, [1]],
+            [1, false, []],
+            [2, false, []],
+        ]);
         $pd_router = $this->getMockBuilder(PageDataRouter::class)
             ->disableOriginalConstructor()
             ->getMock();

@@ -15,8 +15,23 @@
 
 namespace Pdeditor;
 
+use XH\PageDataRouter;
+use XH\Pages;
+
 class Model
 {
+    /** @var Pages */
+    private $pages;
+
+    /** @var PageDataRouter */
+    private $pageData;
+
+    public function __construct(Pages $pages, PageDataRouter $pageData)
+    {
+        $this->pages = $pages;
+        $this->pageData = $pageData;
+    }
+
     public function pluginIconPath(): string
     {
         global $pth;
@@ -26,77 +41,49 @@ class Model
 
     public function isPagedataUrlUpToDate(int $index): bool
     {
-        global $h, $pd_router;
-
-        $pageData = $pd_router->find_page($index);
-        return $pageData['url'] == uenc($h[$index]);
+        $pageData = $this->pageData->find_page($index);
+        return $pageData['url'] == uenc($this->pages->heading($index));
     }
 
     public function toplevelPages(): array
     {
-        global $cl, $l;
-
-        $toplevels = array();
-        for ($i = 0; $i < $cl; $i++) {
-            if ($l[$i] == 1) {
-                $toplevels[] = $i;
-            }
-        }
-        return $toplevels;
+        return $this->pages->toplevels();
     }
 
     public function childPages(int $i): array
     {
-        global $cl, $l, $cf;
-
-        $children = array();
-        $level = $cf['menu']['levelcatch'];
-        for ($j = $i + 1; $j < $cl && $l[$j] > $l[$i]; $j++) {
-            if ($l[$j] <= $level) {
-                $children[] = $j;
-                $level = $l[$j];
-            }
-        }
-        return $children;
+        return $this->pages->children($i, false);
     }
 
     public function pageDataAttributes(): array
     {
-        global $pd_router;
-
-        $attributes = $pd_router->storedFields();
+        $attributes = $this->pageData->storedFields();
         natcasesort($attributes);
         return $attributes;
     }
 
     public function pageDataAttribute(int $index, string $attribute): string
     {
-        global $pd_router;
-
-        $pageData = $pd_router->find_page($index);
+        $pageData = $this->pageData->find_page($index);
         return $pageData[$attribute];
     }
 
     public function updatePageData(string $attribute, array $values): void
     {
-        global $pd_router;
-
         $attributes = $this->pageDataAttributes();
         if (!in_array($attribute, $attributes)) {
             return;
         }
-        $pageData = $pd_router->find_all();
+        $pageData = $this->pageData->find_all();
         foreach ($values as $index => $value) {
             $pageData[$index][$attribute] = $value;
         }
-        $pd_router->model->refresh($pageData);
+        $this->pageData->refresh($pageData);
     }
 
     public function deletePageDataAttribute(string $attribute): void
     {
-        global $pd_router;
-
-        $pd_router->removeInterest($attribute);
+        $this->pageData->removeInterest($attribute);
         XH_saveContents();
     }
 }
