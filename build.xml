@@ -22,13 +22,15 @@
         <echo>${help}</echo>
     </target>
 
-    <target name="sniff" description="checks adherence to PEAR CS">
-        <phpcodesniffer standard="PEAR">
-            <fileset refid="php-sources"/>
-            <fileset refid="unit-tests"/>
-            <fileset refid="attack-tests"/>
-        </phpcodesniffer>
-    </target>
+  <target name="sniff" description="checks adherence to coding standard">
+    <exec executable="phpcs" passthru="true" checkreturn="true">
+      <arg value="--standard=PEAR"/>
+      <arg line="--runtime-set ignore_warnings_on_exit true"/>
+      <arg file="classes"/>
+      <arg file="tests"/>
+      <arg file="admin.php"/>
+    </exec>
+  </target>
 
     <target name="mess" description="detects code flaws">
         <phpmd rulesets="codesize,unusedcode">
