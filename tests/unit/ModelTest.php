@@ -100,16 +100,12 @@ class ModelTest extends TestCase
     {
         global $pd_router;
 
-        if (method_exists($pd_router, 'storedFields')) {
-            $pd_router->expects($this->any())
-                ->method('storedFields')
-                ->will($this->returnValue(array('bar', 'foo')));
-            $expected = array('bar', 'foo');
-            $actual = $this->subject->pageDataAttributes();
-            $this->assertEquals($expected, $actual);
-        } else {
-            $this->markTestSkipped();
-        }
+        $pd_router->expects($this->any())
+            ->method('storedFields')
+            ->will($this->returnValue(array('bar', 'foo')));
+        $expected = array('bar', 'foo');
+        $actual = $this->subject->pageDataAttributes();
+        $this->assertEquals($expected, $actual);
     }
 
     public function testPageDataAttribute(): void
@@ -123,14 +119,10 @@ class ModelTest extends TestCase
     {
         global $pd_router;
 
-        if (method_exists($pd_router, 'removeInterest')) {
-            $attribute = 'foo';
-            $pd_router->expects($this->once())
-                ->method('removeInterest')
-                ->with($this->equalTo($attribute));
-            $this->subject->deletePageDataAttribute($attribute);
-        } else {
-            $this->markTestSkipped();
-        }
+        $attribute = 'foo';
+        $pd_router->expects($this->once())
+            ->method('removeInterest')
+            ->with($this->equalTo($attribute));
+        $this->subject->deletePageDataAttribute($attribute);
     }
 }

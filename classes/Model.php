@@ -64,11 +64,7 @@ class Model
     {
         global $pd_router;
 
-        if (method_exists($pd_router, 'storedFields')) {
-            $attributes = $pd_router->storedFields();
-        } else {
-            $attributes = $pd_router->model->params;
-        }
+        $attributes = $pd_router->storedFields();
         natcasesort($attributes);
         return $attributes;
     }
@@ -100,19 +96,7 @@ class Model
     {
         global $pd_router;
 
-        if (method_exists($pd_router, 'removeInterest')) {
-            $pd_router->removeInterest($attribute);
-            XH_saveContents();
-        } else {
-            $key = array_search($attribute, $pd_router->model->params);
-            if ($key !== false) {
-                unset($pd_router->model->params[$key]);
-            }
-            for ($i = 0; $i < count($pd_router->model->data); $i++) {
-                unset($pd_router->model->data[$i][$attribute]);
-            }
-            unset($pd_router->model->temp_data[$attribute]);
-            $pd_router->model->save();
-        }
+        $pd_router->removeInterest($attribute);
+        XH_saveContents();
     }
 }
