@@ -1,24 +1,21 @@
-<h1>Pdeditor &ndash; Pagedata</h1>
+
+<h1>Pdeditor – Pagedata</h1>
 <h4 class="pdeditor_heading">Attributes</h4>
 <ul id="pdeditor_attr">
-    <li><a href="?pdeditor&amp;normal&amp;admin=plugin_main&amp;action=plugin_text&amp;pdeditor_attr=url">url</a></li><li><a href="?pdeditor&amp;normal&amp;admin=plugin_main&amp;action=plugin_text&amp;pdeditor_attr=description">description</a></li>
-</ul>
+<li><a href="?pdeditor&amp;normal&amp;admin=plugin_main&amp;action=plugin_text&amp;pdeditor_attr=url">url</a></li><li><a href="?pdeditor&amp;normal&amp;admin=plugin_main&amp;action=plugin_text&amp;pdeditor_attr=description">description</a></li></ul>
 <h4 class="pdeditor_heading">Attribute: url</h4>
-<form id="pdeditor_delete" action="?&amp;pdeditor&amp;admin=plugin_main&amp;action=delete&amp;pdeditor_attr=url&amp;edit" method="post"
-      onsubmit="return window.confirm('Deleting an attribute may cause malfunctions of the system!')">
-    <input type="hidden" name="pdeditor_token" value="">
-    <button type="submit">Delete this attribute</button>
+<form id="pdeditor_delete" action="/?pdeditor&amp;admin=plugin_main&amp;action=delete&amp;pdeditor_attr=url&amp;edit" method="post" onsubmit="return window.confirm('Deleting an attribute may cause malfunctions of the system!')">
+  <input type="hidden" name="pdeditor_token" value="123456789ABCDEF">
+  <button type="submit">Delete this attribute</button>
 </form>
-<form id="pdeditor_attributes" action="?&amp;pdeditor&amp;admin=plugin_main&amp;action=save&amp;pdeditor_attr=url&amp;edit" method="post"
-      onsubmit="return window.confirm('Modifying the pagedata may cause malfunctions of the system!')">
-    <input type="hidden" name="pdeditor_token" value="">
-    <input type="submit" class="submit" value="Save" />
-    <ul>
+<form id="pdeditor_attributes" action="/?pdeditor&amp;admin=plugin_main&amp;action=save&amp;pdeditor_attr=url&amp;edit" method="post" onsubmit="return window.confirm('Modifying the pagedata may cause malfunctions of the system!')">
+  <input type="hidden" name="pdeditor_token" value="123456789ABCDEF">
+  <input type="submit" class="submit" value="Save">
+<ul>
     <li>
 ⚠ Welcome<input type="text" name="value[]" value="" />
 </li><li>
 ⚠ Contact<input type="text" name="value[]" value="" />
 </li>
-</ul>
-    <input type="submit" class="submit" value="Save" />
+</ul>  <input type="submit" class="submit" value="Save">
 </form>

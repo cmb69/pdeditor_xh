@@ -69,43 +69,28 @@ class MainAdminController
         $filename = $this->pluginFolder . "pdeditor.js";
         $hjs = '<script type="text/javascript" src="' . $filename . '"></script>';
         $attribute = $request->get("pdeditor_attr") ?? "url";
-        $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
-        $action = '?&pdeditor&admin=plugin_main&action=save&pdeditor_attr=';
+        $deleteUrl = $request->url()->page("pdeditor")->with("admin", "plugin_main")
+            ->with("action", "delete")->with("pdeditor_attr", $attribute)->with("edit")->relative();
+        $action = $request->url()->page("pdeditor")->with("admin", "plugin_main")
+            ->with("action", "save")->with("pdeditor_attr", $attribute)->with("edit")->relative();
         return Response::create($this->administration($attribute, $deleteUrl, $action))
             ->withHjs($hjs);
     }
 
     private function administration(string $attribute, string $deleteUrl, string $action): string
     {
-        $attributes = $this->attributeList();
-        $deleteUrl = $this->view->esc($deleteUrl);
-        $deleteWarning = addcslashes($this->view->plain("warning_delete"), "\n\r\'\"\\");
-        $action = $this->view->esc($action);
-        $saveWarning = addcslashes($this->view->plain("warning_save"), "\n\r\'\"\\");
         $toplevelPages = $this->model->toplevelPages();
         $pageList = $this->pageList($toplevelPages, $attribute);
-        $saveLabel = $this->view->plain("label_save");
-        $attributeLabel = $this->view->plain("label_attribute", $attribute);
-        $token = $this->csrfProtector->token();
-        $o = <<<EOT
-<h1>Pdeditor &ndash; {$this->view->plain("menu_main")}</h1>
-<h4 class="pdeditor_heading">{$this->view->plain("label_attributes")}</h4>
-$attributes
-<h4 class="pdeditor_heading">$attributeLabel</h4>
-<form id="pdeditor_delete" action="$deleteUrl$attribute&amp;edit" method="post"
-      onsubmit="return window.confirm('$deleteWarning')">
-    <input type="hidden" name="pdeditor_token" value="$token">
-    <button type="submit">{$this->view->plain("label_delete")}</button>
-</form>
-<form id="pdeditor_attributes" action="$action$attribute&amp;edit" method="post"
-      onsubmit="return window.confirm('$saveWarning')">
-    <input type="hidden" name="pdeditor_token" value="$token">
-    <input type="submit" class="submit" value="$saveLabel" />
-    $pageList
-    <input type="submit" class="submit" value="$saveLabel" />
-</form>
-EOT;
-        return $o;
+        return $this->view->render("admin", [
+            "attribute" => $attribute,
+            "attributes" => $this->attributeList(),
+            "deleteUrl" => $deleteUrl,
+            "deleteWarning" => addcslashes($this->view->plain("warning_delete"), "\n\r\'\"\\"),
+            "action" => $action,
+            "saveWarning" => addcslashes($this->view->plain("warning_save"), "\n\r\'\"\\"),
+            "csrf_token" => $this->csrfProtector->token(),
+            "pageList" => $pageList,
+        ]);
     }
 
     private function attributeList(): string
@@ -117,12 +102,7 @@ EOT;
         foreach ($attributes as $attribute) {
             $items .= $this->attributeListItem($url, $attribute);
         }
-        $o = <<<EOT
-<ul id="pdeditor_attr">
-    $items
-</ul>
-EOT;
-        return $o;
+        return $items;
     }
 
     private function attributeListItem(string $url, string $attribute): string

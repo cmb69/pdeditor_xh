@@ -34,6 +34,7 @@ class MainAdminControllerTest extends TestCase
             ->method("heading")
             ->willReturnMap([[0, 'Welcome'], [1, 'About'], [2, 'Contact']]);
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
+        $this->csrfProtector->method("token")->willReturn("123456789ABCDEF");
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["pdeditor"]);
     }
 
