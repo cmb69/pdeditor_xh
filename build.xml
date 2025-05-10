@@ -2,19 +2,6 @@
 
 <project name="Pdeditor" default="help">
 
-  <fileset id="php-sources" dir=".">
-    <include name="admin.php"/>
-    <include name="classes/*.php"/>
-  </fileset>
-
-  <fileset id="unit-tests" dir="tests/unit">
-    <include name="*Test.php"/>
-  </fileset>
-
-  <fileset id="attack-tests" dir="tests/attack">
-    <include name="*Test.php"/>
-  </fileset>
-
   <target name="help" description="lists available targets">
     <exec executable="phing" outputProperty="help">
       <arg line="-l"/>
@@ -70,18 +57,6 @@
     <exec executable="pandoc" passthru="true" checkreturn="true">
       <arg line="-s --eol=lf --template=help/template.htm -Vlang=de -Vpagetitle=&quot;Benutzerhandbuch&quot; -o help/help_de.htm README_de.md -t html"/>
     </exec>
-  </target>
-
-  <target name="doc" description="generates developer documentation">
-    <phpdoc title="Pdeditor_XH Developer Documentation" destdir="doc"
-        output="HTML:Smarty:HandS" defaultpackagename="Pdeditor"
-        defaultcategoryname="CMSimple_XH" parseprivate="true">
-      <fileset refid="php-sources"/>
-      <projdocfileset dir=".">
-         <include name="README"/>
-         <include name="CHANGELOG"/>
-      </projdocfileset>
-    </phpdoc>
   </target>
 
   <target name="build" description="builds distributable ZIP archive">
