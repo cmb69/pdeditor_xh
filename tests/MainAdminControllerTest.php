@@ -42,10 +42,34 @@ class MainAdminControllerTest extends TestCase
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text",
         ]);
-        $response = $this->sut()->editor($request);
+        $response = $this->sut()($request);
         $this->assertSame(
             "<script type=\"text/javascript\" src=\"./plugins/pdeditor/pdeditor.js\"></script>",
             $response->hjs()
+        );
+    }
+
+    public function testDeletingIsCsrfProtected(): void
+    {
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
+        ]);
+        $response = $this->sut()($request);
+        $this->assertSame("not authorized", $response->output());
+    }
+
+    public function testDeletingRedirectsAfterDeletingPageData(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused");
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
+            "post" => ["value" => []],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertSame(
+            "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text&normal",
+            $response->location()
         );
     }
 
@@ -55,7 +79,7 @@ class MainAdminControllerTest extends TestCase
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=save",
             "post" => ["value" => []],
         ]);
-        $response = $this->sut()->save($request);
+        $response = $this->sut()($request);
         $this->assertSame("not authorized", $response->output());
     }
 
@@ -67,33 +91,9 @@ class MainAdminControllerTest extends TestCase
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=save&pdeditor_attr=url",
             "post" => ["value" => []],
         ]);
-        $response = $this->sut()->save($request);
+        $response = $this->sut()($request);
         $this->assertSame(
             "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text&pdeditor_attr=url&normal",
-            $response->location()
-        );
-    }
-
-    public function testDeletingIsCsrfProtected(): void
-    {
-        $request = new FakeRequest([
-            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
-        ]);
-        $response = $this->sut()->deleteAttribute($request);
-        $this->assertSame("not authorized", $response->output());
-    }
-
-    public function testDeletingRedirectsAfterDeletingPageData(): void
-    {
-        $this->csrfProtector->method("check")->willReturn(true);
-        $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused");
-        $request = new FakeRequest([
-            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=save&pdeditor_attr=unused",
-            "post" => ["value" => []],
-        ]);
-        $response = $this->sut()->deleteAttribute($request);
-        $this->assertSame(
-            "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text&normal",
             $response->location()
         );
     }

@@ -51,7 +51,42 @@ class MainAdminController
         $this->views = $views;
     }
 
-    public function save(Request $request): Response
+    public function __invoke(Request $request): Response
+    {
+        switch ($request->get("action")) {
+            default:
+                return $this->editor($request);
+            case 'delete':
+                return $this->deleteAttribute($request);
+            case 'save':
+                return $this->save($request);
+        }
+    }
+
+    private function editor(Request $request): Response
+    {
+        $filename = $this->pluginFolder . "pdeditor.js";
+        $hjs = '<script type="text/javascript" src="' . $filename . '"></script>';
+        $attribute = $request->get("pdeditor_attr") ?? "url";
+        $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
+        $action = '?&pdeditor&admin=plugin_main&action=save&pdeditor_attr=';
+        return Response::create($this->views->administration($attribute, $deleteUrl, $action))
+            ->withHjs($hjs);
+    }
+
+    private function deleteAttribute(Request $request): Response
+    {
+        if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
+            return Response::create("not authorized"); // TODO i18n
+        }
+        $attribute = $request->get("pdeditor_attr");
+        $this->model->deletePageDataAttribute($attribute);
+        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
+            ->with("action", "plugin_text")->with("normal");
+            return Response::redirect($url->absolute());
+    }
+
+    private function save(Request $request): Response
     {
         if ($request->postArray("value") !== null) {
             if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
@@ -66,28 +101,5 @@ class MainAdminController
         $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->with("normal");
         return Response::redirect($url->absolute());
-    }
-
-    public function deleteAttribute(Request $request): Response
-    {
-        if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-            return Response::create("not authorized"); // TODO i18n
-        }
-        $attribute = $request->get("pdeditor_attr");
-        $this->model->deletePageDataAttribute($attribute);
-        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "plugin_text")->with("normal");
-            return Response::redirect($url->absolute());
-    }
-
-    public function editor(Request $request): Response
-    {
-        $filename = $this->pluginFolder . "pdeditor.js";
-        $hjs = '<script type="text/javascript" src="' . $filename . '"></script>';
-        $attribute = $request->get("pdeditor_attr") ?? "url";
-        $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
-        $action = '?&pdeditor&admin=plugin_main&action=save&pdeditor_attr=';
-        return Response::create($this->views->administration($attribute, $deleteUrl, $action))
-            ->withHjs($hjs);
     }
 }
