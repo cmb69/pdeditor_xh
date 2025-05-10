@@ -16,6 +16,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+namespace PdEditor;
+
 /**
  * A test case to actually check the CSRF protection.
  *
@@ -127,5 +129,3 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
         );
     }
 }
-
-?>

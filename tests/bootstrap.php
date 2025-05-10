@@ -29,5 +29,3 @@ function XH_saveContents(): bool
 {
     return true;
 }
-
-?>

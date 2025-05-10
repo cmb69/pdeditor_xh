@@ -113,5 +113,3 @@ class ViewsTest extends TestCase
         $this->assertStringContainsString("<img ", $actual);
     }
 }
-
-?>

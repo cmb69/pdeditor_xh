@@ -115,23 +115,23 @@ class Controller
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
-        case '':
-            $o .= $this->info();
-            break;
-        case 'plugin_main':
-            switch ($action) {
-            case 'delete':
-                $o .= $this->deleteAttribute();
+            case '':
+                $o .= $this->info();
                 break;
-            case 'save':
-                $o .= $this->save();
+            case 'plugin_main':
+                switch ($action) {
+                    case 'delete':
+                        $o .= $this->deleteAttribute();
+                        break;
+                    case 'save':
+                        $o .= $this->save();
+                        break;
+                    default:
+                        $o .= $this->editor();
+                }
                 break;
             default:
-                $o .= $this->editor();
-            }
-            break;
-        default:
-            $o .= plugin_admin_common();
+                $o .= plugin_admin_common();
         }
     }
 
@@ -260,5 +260,3 @@ class Controller
         return $this->views->administration($attribute, $deleteUrl, $action);
     }
 }
-
-?>

@@ -335,5 +335,3 @@ EOT;
         return $this->xhtml($o);
     }
 }
-
-?>

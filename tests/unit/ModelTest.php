@@ -227,5 +227,3 @@ class ModelTest extends TestCase
         }
     }
 }
-
-?>

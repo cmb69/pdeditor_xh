@@ -32,5 +32,3 @@ define('PDEDITOR_VERSION', '1.0');
  * Create a controller instance.
  */
 new Controller();
-
-?>
