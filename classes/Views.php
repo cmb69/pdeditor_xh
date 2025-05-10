@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+namespace Pdeditor;
+
 /**
  * The views class.
  *
@@ -22,21 +24,21 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
-class Pdeditor_Views
+class Views
 {
     /**
      * The model.
      *
-     * @var Pdeditor_Model
+     * @var Model
      */
     protected $model;
 
     /**
      * Initializes a new instance.
      *
-     * @param Pdeditor_Model $model The model.
+     * @param Model $model The model.
      */
-    public function __construct(Pdeditor_Model $model)
+    public function __construct(Model $model)
     {
         $this->model = $model;
     }

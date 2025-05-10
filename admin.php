@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+use Pdeditor\Controller;
+
 /*
  * Prevent direct access.
  */
@@ -29,6 +31,6 @@ define('PDEDITOR_VERSION', '1.0');
 /**
  * Create a controller instance.
  */
-new Pdeditor_Controller();
+new Controller();
 
 ?>

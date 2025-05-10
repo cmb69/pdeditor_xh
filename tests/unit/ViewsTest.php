@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+namespace Pdeditor;
+
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 
@@ -35,7 +37,7 @@ class ViewsTest extends TestCase
     /**
      * The views.
      *
-     * @var Pdeditor_Views
+     * @var Views
      */
     protected $views;
 
@@ -50,7 +52,7 @@ class ViewsTest extends TestCase
         $cf = ["xhtml" => ["endtags" => ""]];
         $tx = ["action" => ["save" => ""]];
         $plugin_tx = ["pdeditor" => XH_includeVar("./languages/en.php", "plugin_tx")["pdeditor"]];
-        $model = $this->getMockBuilder('Pdeditor_Model')
+        $model = $this->getMockBuilder(Model::class)
             ->disableOriginalConstructor()
             ->getMock();
         $model->expects($this->any())
@@ -63,7 +65,7 @@ class ViewsTest extends TestCase
             ->method('toplevelPages')
             ->will($this->returnValue(array(0, 2)));
 
-        $this->views = new Pdeditor_Views($model);
+        $this->views = new Views($model);
     }
 
     /**

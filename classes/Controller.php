@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+namespace Pdeditor;
+
 /**
  * The controller class.
  *
@@ -22,19 +24,19 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
-class Pdeditor_Controller
+class Controller
 {
     /**
      * The model.
      *
-     * @var Pdeditor_Model
+     * @var Model
      */
     protected $model;
 
     /**
      * The views.
      *
-     * @var Pdeditor_Views
+     * @var Views
      */
     protected $views;
 
@@ -43,8 +45,8 @@ class Pdeditor_Controller
      */
     public function __construct()
     {
-        $this->model = new Pdeditor_Model();
-        $this->views = new Pdeditor_Views($this->model);
+        $this->model = new Model();
+        $this->views = new Views($this->model);
         $this->dispatch();
     }
 

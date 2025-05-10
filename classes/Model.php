@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+namespace Pdeditor;
+
 /**
  * The model class.
  *
@@ -22,7 +24,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
-class Pdeditor_Model
+class Model
 {
     /**
      * Returns the path of the plugin icon.

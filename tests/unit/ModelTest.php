@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+namespace Pdeditor;
+
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
@@ -40,7 +42,7 @@ class ModelTest extends TestCase
     /**
      * The model under test.
      *
-     * @var Pdeditor_Model
+     * @var Model
      */
     protected $subject;
 
@@ -67,7 +69,7 @@ class ModelTest extends TestCase
         $this->setUpConfig();
         $this->setUpContents();
 
-        $this->subject = new Pdeditor_Model();
+        $this->subject = new Model();
         uopz_set_return("uenc", fn ($url) => urlencode($url), true);
     }
 

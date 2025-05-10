@@ -21,16 +21,9 @@ if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
     include_once '../pluginloader/page_data/page_data_router.php';
 }
 
-spl_autoload_register(
-    function ($class) {
-        global $pth;
-
-        $parts = explode('_', $class, 2);
-        if ($parts[0] == 'Pdeditor') {
-            include_once './classes/' . $parts[1] . '.php';
-        }
-    }
-);
+require_once "./classes/Model.php";
+require_once "./classes/Views.php";
+require_once "./classes/Controller.php";
 
 function XH_saveContents(): bool
 {
