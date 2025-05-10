@@ -18,7 +18,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 ?>
 
 <h1>Pdeditor – <?=$this->text("menu_main")?></h1>
-<h4 class="pdeditor_heading"><?=$this->text("label_attributes")?></h4>
+<h2 class="pdeditor_heading"><?=$this->text("label_attributes")?></h2>
 <ul id="pdeditor_attr">
 <?foreach ($attributes as $attr):?>
   <li>
@@ -26,7 +26,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
   </li>
 <?endforeach?>
 </ul>
-<h4 class="pdeditor_heading"><?=$this->text("label_attribute", $attribute)?></h4>
+<h2 class="pdeditor_heading"><?=$this->text("label_attribute", $attribute)?></h2>
 <form id="pdeditor_delete" action="<?=$this->esc($deleteUrl)?>" method="post" onsubmit="return window.confirm('<?=$this->esc($deleteWarning)?>')">
   <input type="hidden" name="pdeditor_token" value="<?=$this->esc($csrf_token)?>">
   <button type="submit"><?=$this->text("label_delete")?></button>
