@@ -67,7 +67,10 @@ class MainAdminControllerTest extends TestCase
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
         ]);
         $response = $this->sut()($request);
-        $this->assertSame("not authorized", $response->output());
+        $this->assertStringContainsString(
+            "You are not authorized to perform this action!",
+            $response->output()
+        );
     }
 
     public function testDeletingRedirectsAfterDeletingPageData(): void
@@ -92,7 +95,10 @@ class MainAdminControllerTest extends TestCase
             "post" => ["value" => []],
         ]);
         $response = $this->sut()($request);
-        $this->assertSame("not authorized", $response->output());
+        $this->assertStringContainsString(
+            "You are not authorized to perform this action!",
+            $response->output()
+        );
     }
 
     public function testSavingRedirectsAfterUpdatingPageData(): void

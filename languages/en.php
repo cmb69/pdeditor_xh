@@ -6,6 +6,9 @@ $plugin_tx['pdeditor']['label_delete']="Delete this attribute";
 $plugin_tx['pdeditor']['label_save']="Save";
 $plugin_tx['pdeditor']['label_attribute']="Attribute: %s";
 $plugin_tx['pdeditor']['label_attributes']="Attributes";
+
+$plugin_tx['pdeditor']['error_unauthorized']="You are not authorized to perform this action!";
+
 $plugin_tx['pdeditor']['warning_delete']="Deleting an attribute may cause malfunctions of the system!";
 $plugin_tx['pdeditor']['warning_save']="Modifying the pagedata may cause malfunctions of the system!";
 

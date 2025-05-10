@@ -132,7 +132,7 @@ class MainAdminController
     private function deleteAttribute(Request $request): Response
     {
         if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-            return Response::create("not authorized"); // TODO i18n
+            return Response::create($this->view->message("error", "error_unauthorized"));
         }
         $attribute = $request->get("pdeditor_attr") ?? "";
         $this->model->deletePageDataAttribute($attribute);
@@ -145,7 +145,7 @@ class MainAdminController
     {
         if ($request->postArray("value") !== null) {
             if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-                return Response::create("not authorized"); // TODO i18n
+                return Response::create($this->view->message("error", "error_unauthorized"));
             }
             $attribute = $request->get("pdeditor_attr") ?? "";
             $values = $request->postArray("value");
