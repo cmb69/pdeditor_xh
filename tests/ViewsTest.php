@@ -14,9 +14,8 @@ class ViewsTest extends TestCase
 
     public function setUp(): void
     {
-        global $h, $tx, $plugin_tx;
+        global $h, $plugin_tx;
         $h = array('Welcome', 'About', 'Contact');
-        $tx = ["action" => ["save" => ""]];
         $plugin_tx = ["pdeditor" => XH_includeVar("./languages/en.php", "plugin_tx")["pdeditor"]];
         $model = $this->getMockBuilder(Model::class)
             ->disableOriginalConstructor()

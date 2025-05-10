@@ -109,7 +109,7 @@ EOT;
 
     public function administration(string $attribute, string $deleteUrl, string $action): string
     {
-        global $tx, $plugin_tx;
+        global $plugin_tx;
 
         $ptx = $plugin_tx['pdeditor'];
         $attributes = $this->attributeList();
@@ -119,7 +119,7 @@ EOT;
         $saveWarning = addcslashes($ptx['warning_save'], "\n\r\'\"\\");
         $toplevelPages = $this->model->toplevelPages();
         $pageList = $this->pageList($toplevelPages, $attribute);
-        $saveLabel = ucfirst($tx['action']['save']);
+        $saveLabel = $ptx["label_save"];
         $attributeLabel = sprintf($ptx['label_attribute'], $attribute);
         $token = $this->csrfProtector->token();
         $o = <<<EOT

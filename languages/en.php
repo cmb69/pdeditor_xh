@@ -3,6 +3,7 @@
 $plugin_tx['pdeditor']['menu_main']="Pagedata";
 
 $plugin_tx['pdeditor']['label_delete']="Delete this attribute";
+$plugin_tx['pdeditor']['label_save']="Save";
 $plugin_tx['pdeditor']['label_attribute']="Attribute: %s";
 $plugin_tx['pdeditor']['label_attributes']="Attributes";
 $plugin_tx['pdeditor']['warning_delete']="Deleting an attribute may cause malfunctions of the system!";
