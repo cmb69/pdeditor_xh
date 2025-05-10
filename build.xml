@@ -95,11 +95,9 @@
     </exec>
     <untar file="export.tar" todir="export"/>
     <delete file="export.tar"/>
-    <jsMin targetDir="dist" suffix="" failonerror="true">
-      <fileset dir="export">
-        <include name="pdeditor.js"/>
-      </fileset>
-    </jsMin>
+    <exec executable="uglifyjs" passthru="true" checkreturn="true">
+      <arg line="export/pdeditor.js --compress --mangle --output export/pdeditor.min.js"/>
+    </exec>
     <move todir="dist">
       <fileset dir="export">
         <exclude name="build.xml"/>
