@@ -21,9 +21,7 @@
 
 namespace Pdeditor;
 
-use XH\Pages;
-
-class MainAdminControllerController
+class MainAdminController
 {
     /** @var Model */
     private $model;
@@ -31,11 +29,10 @@ class MainAdminControllerController
     /** @var Views */
     private $views;
 
-    public function __construct()
+    public function __construct(Model $model, Views $views)
     {
-        global $pd_router;
-        $this->model = new Model(new Pages(), $pd_router);
-        $this->views = new Views($this->model);
+        $this->model = $model;
+        $this->views = $views;
     }
 
     private function baseUrl(): string

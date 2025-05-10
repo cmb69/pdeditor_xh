@@ -20,9 +20,13 @@
  */
 
 use Pdeditor\InfoController;
-use Pdeditor\MainAdminControllerController;
+use Pdeditor\MainAdminController;
+use Pdeditor\Model;
+use Pdeditor\Views;
 use Plib\SystemChecker;
 use Plib\View;
+use XH\PageDataRouter;
+use XH\Pages;
 
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
@@ -35,6 +39,7 @@ define('PDEDITOR_VERSION', '1.0');
  * @var string $action
  * @var string $admin
  * @var string $o
+ * @var PageDataRouter $pd_router
  * @var array<string,array<string,string>> $plugin_tx
  * @var array{folder:array<string,string>,file:array<string,string>} $pth
  */
@@ -48,15 +53,17 @@ if (XH_wantsPluginAdministration('pdeditor')) {
             $o .= (new InfoController($pth["folder"]["plugins"] . "pdeditor/", new SystemChecker(), $temp))();
             break;
         case 'plugin_main':
+            $j = new Model(new Pages(), $pd_router);
+            $temp = new MainAdminController($j, new Views($j));
             switch ($action) {
                 case 'delete':
-                    $o .= (new MainAdminControllerController())->deleteAttribute();
+                    $o .= $temp->deleteAttribute();
                     break;
                 case 'save':
-                    $o .= (new MainAdminControllerController())->save();
+                    $o .= $temp->save();
                     break;
                 default:
-                    $o .= (new MainAdminControllerController())->editor();
+                    $o .= $temp->editor();
             }
             break;
         default:
