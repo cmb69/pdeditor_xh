@@ -74,7 +74,7 @@ class MainAdminController
         $action = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "save")->with("pdeditor_attr", $attribute)->with("edit")->relative();
         return Response::create($this->administration($request, $attribute, $deleteUrl, $action))
-            ->withHjs($hjs);
+            ->withHjs($hjs)->withTitle("Pdeditor – {$this->view->text("menu_main")}");
     }
 
     private function administration(Request $request, string $attribute, string $deleteUrl, string $action): string

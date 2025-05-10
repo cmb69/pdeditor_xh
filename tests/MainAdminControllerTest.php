@@ -58,6 +58,7 @@ class MainAdminControllerTest extends TestCase
             "<script type=\"text/javascript\" src=\"./plugins/pdeditor/pdeditor.js\"></script>",
             $response->hjs()
         );
+        $this->assertSame("Pdeditor – Pagedata", $response->title());
         Approvals::verifyHtml($response->output());
     }
 

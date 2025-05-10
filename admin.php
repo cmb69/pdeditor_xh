@@ -38,7 +38,7 @@ if (XH_wantsPluginAdministration('pdeditor')) {
     $o .= print_plugin_admin('on');
     switch ($admin) {
         case '':
-            $o .= Dic::infoController()();
+            $o .= Dic::infoController()()();
             break;
         case 'plugin_main':
             $o .= Dic::mainAdminController()(Request::current())();
