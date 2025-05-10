@@ -90,7 +90,7 @@ class Controller
 
     private function systemChecks(): array
     {
-        global $pth, $tx, $plugin_tx;
+        global $pth, $plugin_tx;
 
         $phpVersion = '7.1.0';
         $ptx = $plugin_tx['pdeditor'];
@@ -101,8 +101,9 @@ class Controller
             $checks[sprintf($ptx['syscheck_extension'], $extension)]
                 = extension_loaded($extension) ? 'success' : 'fail';
         }
-        $checks[$ptx['syscheck_encoding']]
-            = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'success' : 'warning';
+        $xhVersion = "1.7.0";
+        $checks[sprintf($ptx['syscheck_xhversion'], $xhVersion)]
+            = version_compare(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion") >= 0 ? 'success' : 'warning'; // @phpstan-ignore-line
         $folders = array();
         foreach (array('css/', 'languages/') as $folder) {
             $folders[] = $pth['folder']['plugins'] . 'pdeditor/' . $folder;
