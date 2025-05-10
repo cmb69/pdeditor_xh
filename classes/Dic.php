@@ -30,8 +30,10 @@ class Dic
 {
     public static function mainAdminController(): MainAdminController
     {
+        global $pth;
         $csrfProtector = new CsrfProtector();
         return new MainAdminController(
+            $pth["folder"]["plugins"] . "pdeditor/",
             self::model(),
             $csrfProtector,
             new Views(self::model(), $csrfProtector)

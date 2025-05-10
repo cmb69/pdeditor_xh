@@ -27,6 +27,9 @@ use Plib\Response;
 
 class MainAdminController
 {
+    /** @var string */
+    private $pluginFolder;
+
     /** @var Model */
     private $model;
 
@@ -36,8 +39,13 @@ class MainAdminController
     /** @var Views */
     private $views;
 
-    public function __construct(Model $model, CsrfProtector $csrfProtector, Views $views)
-    {
+    public function __construct(
+        string $pluginFolder,
+        Model $model,
+        CsrfProtector $csrfProtector,
+        Views $views
+    ) {
+        $this->pluginFolder = $pluginFolder;
         $this->model = $model;
         $this->csrfProtector = $csrfProtector;
         $this->views = $views;
@@ -45,7 +53,7 @@ class MainAdminController
 
     public function save(Request $request): Response
     {
-        if (isset($_POST['value'])) {
+        if ($request->postArray("value") !== null) {
             if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
                 return Response::create("not authorized"); // TODO i18n
             }
@@ -74,9 +82,7 @@ class MainAdminController
 
     public function editor(Request $request): Response
     {
-        global $pth;
-
-        $filename = $pth['folder']['plugins'] . 'pdeditor/pdeditor.js';
+        $filename = $this->pluginFolder . "pdeditor.js";
         $hjs = '<script type="text/javascript" src="' . $filename . '"></script>';
         $attribute = $request->get("pdeditor_attr") ?? "url";
         $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
