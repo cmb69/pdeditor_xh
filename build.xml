@@ -81,7 +81,7 @@
     </move>
     <delete dir="export"/>
     <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
-    <zip destfile="Pdeditor_XH-1.1-dev.zip" basedir="dist" prefix="pdeditor/"/>
+    <zip destfile="Pdeditor_XH-2.0-dev.zip" basedir="dist" prefix="pdeditor/"/>
     <delete dir="dist"/>
   </target>
 

@@ -28,7 +28,7 @@ use XH\Pages;
 
 class Dic
 {
-    public const VERSION = "1.1-dev";
+    public const VERSION = "2.0-dev";
 
     public static function mainAdminController(): MainAdminController
     {
