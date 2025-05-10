@@ -57,10 +57,16 @@
     </exec>
     <move todir="dist">
       <fileset dir="export">
+        <exclude name=".github/**"/>
+        <exclude name=".phive/**"/>
+        <exclude name="tests/**"/>
+        <exclude name="README*.md"/>
         <exclude name="build.xml"/>
         <exclude name="composer.*"/>
         <exclude name="pdeditor.js"/>
-        <exclude name="tests/**"/>
+        <exclude name="phpstan.*"/>
+        <exclude name="phpunit.*"/>
+        <exclude name="teplad.xml"/>
       </fileset>
     </move>
     <delete dir="export"/>
