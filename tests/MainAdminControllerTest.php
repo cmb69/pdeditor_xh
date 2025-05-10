@@ -2,11 +2,13 @@
 
 namespace Pdeditor;
 
+use ApprovalTests\Approvals;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Plib\CsrfProtector;
 use Plib\FakeRequest;
+use Plib\View;
 
 class MainAdminControllerTest extends TestCase
 {
@@ -16,14 +18,23 @@ class MainAdminControllerTest extends TestCase
     /** @var CsrfProtector&Stub */
     private $csrfProtector;
 
-    /** @var Views&MockObject */
-    private $views;
+    /** @var View */
+    private $view;
 
     public function setUp(): void
     {
         $this->model = $this->createMock(Model::class);
+        $this->model->expects($this->any())
+            ->method('pageDataAttributes')
+            ->will($this->returnValue(array('url', 'description')));
+        $this->model->expects($this->any())
+            ->method('toplevelPages')
+            ->will($this->returnValue(array(0, 2)));
+        $this->model->expects($this->any())
+            ->method("heading")
+            ->willReturnMap([[0, 'Welcome'], [1, 'About'], [2, 'Contact']]);
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
-        $this->views = $this->createMock(Views::class);
+        $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["pdeditor"]);
     }
 
     private function sut(): MainAdminController
@@ -32,13 +43,12 @@ class MainAdminControllerTest extends TestCase
             "./plugins/pdeditor/",
             $this->model,
             $this->csrfProtector,
-            $this->views
+            $this->view
         );
     }
 
     public function testShowsAdministrationByDefault(): void
     {
-        $this->views->expects($this->once())->method("administration");
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text",
         ]);
@@ -47,6 +57,7 @@ class MainAdminControllerTest extends TestCase
             "<script type=\"text/javascript\" src=\"./plugins/pdeditor/pdeditor.js\"></script>",
             $response->hjs()
         );
+        Approvals::verifyHtml($response->output());
     }
 
     public function testDeletingIsCsrfProtected(): void

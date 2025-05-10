@@ -24,6 +24,7 @@ namespace Pdeditor;
 use Plib\CsrfProtector;
 use Plib\Request;
 use Plib\Response;
+use Plib\View;
 
 class MainAdminController
 {
@@ -36,19 +37,19 @@ class MainAdminController
     /** @var CsrfProtector */
     private $csrfProtector;
 
-    /** @var Views */
-    private $views;
+    /** @var View */
+    private $view;
 
     public function __construct(
         string $pluginFolder,
         Model $model,
         CsrfProtector $csrfProtector,
-        Views $views
+        View $view
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->model = $model;
         $this->csrfProtector = $csrfProtector;
-        $this->views = $views;
+        $this->view = $view;
     }
 
     public function __invoke(Request $request): Response
@@ -70,8 +71,105 @@ class MainAdminController
         $attribute = $request->get("pdeditor_attr") ?? "url";
         $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
         $action = '?&pdeditor&admin=plugin_main&action=save&pdeditor_attr=';
-        return Response::create($this->views->administration($attribute, $deleteUrl, $action))
+        return Response::create($this->administration($attribute, $deleteUrl, $action))
             ->withHjs($hjs);
+    }
+
+    private function administration(string $attribute, string $deleteUrl, string $action): string
+    {
+        $attributes = $this->attributeList();
+        $deleteUrl = $this->view->esc($deleteUrl);
+        $deleteWarning = addcslashes($this->view->plain("warning_delete"), "\n\r\'\"\\");
+        $action = $this->view->esc($action);
+        $saveWarning = addcslashes($this->view->plain("warning_save"), "\n\r\'\"\\");
+        $toplevelPages = $this->model->toplevelPages();
+        $pageList = $this->pageList($toplevelPages, $attribute);
+        $saveLabel = $this->view->plain("label_save");
+        $attributeLabel = $this->view->plain("label_attribute", $attribute);
+        $token = $this->csrfProtector->token();
+        $o = <<<EOT
+<h1>Pdeditor &ndash; {$this->view->plain("menu_main")}</h1>
+<h4 class="pdeditor_heading">{$this->view->plain("label_attributes")}</h4>
+$attributes
+<h4 class="pdeditor_heading">$attributeLabel</h4>
+<form id="pdeditor_delete" action="$deleteUrl$attribute&amp;edit" method="post"
+      onsubmit="return window.confirm('$deleteWarning')">
+    <input type="hidden" name="pdeditor_token" value="$token">
+    <button type="submit">{$this->view->plain("label_delete")}</button>
+</form>
+<form id="pdeditor_attributes" action="$action$attribute&amp;edit" method="post"
+      onsubmit="return window.confirm('$saveWarning')">
+    <input type="hidden" name="pdeditor_token" value="$token">
+    <input type="submit" class="submit" value="$saveLabel" />
+    $pageList
+    <input type="submit" class="submit" value="$saveLabel" />
+</form>
+EOT;
+        return $o;
+    }
+
+    private function attributeList(): string
+    {
+        $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
+            . '&pdeditor_attr=';
+        $attributes = $this->model->pageDataAttributes();
+        $items = '';
+        foreach ($attributes as $attribute) {
+            $items .= $this->attributeListItem($url, $attribute);
+        }
+        $o = <<<EOT
+<ul id="pdeditor_attr">
+    $items
+</ul>
+EOT;
+        return $o;
+    }
+
+    private function attributeListItem(string $url, string $attribute): string
+    {
+        $url = $this->view->esc($url . $attribute);
+        return <<<EOT
+<li><a href="$url">$attribute</a></li>
+EOT;
+    }
+
+    private function pageList(array $pages, string $attribute): string
+    {
+        if (empty($pages)) {
+            return '';
+        }
+        $items = '';
+        foreach ($pages as $i) {
+            $items .= $this->pageListItem($attribute, $i);
+        }
+        return <<<EOT
+<ul>
+    $items
+</ul>
+EOT;
+    }
+
+    private function pageListItem(string $attribute, int $i): string
+    {
+        $heading = $this->model->heading($i);
+        $pageDataAttribute = $this->model->pageDataAttribute($i, $attribute);
+        if ($attribute == 'url' && !$this->model->isPagedataUrlUpToDate($i)) {
+            $warning = $this->warningIcon();
+        } else {
+            $warning = '';
+        }
+        $value = $this->view->esc($pageDataAttribute);
+        $subpages = $this->pageList($this->model->childPages($i), $attribute);
+        return <<<EOT
+<li>
+$warning$heading<input type="text" name="value[]" value="$value" />$subpages
+</li>
+EOT;
+    }
+
+    private function warningIcon(): string
+    {
+        return "\xE2\x9A\xA0 ";
     }
 
     private function deleteAttribute(Request $request): Response

@@ -36,7 +36,7 @@ class Dic
             $pth["folder"]["plugins"] . "pdeditor/",
             self::model(),
             $csrfProtector,
-            new Views(self::model(), $csrfProtector)
+            self::view()
         );
     }
 
