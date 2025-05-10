@@ -18,10 +18,10 @@ namespace Pdeditor;
 class Controller
 {
     /** @var Model */
-    protected $model;
+    private $model;
 
     /** @var Views */
-    protected $views;
+    private $views;
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class Controller
         $this->dispatch();
     }
 
-    protected function baseUrl(): string
+    private function baseUrl(): string
     {
         global $sn;
 
@@ -40,7 +40,7 @@ class Controller
             . preg_replace('/index\.php$/', '', $sn);
     }
 
-    protected function dispatch(): void
+    private function dispatch(): void
     {
         global $adm;
 
@@ -52,14 +52,14 @@ class Controller
         }
     }
 
-    protected function isAdministrationRequested(): bool
+    private function isAdministrationRequested(): bool
     {
         global $pdeditor;
 
         return XH_wantsPluginAdministration('pdeditor');
     }
 
-    protected function administration(): void
+    private function administration(): void
     {
         global $o, $admin, $action;
 
@@ -85,7 +85,7 @@ class Controller
         }
     }
 
-    protected function systemChecks(): array
+    private function systemChecks(): array
     {
         global $pth, $tx, $plugin_tx;
 

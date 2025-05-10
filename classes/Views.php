@@ -18,14 +18,14 @@ namespace Pdeditor;
 class Views
 {
     /** @var Model */
-    protected $model;
+    private $model;
 
     public function __construct(Model $model)
     {
         $this->model = $model;
     }
 
-    protected function hsc(string $string): string
+    private function hsc(string $string): string
     {
         if (function_exists('XH_hsc')) {
             return XH_hsc($string);
@@ -34,7 +34,7 @@ class Views
         }
     }
 
-    protected function xhtml(string $string): string
+    private function xhtml(string $string): string
     {
         global $cf;
 
@@ -44,7 +44,7 @@ class Views
         return $string;
     }
 
-    protected function license(): string
+    private function license(): string
     {
         return <<<EOT
 <p class="pdeditor_license">This program is free software: you can redistribute it
@@ -61,7 +61,7 @@ href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>.</p>
 EOT;
     }
 
-    protected function systemCheckItem(string $check, string $state): string
+    private function systemCheckItem(string $check, string $state): string
     {
         global $pth;
 
@@ -107,7 +107,7 @@ EOT;
         return $this->xhtml($o);
     }
 
-    protected function attributeListItem(string $url, string $attribute): string
+    private function attributeListItem(string $url, string $attribute): string
     {
         $url = $this->hsc($url . $attribute);
         return <<<EOT
@@ -115,7 +115,7 @@ EOT;
 EOT;
     }
 
-    protected function attributeList(): string
+    private function attributeList(): string
     {
         $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
             . '&pdeditor_attr=';
@@ -132,7 +132,7 @@ EOT;
         return $this->xhtml($o);
     }
 
-    protected function warningIcon(): string
+    private function warningIcon(): string
     {
         global $pth, $plugin_tx;
 
@@ -143,7 +143,7 @@ EOT;
 EOT;
     }
 
-    protected function pageListItem(string $attribute, int $i): string
+    private function pageListItem(string $attribute, int $i): string
     {
         global $h;
 
@@ -162,7 +162,7 @@ $warning$h[$i]<input type="text" name="value[]" value="$value" />$subpages
 EOT;
     }
 
-    protected function pageList(array $pages, string $attribute): string
+    private function pageList(array $pages, string $attribute): string
     {
         if (empty($pages)) {
             return '';

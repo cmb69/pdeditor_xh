@@ -10,7 +10,7 @@ define('PDEDITOR_VERSION', '1.0');
 class ViewsTest extends TestCase
 {
     /** @var Views */
-    protected $views;
+    private $views;
 
     public function setUp(): void
     {

@@ -11,10 +11,10 @@ use XH\PageDataRouter;
 class ModelTest extends TestCase
 {
     /** @var string  */
-    protected $pluginsFolder;
+    private $pluginsFolder;
 
     /** @var Model */
-    protected $subject;
+    private $subject;
 
     public function setUp(): void
     {
@@ -41,7 +41,7 @@ class ModelTest extends TestCase
         uopz_unset_return("uenc");
     }
 
-    protected function setUpConfig(): void
+    private function setUpConfig(): void
     {
         global $cf;
 
@@ -50,7 +50,7 @@ class ModelTest extends TestCase
         );
     }
 
-    protected function setUpContents(): void
+    private function setUpContents(): void
     {
         global $h, $l, $cl, $pd_router;
 

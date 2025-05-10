@@ -34,21 +34,21 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
      *
      * @var string
      */
-    protected $url;
+    private $url;
 
     /**
      * The cURL handle.
      *
      * @var resource
      */
-    protected $curlHandle;
+    private $curlHandle;
 
     /**
      * The path of the cookie file.
      *
      * @var string
      */
-    protected $cookieFile;
+    private $cookieFile;
 
     /**
      * Sets up the test fixture.
@@ -76,7 +76,7 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function setCurlOptions($fields)
+    private function setCurlOptions($fields)
     {
         $options = array(
             CURLOPT_POST => true,
