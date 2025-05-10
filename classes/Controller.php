@@ -21,6 +21,7 @@
 
 namespace Pdeditor;
 
+use Plib\SystemChecker;
 use XH\Pages;
 
 class Controller
@@ -75,7 +76,7 @@ class Controller
         $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
-                $o .= (new InfoController($this->views))();
+                $o .= (new InfoController($this->views, new SystemChecker()))();
                 break;
             case 'plugin_main':
                 switch ($action) {

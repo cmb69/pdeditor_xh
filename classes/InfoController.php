@@ -21,14 +21,20 @@
 
 namespace Pdeditor;
 
+use Plib\SystemChecker;
+
 class InfoController
 {
     /** @var Views */
     private $views;
 
-    public function __construct(Views $views)
+    /** @var SystemChecker */
+    private $systemChecker;
+
+    public function __construct(Views $views, SystemChecker $systemChecker)
     {
         $this->views = $views;
+        $this->systemChecker = $systemChecker;
     }
 
     public function __invoke(): string
@@ -45,21 +51,21 @@ class InfoController
         $ptx = $plugin_tx['pdeditor'];
         $checks = array();
         $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
-            = version_compare(PHP_VERSION, $phpVersion) >= 0 ? 'success' : 'fail';
+            = $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) ? 'success' : 'fail';
         foreach (array('pcre', 'spl') as $extension) {
             $checks[sprintf($ptx['syscheck_extension'], $extension)]
-                = extension_loaded($extension) ? 'success' : 'fail';
+                = $this->systemChecker->checkExtension($extension) ? 'success' : 'fail';
         }
         $xhVersion = "1.7.0";
         $checks[sprintf($ptx['syscheck_xhversion'], $xhVersion)]
-            = version_compare(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion") >= 0 ? 'success' : 'warning'; // @phpstan-ignore-line
+            = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion") ? 'success' : 'warning';
         $folders = array();
         foreach (array('css/', 'languages/') as $folder) {
             $folders[] = $pth['folder']['plugins'] . 'pdeditor/' . $folder;
         }
         foreach ($folders as $folder) {
             $checks[sprintf($ptx['syscheck_writable'], $folder)]
-                = is_writable($folder) ? 'success' : 'warning';
+                = $this->systemChecker->checkWritability($folder) ? 'success' : 'warning';
         }
         return $checks;
     }
