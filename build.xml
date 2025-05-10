@@ -42,6 +42,8 @@
     </exec>
   </target>
 
+  <target name="check" description="runs all checks" depends="sniff,stan,unit-tests"/>
+
   <target name="attack-tests" description="runs all attack tests">
     <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
     <phpunit bootstrap="tests/bootstrap.php"
