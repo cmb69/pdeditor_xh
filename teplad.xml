@@ -81,27 +81,26 @@
   <descriptions>
     <!-- description of the plugin, ca. 200 characters, you can use <br/>, <ol></ol>, <ul></ul>, <li></li>, <b></b>, <i></i>. -->
     <description lang="en">
-      Pdeditor_XH facilitates viewing and editing the page data in the administration of CMSimple_XH.
-      It also provides some diagnostics regarding potential desynchronisation of content and pagedata
-      (what is supposed to never happen in CMSimple_XH ≥ 1.6).
-      It is meant as an alternative to editing pagedata.php
-      resp. since CMSimple_XH 1.6 the pagedata sections in content.htm) manually,
-      so it should be used by experienced users only, who know exactly, what they are doing.
-      <b>It's not a tool for unexperienced users!</b>
-      These should manipulate the pagedata via the interface provided by the respective
+      Pdeditor_XH facilitates viewing and editing the page data in the back-end
+      of CMSimple_XH.  It also provides some diagnostics regarding potential
+      desynchronisation of content and pagedata (what is supposed to never happen in
+      CMSimple_XH ≥ 1.6).  It is meant as an alternative to editing the pagedata
+      sections in content.htm manually, so it should be <i>used by experienced users only</i>,
+      who know exactly what they are doing.  It is <i>not a tool for unexperienced users</i>!
+      These should manipulate the pagedata via the interfaces provided by the respective
       plugins only (often a tab above the editor).
     </description>
     <!-- Beschreibung des Plugins, ca. 200 Zeichen, es können <br/>, <ol></ol>, <ul></ul>, <li></li>, <b></b>, <i></i> genutzt werden. -->
     <description lang="de">
-      Pdeditor_XH ermöglicht das Betrachten und Bearbeiten der Pagedata im Administrationbereich von CMSimple.
-      Es bietet darüber hinaus eine Diagnose bzgl. potentieller Desynchronisierung von Content und Pagedata
-      (was unter CMSimple_XH ≥ 1.6 niemals vorkommen sollte).
-      Es ist als eine Alternative zur manuellen Bearbeitung der pagedata.php
-      (bzw. seit CMSimple_XH 1.6 der Pagedata-Abschnitte in content.htm) gedacht,
-      so dass es nur von erfahrenen Anwendern verwendet werden sollte, die genau wissen, was sie tun.
-      <b>Es ist kein Werkzeug für unerfahrene Anwender!</b>
-      Diese sollten die Pagedata ausschließlich über die Schnittstellen, die von den entsprechenden
-      Plugins angeboten werden (meist in einem Reiter über dem Editor), bearbeiten.
+      Pdeditor_XH ermöglicht das Betrachten und Bearbeiten der Pagedata im
+      Backend von CMSimple_XH. Es bietet darüber hinaus eine Diagnose
+      bezüglich potentieller Desynchronisierung von Content und Pagedata (was unter
+      CMSimple_XH ≥ 1.6 niemals vorkommen sollte). Es ist als eine Alternative zur
+      manuellen Bearbeitung der Pagedata-Abschnitte in content.htm gedacht,
+      so dass es nur <i>von erfahrenen Anwendern verwendet werden sollte</i>, die genau wissen, was sie tun.
+      Es ist <i>kein Werkzeug für unerfahrene Anwender</i>! Diese sollten die Pagedata
+      ausschließlich über die Schnittstellen, die von den entsprechenden Plugins
+      angeboten werden (meist in einem Reiter über dem Editor), bearbeiten.
     </description>
     <!-- additional languages are possible, i.e. da, fr, pl, ... -->
     <!-- The use of this language is limited by the website where the repository is hosted. -->
