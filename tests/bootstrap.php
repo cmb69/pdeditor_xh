@@ -20,7 +20,6 @@ require_once "./classes/InfoController.php";
 require_once "./classes/MainAdminController.php";
 
 const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.5";
-const PDEDITOR_VERSION = "1.1-dev";
 
 function XH_saveContents(): bool
 {

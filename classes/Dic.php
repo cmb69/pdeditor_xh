@@ -28,6 +28,8 @@ use XH\Pages;
 
 class Dic
 {
+    public const VERSION = "1.1-dev";
+
     public static function mainAdminController(): MainAdminController
     {
         global $pth;

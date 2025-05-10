@@ -27,8 +27,6 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
     exit;
 }
 
-define('PDEDITOR_VERSION', '1.1-dev');
-
 /**
  * @var string $action
  * @var string $admin

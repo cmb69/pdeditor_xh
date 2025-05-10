@@ -44,7 +44,7 @@ class InfoController
 
     public function __invoke(): string
     {
-        return "<h1>Pdeditor " . PDEDITOR_VERSION . "</h1>\n"
+        return "<h1>Pdeditor {$this->view->esc(Dic::VERSION)}</h1>\n"
             . "<h2>{$this->view->text("syscheck_title")}</h2>\n"
             . $this->systemChecks();
     }
