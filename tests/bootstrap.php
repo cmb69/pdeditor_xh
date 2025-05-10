@@ -12,7 +12,7 @@ require_once "../plib/classes/FakeSystemChecker.php";
 require_once "./classes/Model.php";
 require_once "./classes/Views.php";
 require_once "./classes/InfoController.php";
-require_once "./classes/Controller.php";
+require_once "./classes/MainAdminController.php";
 
 const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.5";
 

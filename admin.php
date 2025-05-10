@@ -19,8 +19,8 @@
  * along with Pdeditor_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Pdeditor\Controller;
 use Pdeditor\InfoController;
+use Pdeditor\MainAdminControllerController;
 use Plib\SystemChecker;
 use Plib\View;
 
@@ -50,13 +50,13 @@ if (XH_wantsPluginAdministration('pdeditor')) {
         case 'plugin_main':
             switch ($action) {
                 case 'delete':
-                    $o .= (new Controller())->deleteAttribute();
+                    $o .= (new MainAdminControllerController())->deleteAttribute();
                     break;
                 case 'save':
-                    $o .= (new Controller())->save();
+                    $o .= (new MainAdminControllerController())->save();
                     break;
                 default:
-                    $o .= (new Controller())->editor();
+                    $o .= (new MainAdminControllerController())->editor();
             }
             break;
         default:

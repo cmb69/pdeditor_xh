@@ -23,7 +23,7 @@ namespace Pdeditor;
 
 use XH\Pages;
 
-class Controller
+class MainAdminControllerController
 {
     /** @var Model */
     private $model;
