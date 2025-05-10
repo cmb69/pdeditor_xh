@@ -7,7 +7,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 /**
  * @var View $this
  * @var string $attribute
- * @var list<object{name:string,url:string}> $attributes
+ * @var list<object{name:string,selected:string}> $attributes
  * @var string $deleteUrl
  * @var string $deleteWarning
  * @var string $action
@@ -18,15 +18,20 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 ?>
 
 <h1>Pdeditor – <?=$this->text("menu_main")?></h1>
-<h2 class="pdeditor_heading"><?=$this->text("label_attributes")?></h2>
-<ul id="pdeditor_attr">
+<form method="get">
+  <input type="hidden" name="selected" value="pdeditor">
+  <input type="hidden" name="admin" value="plugin_main">
+  <input type="hidden" name="action" value="plugin_text">
+  <label>
+    <span><?=$this->text("label_attribute")?></span>
+    <select name="pdeditor_attr" id="pdeditor_attr" onchange='this.form.submit()'>
 <?foreach ($attributes as $attr):?>
-  <li>
-    <a href="<?=$this->esc($attr->url)?>"><?=$this->esc($attr->name)?></a>
-  </li>
+      <option <?=$this->esc($attr->selected)?>><?=$this->esc($attr->name)?></option>
 <?endforeach?>
-</ul>
-<h2 class="pdeditor_heading"><?=$this->text("label_attribute", $attribute)?></h2>
+    </select>
+  </label>
+  <button><?=$this->text("label_show")?></button>
+</form>
 <form id="pdeditor_delete" action="<?=$this->esc($deleteUrl)?>" method="post" onsubmit="return window.confirm('<?=$this->esc($deleteWarning)?>')">
   <input type="hidden" name="pdeditor_token" value="<?=$this->esc($csrf_token)?>">
   <button type="submit"><?=$this->text("label_delete")?></button>

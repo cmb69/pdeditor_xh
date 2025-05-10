@@ -41,7 +41,6 @@ class MainAdminControllerTest extends TestCase
     private function sut(): MainAdminController
     {
         return new MainAdminController(
-            "./plugins/pdeditor/",
             $this->model,
             $this->csrfProtector,
             $this->view
@@ -54,10 +53,6 @@ class MainAdminControllerTest extends TestCase
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text",
         ]);
         $response = $this->sut()($request);
-        $this->assertSame(
-            "<script type=\"text/javascript\" src=\"./plugins/pdeditor/pdeditor.js\"></script>",
-            $response->hjs()
-        );
         $this->assertSame("Pdeditor – Pagedata", $response->title());
         Approvals::verifyHtml($response->output());
     }

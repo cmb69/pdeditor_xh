@@ -52,9 +52,6 @@
     </exec>
     <untar file="export.tar" todir="export"/>
     <delete file="export.tar"/>
-    <exec executable="uglifyjs" passthru="true" checkreturn="true">
-      <arg line="export/pdeditor.js --compress --mangle --output export/pdeditor.min.js"/>
-    </exec>
     <move todir="dist">
       <fileset dir="export">
         <include name="views/*.php"/>
@@ -73,7 +70,6 @@
         <exclude name="README*.md"/>
         <exclude name="build.xml"/>
         <exclude name="composer.*"/>
-        <exclude name="pdeditor.js"/>
         <exclude name="phpstan.*"/>
         <exclude name="phpunit.*"/>
         <exclude name="teplad.xml"/>

@@ -28,9 +28,6 @@ use Plib\View;
 
 class MainAdminController
 {
-    /** @var string */
-    private $pluginFolder;
-
     /** @var Model */
     private $model;
 
@@ -41,12 +38,10 @@ class MainAdminController
     private $view;
 
     public function __construct(
-        string $pluginFolder,
         Model $model,
         CsrfProtector $csrfProtector,
         View $view
     ) {
-        $this->pluginFolder = $pluginFolder;
         $this->model = $model;
         $this->csrfProtector = $csrfProtector;
         $this->view = $view;
@@ -66,22 +61,20 @@ class MainAdminController
 
     private function editor(Request $request): Response
     {
-        $filename = $this->pluginFolder . "pdeditor.js";
-        $hjs = '<script type="text/javascript" src="' . $filename . '"></script>';
         $attribute = $request->get("pdeditor_attr") ?? "url";
         $deleteUrl = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "delete")->with("pdeditor_attr", $attribute)->with("edit")->relative();
         $action = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "save")->with("pdeditor_attr", $attribute)->with("edit")->relative();
-        return Response::create($this->administration($request, $attribute, $deleteUrl, $action))
-            ->withHjs($hjs)->withTitle("Pdeditor – {$this->view->text("menu_main")}");
+        return Response::create($this->administration($attribute, $deleteUrl, $action))
+            ->withTitle("Pdeditor – {$this->view->text("menu_main")}");
     }
 
-    private function administration(Request $request, string $attribute, string $deleteUrl, string $action): string
+    private function administration(string $attribute, string $deleteUrl, string $action): string
     {
         return $this->view->render("admin", [
             "attribute" => $attribute,
-            "attributes" => $this->attributeList($request),
+            "attributes" => $this->attributeList($attribute),
             "deleteUrl" => $deleteUrl,
             "deleteWarning" => addcslashes($this->view->plain("warning_delete"), "\n\r\'\"\\"),
             "action" => $action,
@@ -91,15 +84,14 @@ class MainAdminController
         ]);
     }
 
-    /** @return list<object{name:string,url:string}> */
-    private function attributeList(Request $request): array
+    /** @return list<object{name:string,selected:string}> */
+    private function attributeList(string $currentAttribute): array
     {
         $items = [];
         foreach ($this->model->pageDataAttributes() as $attribute) {
             $items[] = (object) [
                 "name" => $attribute,
-                "url" => $request->url()->page("pdeditor")->with("normal")->with("admin", "plugin_main")
-                    ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->relative(),
+                "selected" => $attribute === $currentAttribute ? "selected" : "",
             ];
         }
         return $items;

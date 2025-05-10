@@ -2,10 +2,10 @@
 
 $plugin_tx['pdeditor']['menu_main']="Pagedata";
 
+$plugin_tx['pdeditor']['label_attribute']="Attribut";
 $plugin_tx['pdeditor']['label_delete']="Attribut entfernen";
+$plugin_tx['pdeditor']['label_show']="Anzeigen";
 $plugin_tx['pdeditor']['label_save']="Speichern";
-$plugin_tx['pdeditor']['label_attribute']="Attribut: %s";
-$plugin_tx['pdeditor']['label_attributes']="Attribute";
 
 $plugin_tx['pdeditor']['error_unauthorized']="Sie sind nicht befugt diese Aktion durchzuführen!";
 
@@ -20,3 +20,4 @@ $plugin_tx['pdeditor']['syscheck_bad']="nicht okay";
 $plugin_tx['pdeditor']['syscheck_good']="okay";
 
 ?>
+
