@@ -113,6 +113,7 @@ class MainAdminController
 EOT;
     }
 
+    /** @param list<int> $pages */
     private function pageList(array $pages, string $attribute): string
     {
         if (empty($pages)) {
@@ -157,7 +158,7 @@ EOT;
         if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
             return Response::create("not authorized"); // TODO i18n
         }
-        $attribute = $request->get("pdeditor_attr");
+        $attribute = $request->get("pdeditor_attr") ?? "";
         $this->model->deletePageDataAttribute($attribute);
         $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "plugin_text")->with("normal");
@@ -170,7 +171,7 @@ EOT;
             if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
                 return Response::create("not authorized"); // TODO i18n
             }
-            $attribute = $request->get("pdeditor_attr");
+            $attribute = $request->get("pdeditor_attr") ?? "";
             $values = $request->postArray("value");
             $this->model->updatePageData($attribute, $values);
         } else {

@@ -49,16 +49,19 @@ class Model
         return $pageData['url'] == uenc($this->pages->heading($index));
     }
 
+    /** @return list<int> */
     public function toplevelPages(): array
     {
         return $this->pages->toplevels();
     }
 
+    /** @return list<int> */
     public function childPages(int $i): array
     {
         return $this->pages->children($i, false);
     }
 
+    /** @return list<string> */
     public function pageDataAttributes(): array
     {
         $attributes = $this->pageData->storedFields();
@@ -72,6 +75,7 @@ class Model
         return $pageData[$attribute];
     }
 
+    /** @param list<string> $values */
     public function updatePageData(string $attribute, array $values): void
     {
         $attributes = $this->pageDataAttributes();
