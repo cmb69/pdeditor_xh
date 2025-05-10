@@ -32,18 +32,6 @@
     </exec>
   </target>
 
-    <target name="mess" description="detects code flaws">
-        <phpmd rulesets="codesize,unusedcode">
-            <fileset refid="php-sources"/>
-            <fileset refid="unit-tests"/>
-            <fileset refid="attack-tests"/>
-         </phpmd>
-    </target>
-
-    <target name="compat" description="checks PHP requirements">
-        <exec command="phpcompatinfo analyser:run ." logoutput="true"/>
-    </target>
-
     <target name="unit-tests" description="runs all unit tests">
         <phpunit bootstrap="tests/bootstrap.php"
                  haltonerror="true" haltonfailure="true">
@@ -117,7 +105,6 @@
                 <exclude name="build.xml"/>
                 <exclude name="composer.*"/>
                 <exclude name="pdeditor.js"/>
-                <exclude name="phpcompatinfo.json"/>
                 <exclude name="tests/**"/>
             </fileset>
         </move>
