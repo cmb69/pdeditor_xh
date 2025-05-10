@@ -20,6 +20,9 @@
  */
 
 use Pdeditor\Controller;
+use Pdeditor\InfoController;
+use Plib\SystemChecker;
+use Plib\View;
 
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
@@ -28,4 +31,35 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 
 define('PDEDITOR_VERSION', '1.0');
 
-new Controller();
+/**
+ * @var string $action
+ * @var string $admin
+ * @var string $o
+ * @var array<string,array<string,string>> $plugin_tx
+ * @var array{folder:array<string,string>,file:array<string,string>} $pth
+ */
+
+XH_registerStandardPluginMenuItems(true);
+if (XH_wantsPluginAdministration('pdeditor')) {
+    $o .= print_plugin_admin('on');
+    switch ($admin) {
+        case '':
+            $temp = new View($pth["folder"]["plugins"] . "pdeditor/views/", $plugin_tx["pdeditor"]);
+            $o .= (new InfoController($pth["folder"]["plugins"] . "pdeditor/", new SystemChecker(), $temp))();
+            break;
+        case 'plugin_main':
+            switch ($action) {
+                case 'delete':
+                    $o .= (new Controller())->deleteAttribute();
+                    break;
+                case 'save':
+                    $o .= (new Controller())->save();
+                    break;
+                default:
+                    $o .= (new Controller())->editor();
+            }
+            break;
+        default:
+            $o .= plugin_admin_common();
+    }
+}

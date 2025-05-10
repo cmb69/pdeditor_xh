@@ -21,8 +21,6 @@
 
 namespace Pdeditor;
 
-use Plib\SystemChecker;
-use Plib\View;
 use XH\Pages;
 
 class Controller
@@ -38,7 +36,6 @@ class Controller
         global $pd_router;
         $this->model = new Model(new Pages(), $pd_router);
         $this->views = new Views($this->model);
-        $this->dispatch();
     }
 
     private function baseUrl(): string
@@ -49,50 +46,6 @@ class Controller
             . (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 's' : '')
             . '://' . $_SERVER['HTTP_HOST']
             . preg_replace('/index\.php$/', '', $sn);
-    }
-
-    private function dispatch(): void
-    {
-        global $adm;
-
-        if ($adm) {
-            XH_registerStandardPluginMenuItems(true);
-            if ($this->isAdministrationRequested()) {
-                $this->administration();
-            }
-        }
-    }
-
-    private function isAdministrationRequested(): bool
-    {
-        return XH_wantsPluginAdministration('pdeditor');
-    }
-
-    private function administration(): void
-    {
-        global $o, $admin, $action, $pth, $plugin_tx;
-
-        $o .= print_plugin_admin('on');
-        switch ($admin) {
-            case '':
-                $view = new View($pth["folder"]["plugins"] . "pdeditor/views/", $plugin_tx["pdeditor"]);
-                $o .= (new InfoController($pth["folder"]["plugins"] . "pdeditor/", new SystemChecker(), $view))();
-                break;
-            case 'plugin_main':
-                switch ($action) {
-                    case 'delete':
-                        $o .= $this->deleteAttribute();
-                        break;
-                    case 'save':
-                        $o .= $this->save();
-                        break;
-                    default:
-                        $o .= $this->editor();
-                }
-                break;
-            default:
-                $o .= plugin_admin_common();
-        }
     }
 
     public function save(): string
