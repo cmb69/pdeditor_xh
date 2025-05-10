@@ -20,6 +20,7 @@
  */
 
 use Pdeditor\Dic;
+use Plib\Request;
 
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
@@ -44,13 +45,13 @@ if (XH_wantsPluginAdministration('pdeditor')) {
         case 'plugin_main':
             switch ($action) {
                 case 'delete':
-                    $o .= Dic::mainAdminController()->deleteAttribute();
+                    $o .= Dic::mainAdminController()->deleteAttribute(Request::current());
                     break;
                 case 'save':
-                    $o .= Dic::mainAdminController()->save();
+                    $o .= Dic::mainAdminController()->save(Request::current());
                     break;
                 default:
-                    $o .= Dic::mainAdminController()->editor();
+                    $o .= Dic::mainAdminController()->editor(Request::current());
             }
             break;
         default:

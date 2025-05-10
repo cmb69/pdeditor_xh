@@ -21,6 +21,8 @@
 
 namespace Pdeditor;
 
+use Plib\Request;
+
 class MainAdminController
 {
     /** @var Model */
@@ -35,17 +37,7 @@ class MainAdminController
         $this->views = $views;
     }
 
-    private function baseUrl(): string
-    {
-        global $sn;
-
-        return 'http'
-            . (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 's' : '')
-            . '://' . $_SERVER['HTTP_HOST']
-            . preg_replace('/index\.php$/', '', $sn);
-    }
-
-    public function save(): string
+    public function save(Request $request): string
     {
         global $_XH_csrfProtection;
 
@@ -53,43 +45,41 @@ class MainAdminController
             if (isset($_XH_csrfProtection)) {
                 $_XH_csrfProtection->check();
             }
-            $attribute = $_GET['pdeditor_attr'];
-            $values = $_POST['value'];
+            $attribute = $request->get("pdeditor_attr");
+            $values = $request->postArray("value");
             $this->model->updatePageData($attribute, $values);
         } else {
             $attribute = "";
         }
-        $url = $this->baseUrl()
-            . '?&pdeditor&admin=plugin_main&action=plugin_text&pdeditor_attr='
-            . $attribute . '&normal';
+        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
+            ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->with("normal")
+            ->absolute();
         header('Location: ' . $url);
         exit;
     }
 
-    public function deleteAttribute(): string
+    public function deleteAttribute(Request $request): string
     {
         global $_XH_csrfProtection;
 
         if (isset($_XH_csrfProtection)) {
             $_XH_csrfProtection->check();
         }
-        $attribute = $_GET['pdeditor_attr'];
+        $attribute = $request->get("pdeditor_attr");
         $this->model->deletePageDataAttribute($attribute);
-        $url = $this->baseUrl()
-            . '?&pdeditor&admin=plugin_main&action=plugin_text&normal';
+        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
+            ->with("action", "plugin_text")->with("normal")->absolute();
         header('Location: ' . $url);
         exit;
     }
 
-    public function editor(): string
+    public function editor(Request $request): string
     {
         global $hjs, $pth;
 
         $filename = $pth['folder']['plugins'] . 'pdeditor/pdeditor.js';
         $hjs .= '<script type="text/javascript" src="' . $filename . '"></script>';
-        $attribute = isset($_GET['pdeditor_attr'])
-            ? $_GET['pdeditor_attr']
-            : 'url';
+        $attribute = $request->get("pdeditor_attr") ?? "url";
         $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
         $action = '?&pdeditor&admin=plugin_main&action=save&pdeditor_attr=';
         return $this->views->administration($attribute, $deleteUrl, $action);
