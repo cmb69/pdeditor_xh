@@ -16,6 +16,8 @@
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
+use XH\PageDataRouter;
 
 /**
  * A test case for the model class.
@@ -26,7 +28,7 @@ use org\bovigo\vfs\vfsStream;
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
-class ModelTest extends PHPUnit_Framework_TestCase
+class ModelTest extends TestCase
 {
     /**
      * The path of the plugins folder.
@@ -49,7 +51,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
      *
      * @global array The paths of system files and folder.
      */
-    public function setUp()
+    public function setUp(): void
     {
         global $pth;
 
@@ -66,9 +68,12 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->setUpContents();
 
         $this->subject = new Pdeditor_Model();
-        $uencMock = new PHPUnit_Extensions_MockFunction('uenc', $this->subject);
-        $uencMock->expects($this->any())->will($this->returnCallback('urlencode'));
-        new PHPUnit_Extensions_MockFunction('XH_saveContents', $this->subject);
+        uopz_set_return("uenc", fn ($url) => urlencode($url), true);
+    }
+
+    public function tearDown(): void
+    {
+        uopz_unset_return("uenc");
     }
 
     /**
@@ -105,10 +110,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $l = array('1', '2', '1');
         $cl = count($l);
 
-        $class = class_exists('XH_PageDataRouter')
-            ? 'XH_PageDataRouter'
-            : 'PL_Page_Data_Router';
-        $pd_router = $this->getMockBuilder($class)
+        $pd_router = $this->getMockBuilder(PageDataRouter::class)
             ->disableOriginalConstructor()
             ->getMock();
         $map = array(

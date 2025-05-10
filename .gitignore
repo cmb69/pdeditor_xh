@@ -2,3 +2,5 @@
 /vendor
 /tools
 /composer.lock
+/.phpunit.result.cache
+/coverage

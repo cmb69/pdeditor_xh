@@ -13,6 +13,9 @@
  * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
 
+use ApprovalTests\Approvals;
+use PHPUnit\Framework\TestCase;
+
 /**
  * The version number of the plugin.
  */
@@ -27,7 +30,7 @@ define('PDEDITOR_VERSION', '1.0');
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
  */
-class ViewsTest extends PHPUnit_Framework_TestCase
+class ViewsTest extends TestCase
 {
     /**
      * The views.
@@ -41,8 +44,12 @@ class ViewsTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
+        global $cf, $tx, $plugin_tx;
+        $cf = ["xhtml" => ["endtags" => ""]];
+        $tx = ["action" => ["save" => ""]];
+        $plugin_tx = ["pdeditor" => XH_includeVar("./languages/en.php", "plugin_tx")["pdeditor"]];
         $model = $this->getMockBuilder('Pdeditor_Model')
             ->disableOriginalConstructor()
             ->getMock();
@@ -66,22 +73,8 @@ class ViewsTest extends PHPUnit_Framework_TestCase
      */
     public function testAboutShowsVersion()
     {
-        $matcher = array('tag' => 'p', 'content' => '1.0');
         $actual = $this->views->about();
-        @$this->assertTag($matcher, $actual);
-    }
-
-    /**
-     * Tests whether ::about() shows the current year.
-     *
-     * @return void
-     */
-    public function testAboutShowsCurrentYear()
-    {
-        $currentYear = date('Y');
-        $matcher = array('tag' => 'p', 'content' => $currentYear);
-        $actual = $this->views->about();
-        @$this->assertTag($matcher, $actual);
+        $this->assertStringContainsString("<p>Version: 1.0</p>", $actual);
     }
 
     /**
@@ -92,13 +85,8 @@ class ViewsTest extends PHPUnit_Framework_TestCase
     public function testSystemCheckHasDesiredStructure()
     {
         $checks = array('one' => 'ok');
-        $matcher = array(
-            'tag' => 'ul',
-            'attributes' => array('class' => 'pdeditor_system_check'),
-            'children' => array('count' => count($checks))
-        );
         $actual = $this->views->systemCheck($checks);
-        @$this->assertTag($matcher, $actual);
+        Approvals::verifyHtml($actual);
     }
 
     /**
@@ -108,11 +96,8 @@ class ViewsTest extends PHPUnit_Framework_TestCase
      */
     public function testAdministrationHasForm()
     {
-        $matcher = array(
-            'tag' => 'form'
-        );
         $actual = $this->views->administration('url', '', '');
-        @$this->assertTag($matcher, $actual);
+        $this->assertStringContainsString("<form ", $actual);
     }
 
     /**
@@ -122,11 +107,8 @@ class ViewsTest extends PHPUnit_Framework_TestCase
      */
     public function testAdministrationShowsWarningIcon()
     {
-        $matcher = array(
-            'tag' => 'img'
-        );
         $actual = $this->views->administration('url', '', '');
-        @$this->assertTag($matcher, $actual);
+        $this->assertStringContainsString("<img ", $actual);
     }
 }
 

@@ -33,15 +33,9 @@
   </target>
 
   <target name="unit-tests" description="runs all unit tests">
-    <phpunit bootstrap="tests/bootstrap.php"
-         haltonerror="true" haltonfailure="true">
-      <formatter type="plain" usefile="false"/>
-      <batchtest>
-        <fileset dir="tests/unit">
-          <include name="*Test.php"/>
-        </fileset>
-      </batchtest>
-    </phpunit>
+    <exec executable="phpunit" passthru="true" checkreturn="true">
+      <arg file="tests/unit"/>
+    </exec>
   </target>
 
   <target name="attack-tests" description="runs all attack tests">
@@ -58,22 +52,9 @@
   </target>
 
   <target name="coverage" description="generates coverage report">
-    <mkdir dir="tests/coverage"/>
-    <coverage-setup database="tests/coverage/coverage.db">
-      <fileset dir="classes">
-        <include name="*.php"/>
-      </fileset>
-    </coverage-setup>
-    <phpunit bootstrap="tests/bootstrap.php" codecoverage="true">
-      <batchtest>
-        <fileset dir="tests/unit">
-          <include name="*Test.php"/>
-        </fileset>
-      </batchtest>
-    </phpunit>
-    <coverage-report outfile="tests/coverage/coverage.xml">
-      <report todir="tests/coverage" styledir="vendor/phing/phing/etc"/>
-    </coverage-report>
+    <exec executable="phpunit" passthru="true" checkreturn="true">
+      <arg line="--coverage-html coverage"/>
+    </exec>
   </target>
 
   <target name="doc" description="generates developer documentation">

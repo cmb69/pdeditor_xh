@@ -15,7 +15,6 @@
 
 require_once './vendor/autoload.php';
 require_once '../../cmsimple/functions.php';
-require_once '../../cmsimple/adminfuncs.php';
 if (file_exists('../../cmsimple/classes/PageDataRouter.php')) {
     include_once '../../cmsimple/classes/PageDataRouter.php';
 } else {
@@ -32,5 +31,10 @@ spl_autoload_register(
         }
     }
 );
+
+function XH_saveContents(): bool
+{
+    return true;
+}
 
 ?>
