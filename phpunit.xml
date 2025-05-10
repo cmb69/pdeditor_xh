@@ -8,7 +8,7 @@
   </coverage>
   <testsuites>
     <testsuite name="coverage">
-      <directory>tests/unit</directory>
+      <directory>tests</directory>
     </testsuite>
   </testsuites>
   <logging/>
