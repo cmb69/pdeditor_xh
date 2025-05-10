@@ -23,6 +23,7 @@ namespace Pdeditor;
 
 use Plib\CsrfProtector;
 use Plib\Request;
+use Plib\Response;
 
 class MainAdminController
 {
@@ -42,11 +43,11 @@ class MainAdminController
         $this->views = $views;
     }
 
-    public function save(Request $request): string
+    public function save(Request $request): Response
     {
         if (isset($_POST['value'])) {
             if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-                return "not authorized"; // TODO i18n
+                return Response::create("not authorized"); // TODO i18n
             }
             $attribute = $request->get("pdeditor_attr");
             $values = $request->postArray("value");
@@ -55,34 +56,32 @@ class MainAdminController
             $attribute = "";
         }
         $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->with("normal")
-            ->absolute();
-        header('Location: ' . $url);
-        exit;
+            ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->with("normal");
+        return Response::redirect($url->absolute());
     }
 
-    public function deleteAttribute(Request $request): string
+    public function deleteAttribute(Request $request): Response
     {
         if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-            return "not authorized"; // TODO i18n
+            return Response::create("not authorized"); // TODO i18n
         }
         $attribute = $request->get("pdeditor_attr");
         $this->model->deletePageDataAttribute($attribute);
         $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "plugin_text")->with("normal")->absolute();
-        header('Location: ' . $url);
-        exit;
+            ->with("action", "plugin_text")->with("normal");
+            return Response::redirect($url->absolute());
     }
 
-    public function editor(Request $request): string
+    public function editor(Request $request): Response
     {
-        global $hjs, $pth;
+        global $pth;
 
         $filename = $pth['folder']['plugins'] . 'pdeditor/pdeditor.js';
-        $hjs .= '<script type="text/javascript" src="' . $filename . '"></script>';
+        $hjs = '<script type="text/javascript" src="' . $filename . '"></script>';
         $attribute = $request->get("pdeditor_attr") ?? "url";
         $deleteUrl = '?&pdeditor&admin=plugin_main&action=delete&pdeditor_attr=';
         $action = '?&pdeditor&admin=plugin_main&action=save&pdeditor_attr=';
-        return $this->views->administration($attribute, $deleteUrl, $action);
+        return Response::create($this->views->administration($attribute, $deleteUrl, $action))
+            ->withHjs($hjs);
     }
 }

@@ -45,13 +45,13 @@ if (XH_wantsPluginAdministration('pdeditor')) {
         case 'plugin_main':
             switch ($action) {
                 case 'delete':
-                    $o .= Dic::mainAdminController()->deleteAttribute(Request::current());
+                    $o .= Dic::mainAdminController()->deleteAttribute(Request::current())();
                     break;
                 case 'save':
-                    $o .= Dic::mainAdminController()->save(Request::current());
+                    $o .= Dic::mainAdminController()->save(Request::current())();
                     break;
                 default:
-                    $o .= Dic::mainAdminController()->editor(Request::current());
+                    $o .= Dic::mainAdminController()->editor(Request::current())();
             }
             break;
         default:
