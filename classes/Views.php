@@ -30,16 +30,6 @@ class Views
         return XH_hsc($string);
     }
 
-    private function xhtml(string $string): string
-    {
-        global $cf;
-
-        if (!$cf['xhtml']['endtags']) {
-            $string = str_replace(' />', '>', $string);
-        }
-        return $string;
-    }
-
     private function systemCheckItem(string $check, string $state): string
     {
         global $pth;
@@ -66,7 +56,7 @@ EOT;
     $items
 </ul>
 EOT;
-        return $this->xhtml($o);
+        return $o;
     }
 
     private function attributeListItem(string $url, string $attribute): string
@@ -91,7 +81,7 @@ EOT;
     $items
 </ul>
 EOT;
-        return $this->xhtml($o);
+        return $o;
     }
 
     private function warningIcon(): string
@@ -177,6 +167,6 @@ $attributes
     <input type="submit" class="submit" value="$saveLabel" />
 </form>
 EOT;
-        return $this->xhtml($o);
+        return $o;
     }
 }
