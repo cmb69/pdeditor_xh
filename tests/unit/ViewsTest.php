@@ -33,7 +33,7 @@ class ViewsTest extends TestCase
 
     public function testSystemCheckHasDesiredStructure(): void
     {
-        $checks = array('one' => 'ok');
+        $checks = array('one' => 'success');
         $actual = $this->views->systemCheck($checks);
         Approvals::verifyHtml($actual);
     }
@@ -42,14 +42,5 @@ class ViewsTest extends TestCase
     {
         $actual = $this->views->administration('url', '', '');
         $this->assertStringContainsString("<form ", $actual);
-    }
-
-    /**
-     * Checks for bug, where img tag missed < (reported by learnandcode)
-     */
-    public function testAdministrationShowsWarningIcon(): void
-    {
-        $actual = $this->views->administration('url', '', '');
-        $this->assertStringContainsString("<img ", $actual);
     }
 }

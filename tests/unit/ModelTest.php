@@ -2,9 +2,6 @@
 
 namespace Pdeditor;
 
-use org\bovigo\vfs\vfsStreamWrapper;
-use org\bovigo\vfs\vfsStreamDirectory;
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use XH\PageDataRouter;
@@ -12,9 +9,6 @@ use XH\Pages;
 
 class ModelTest extends TestCase
 {
-    /** @var string  */
-    private $pluginsFolder;
-
     /** @var Pages&Stub */
     private $pages;
 
@@ -23,16 +17,7 @@ class ModelTest extends TestCase
 
     public function setUp(): void
     {
-        global $pth, $pd_router;
-
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
-
-        $this->pluginsFolder = vfsStream::url('test/plugins/');
-        mkdir($this->pluginsFolder, 0777, true);
-        $pth = array(
-            'folder' => array('plugins' => $this->pluginsFolder)
-        );
+        global $pd_router;
 
         $this->setUpConfig();
         $this->setUpContents();

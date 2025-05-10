@@ -96,20 +96,20 @@ class Controller
         $ptx = $plugin_tx['pdeditor'];
         $checks = array();
         $checks[sprintf($ptx['syscheck_phpversion'], $phpVersion)]
-            = version_compare(PHP_VERSION, $phpVersion) >= 0 ? 'ok' : 'fail';
+            = version_compare(PHP_VERSION, $phpVersion) >= 0 ? 'success' : 'fail';
         foreach (array('pcre', 'spl') as $extension) {
             $checks[sprintf($ptx['syscheck_extension'], $extension)]
-                = extension_loaded($extension) ? 'ok' : 'fail';
+                = extension_loaded($extension) ? 'success' : 'fail';
         }
         $checks[$ptx['syscheck_encoding']]
-            = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'ok' : 'warn';
+            = strtoupper($tx['meta']['codepage']) == 'UTF-8' ? 'success' : 'warning';
         $folders = array();
         foreach (array('css/', 'languages/') as $folder) {
             $folders[] = $pth['folder']['plugins'] . 'pdeditor/' . $folder;
         }
         foreach ($folders as $folder) {
             $checks[sprintf($ptx['syscheck_writable'], $folder)]
-                = is_writable($folder) ? 'ok' : 'warn';
+                = is_writable($folder) ? 'success' : 'warning';
         }
         return $checks;
     }

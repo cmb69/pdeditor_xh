@@ -32,12 +32,7 @@ class Views
 
     private function systemCheckItem(string $check, string $state): string
     {
-        global $pth;
-
-        $imageFolder = $pth['folder']['plugins'] . 'pdeditor/images/';
-        return <<<EOT
-<li><img src="$imageFolder$state.png" alt="$state" /> $check</li>
-EOT;
+        return XH_message($state, $check);
     }
 
     public function systemCheck(array $checks): string
@@ -86,13 +81,7 @@ EOT;
 
     private function warningIcon(): string
     {
-        global $pth, $plugin_tx;
-
-        $ptx = $plugin_tx['pdeditor'];
-        return <<<EOT
-<img src="{$pth['folder']['plugins']}pdeditor/images/warn.png"
-    alt="$ptx[message_headings]" title="$ptx[message_headings]" />
-EOT;
+        return "\xE2\x9A\xA0 ";
     }
 
     private function pageListItem(string $attribute, int $i): string
