@@ -15,42 +15,16 @@
 
 namespace Pdeditor;
 
-/**
- * The model class.
- *
- * @category CMSimple_XH
- * @package  Pdeditor
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
- */
 class Model
 {
-    /**
-     * Returns the path of the plugin icon.
-     *
-     * @return string
-     *
-     * @global array The paths of system files and folders.
-     */
-    public function pluginIconPath()
+    public function pluginIconPath(): string
     {
         global $pth;
 
         return $pth['folder']['plugins'] . 'pdeditor/pdeditor.png';
     }
 
-    /**
-     * Returns whether the URL stored in the page data is up-to-date.
-     *
-     * @param int $index The page index.
-     *
-     * @return bool
-     *
-     * @global array  The headings of the pages.
-     * @global object The page data router.
-     */
-    public function isPagedataUrlUpToDate($index)
+    public function isPagedataUrlUpToDate(int $index): bool
     {
         global $h, $pd_router;
 
@@ -58,15 +32,7 @@ class Model
         return $pageData['url'] == uenc($h[$index]);
     }
 
-    /**
-     * Returns an array of indexes of the toplevel pages.
-     *
-     * @return array
-     *
-     * @global int   The number of pages.
-     * @global array The page levels.
-     */
-    public function toplevelPages()
+    public function toplevelPages(): array
     {
         global $cl, $l;
 
@@ -79,18 +45,7 @@ class Model
         return $toplevels;
     }
 
-    /**
-     * Returns an array of indexes of child pages of a page.
-     *
-     * @param int $i A page index.
-     *
-     * @return array
-     *
-     * @global int   The number of pages.
-     * @global array The page levels.
-     * @global arras The configuration of the core.
-     */
-    public function childPages($i)
+    public function childPages(int $i): array
     {
         global $cl, $l, $cf;
 
@@ -105,14 +60,7 @@ class Model
         return $children;
     }
 
-    /**
-     * Returns the registered page data attributes.
-     *
-     * @return array
-     *
-     * @global object The page data router.
-     */
-    public function pageDataAttributes()
+    public function pageDataAttributes(): array
     {
         global $pd_router;
 
@@ -125,17 +73,7 @@ class Model
         return $attributes;
     }
 
-    /**
-     * Returns a page data attribute.
-     *
-     * @param int    $index     A page index.
-     * @param string $attribute An attribute name.
-     *
-     * @return string
-     *
-     * @global object The page data router.
-     */
-    public function pageDataAttribute($index, $attribute)
+    public function pageDataAttribute(int $index, string $attribute): string
     {
         global $pd_router;
 
@@ -143,15 +81,7 @@ class Model
         return $pageData[$attribute];
     }
 
-    /**
-     * Updates the page data with new values.
-     *
-     * @param string $attribute An attribute name.
-     * @param array  $values    An array of new values.
-     *
-     * @return void
-     */
-    public function updatePageData($attribute, $values)
+    public function updatePageData(string $attribute, array $values): void
     {
         global $pd_router;
 
@@ -166,16 +96,7 @@ class Model
         $pd_router->model->refresh($pageData);
     }
 
-    /**
-     * Deletes a page data attribute.
-     *
-     * @param string $attribute An attribute name.
-     *
-     * @return void
-     *
-     * @global object The page data router.
-     */
-    public function deletePageDataAttribute($attribute)
+    public function deletePageDataAttribute(string $attribute): void
     {
         global $pd_router;
 

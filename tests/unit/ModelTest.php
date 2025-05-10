@@ -1,18 +1,5 @@
 <?php
 
-/**
- * A test case for the model class.
- *
- * PHP version 5
- *
- * @category  CMSimple_XH
- * @package   Pdeditor
- * @author    Christoph M. Becker <cmbecker69@gmx.de>
- * @copyright 2013-2015 Christoph M. Becker <http://3-magi.net/>
- * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link      http://3-magi.net/?CMSimple_XH/Pdeditor_XH
- */
-
 namespace Pdeditor;
 
 use org\bovigo\vfs\vfsStreamWrapper;
@@ -21,38 +8,14 @@ use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use XH\PageDataRouter;
 
-/**
- * A test case for the model class.
- *
- * @category CMSimple_XH
- * @package  Pdeditor
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
- */
 class ModelTest extends TestCase
 {
-    /**
-     * The path of the plugins folder.
-     *
-     * @var string
-     */
+    /** @var string  */
     protected $pluginsFolder;
 
-    /**
-     * The model under test.
-     *
-     * @var Model
-     */
+    /** @var Model */
     protected $subject;
 
-    /**
-     * Sets up the test fixture.
-     *
-     * @return void
-     *
-     * @global array The paths of system files and folder.
-     */
     public function setUp(): void
     {
         global $pth;
@@ -78,14 +41,7 @@ class ModelTest extends TestCase
         uopz_unset_return("uenc");
     }
 
-    /**
-     * Sets up the configuration of the test fixture.
-     *
-     * @return void
-     *
-     * @global array The configuration of the core.
-     */
-    protected function setUpConfig()
+    protected function setUpConfig(): void
     {
         global $cf;
 
@@ -94,17 +50,7 @@ class ModelTest extends TestCase
         );
     }
 
-    /**
-     * Sets up the contents of the text fixture.
-     *
-     * @return void
-     *
-     * @global The page headings.
-     * @global The levels of the pages.
-     * @global The number of pages.
-     * @global The page data router.
-     */
-    protected function setUpContents()
+    protected function setUpContents(): void
     {
         global $h, $l, $cl, $pd_router;
 
@@ -123,61 +69,34 @@ class ModelTest extends TestCase
             ->will($this->returnValueMap($map));
     }
 
-    /**
-     * Tests ::pluginIconPath().
-     *
-     * @return void
-     */
-    public function testPluginIconPath()
+    public function testPluginIconPath(): void
     {
         $expected = $this->pluginsFolder . 'pdeditor/pdeditor.png';
         $actual = $this->subject->pluginIconPath();
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * Tests ::isPagedataUrlUpToDate().
-     *
-     * @return void
-     */
-    public function testIsPagedataUrlUpToDate()
+    public function testIsPagedataUrlUpToDate(): void
     {
         $actual = $this->subject->isPagedataUrlUpToDate(0);
         $this->assertTrue($actual);
     }
 
-    /**
-     * Tests ::topLevelPages().
-     *
-     * @return void
-     */
-    public function testTopLevelPages()
+    public function testTopLevelPages(): void
     {
         $expected = array(0, 2);
         $actual = $this->subject->toplevelPages();
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * Tests ::childPages().
-     *
-     * @return void
-     */
-    public function testChildPages()
+    public function testChildPages(): void
     {
         $expected = array(1);
         $actual = $this->subject->childPages(0);
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * Tests ::pageDataAttributes().
-     *
-     * @return void
-     *
-     * @global object The page data router.
-     */
-    public function testPageDataAttributes()
+    public function testPageDataAttributes(): void
     {
         global $pd_router;
 
@@ -193,26 +112,14 @@ class ModelTest extends TestCase
         }
     }
 
-    /**
-     * Tests ::pageDataAttribute().
-     *
-     * @return void
-     */
-    public function testPageDataAttribute()
+    public function testPageDataAttribute(): void
     {
         $expected = 'Welcome';
         $actual = $this->subject->pageDataAttribute(0, 'url');
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * Tests ::deletePageDataAttribute().
-     *
-     * @return void
-     *
-     * @global object The page data router.
-     */
-    public function testDeletePageDataAttribute()
+    public function testDeletePageDataAttribute(): void
     {
         global $pd_router;
 

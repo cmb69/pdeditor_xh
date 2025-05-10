@@ -15,34 +15,14 @@
 
 namespace Pdeditor;
 
-/**
- * The controller class.
- *
- * @category CMSimple_XH
- * @package  Pdeditor
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
- */
 class Controller
 {
-    /**
-     * The model.
-     *
-     * @var Model
-     */
+    /** @var Model */
     protected $model;
 
-    /**
-     * The views.
-     *
-     * @var Views
-     */
+    /** @var Views */
     protected $views;
 
-    /**
-     * Initializes a new instance.
-     */
     public function __construct()
     {
         $this->model = new Model();
@@ -50,14 +30,7 @@ class Controller
         $this->dispatch();
     }
 
-    /**
-     * Returns the fully qualified URL of the CMSimple_XH installation folder.
-     *
-     * @return string
-     *
-     * @global string The script name.
-     */
-    protected function baseUrl()
+    protected function baseUrl(): string
     {
         global $sn;
 
@@ -67,14 +40,7 @@ class Controller
             . preg_replace('/index\.php$/', '', $sn);
     }
 
-    /**
-     * Dispatches on current request.
-     *
-     * @return void
-     *
-     * @global bool Whether we're in admin mode.
-     */
-    protected function dispatch()
+    protected function dispatch(): void
     {
         global $adm;
 
@@ -86,30 +52,14 @@ class Controller
         }
     }
 
-    /**
-     * Returns whether the plugin administration is requested.
-     *
-     * @return bool
-     *
-     * @global string Whether the administration of the plugin is requested.
-     */
-    protected function isAdministrationRequested()
+    protected function isAdministrationRequested(): bool
     {
         global $pdeditor;
 
         return XH_wantsPluginAdministration('pdeditor');
     }
 
-    /**
-     * Handles the plugin administration.
-     *
-     * @return void
-     *
-     * @global string The document fragment to use for the contents area.
-     * @global string The value of the admin GP parameter.
-     * @global string The value of the action GP parameter.
-     */
-    protected function administration()
+    protected function administration(): void
     {
         global $o, $admin, $action;
 
@@ -135,16 +85,7 @@ class Controller
         }
     }
 
-    /**
-     * Returns the system checks.
-     *
-     * @return array
-     *
-     * @global array The paths of system files and folders.
-     * @global array The localization of the core.
-     * @global array The localization of the plugins.
-     */
-    protected function systemChecks()
+    protected function systemChecks(): array
     {
         global $pth, $tx, $plugin_tx;
 
@@ -170,14 +111,7 @@ class Controller
         return $checks;
     }
 
-    /**
-     * Returns the plugin info view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the core.
-     */
-    public function info()
+    public function info(): string
     {
         global $plugin_tx;
 
@@ -188,14 +122,7 @@ class Controller
         return $o;
     }
 
-    /**
-     * Saves the submitted page data and returns the main admin view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global object The CSRF protector.
-     */
-    public function save()
+    public function save(): string
     {
         global $_XH_csrfProtection;
 
@@ -216,14 +143,7 @@ class Controller
         exit;
     }
 
-    /**
-     * Deletes a page data attribute and returns the main admin view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global object The CSRF protector.
-     */
-    public function deleteAttribute()
+    public function deleteAttribute(): string
     {
         global $_XH_csrfProtection;
 
@@ -238,15 +158,7 @@ class Controller
         exit;
     }
 
-    /**
-     * Returns the main administration view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global string The document fragment to insert into the head element.
-     * @global array  The paths of system files and folders.
-     */
-    public function editor()
+    public function editor(): string
     {
         global $hjs, $pth;
 

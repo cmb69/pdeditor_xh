@@ -15,20 +15,11 @@
 
 use Pdeditor\Controller;
 
-/*
- * Prevent direct access.
- */
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
     exit;
 }
 
-/**
- * The version number of the plugin.
- */
 define('PDEDITOR_VERSION', '1.0');
 
-/**
- * Create a controller instance.
- */
 new Controller();

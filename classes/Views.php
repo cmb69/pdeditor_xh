@@ -15,44 +15,17 @@
 
 namespace Pdeditor;
 
-/**
- * The views class.
- *
- * @category CMSimple_XH
- * @package  Pdeditor
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Pdeditor_XH
- */
 class Views
 {
-    /**
-     * The model.
-     *
-     * @var Model
-     */
+    /** @var Model */
     protected $model;
 
-    /**
-     * Initializes a new instance.
-     *
-     * @param Model $model The model.
-     */
     public function __construct(Model $model)
     {
         $this->model = $model;
     }
 
-    /**
-     * Returns a string with special (X)HTML characters escaped as entities.
-     *
-     * Uses a simplified fallback for CMSimple_XH < 1.6.
-     *
-     * @param string $string A string.
-     *
-     * @return string (X)HTML.
-     */
-    protected function hsc($string)
+    protected function hsc(string $string): string
     {
         if (function_exists('XH_hsc')) {
             return XH_hsc($string);
@@ -61,16 +34,7 @@ class Views
         }
     }
 
-    /**
-     * Returns a string with ETAGCs adjusted to the configured markup language.
-     *
-     * @param string $string A string.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The configuration of the core.
-     */
-    protected function xhtml($string)
+    protected function xhtml(string $string): string
     {
         global $cf;
 
@@ -80,12 +44,7 @@ class Views
         return $string;
     }
 
-    /**
-     * Returns summarized GPLv3 license information.
-     *
-     * @return string XHTML.
-     */
-    protected function license()
+    protected function license(): string
     {
         return <<<EOT
 <p class="pdeditor_license">This program is free software: you can redistribute it
@@ -102,17 +61,7 @@ href="http://www.gnu.org/licenses/"> http://www.gnu.org/licenses/</a>.</p>
 EOT;
     }
 
-    /**
-     * Returns a single system check list item.
-     *
-     * @param string $check A label.
-     * @param string $state A state.
-     *
-     * @return string XHTML.
-     *
-     * @global array The paths of system files and folders.
-     */
-    protected function systemCheckItem($check, $state)
+    protected function systemCheckItem(string $check, string $state): string
     {
         global $pth;
 
@@ -122,16 +71,7 @@ EOT;
 EOT;
     }
 
-    /**
-     * Returns the system check view.
-     *
-     * @param array $checks An associative array of system checks (label => state).
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the plugins.
-     */
-    public function systemCheck($checks)
+    public function systemCheck(array $checks): string
     {
         global $plugin_tx;
 
@@ -150,12 +90,7 @@ EOT;
         return $this->xhtml($o);
     }
 
-    /**
-     * Returns the plugin about information view.
-     *
-     * @return string (X)HTML.
-     */
-    public function about()
+    public function about(): string
     {
         global $plugin_tx;
 
@@ -172,15 +107,7 @@ EOT;
         return $this->xhtml($o);
     }
 
-    /**
-     * Returns an attribute list item.
-     *
-     * @param string $url       A partial URL.
-     * @param string $attribute An attribute name.
-     *
-     * @return string XHTML.
-     */
-    protected function attributeListItem($url, $attribute)
+    protected function attributeListItem(string $url, string $attribute): string
     {
         $url = $this->hsc($url . $attribute);
         return <<<EOT
@@ -188,12 +115,7 @@ EOT;
 EOT;
     }
 
-    /**
-     * Returns a list of attributes.
-     *
-     * @return string (X)HTML.
-     */
-    protected function attributeList()
+    protected function attributeList(): string
     {
         $url = '?pdeditor&normal&admin=plugin_main&action=plugin_text'
             . '&pdeditor_attr=';
@@ -210,15 +132,7 @@ EOT;
         return $this->xhtml($o);
     }
 
-    /**
-     * Returns a warning icon.
-     *
-     * @return string XHTML.
-     *
-     * @global array The paths of system files and folders.
-     * @global array The localization of the plugins.
-     */
-    protected function warningIcon()
+    protected function warningIcon(): string
     {
         global $pth, $plugin_tx;
 
@@ -229,17 +143,7 @@ EOT;
 EOT;
     }
 
-    /**
-     * Returns a page list item.
-     *
-     * @param string $attribute An attribute name.
-     * @param int    $i         A page index.
-     *
-     * @return string XHTML.
-     *
-     * @global array The headings of the pages.
-     */
-    protected function pageListItem($attribute, $i)
+    protected function pageListItem(string $attribute, int $i): string
     {
         global $h;
 
@@ -258,15 +162,7 @@ $warning$h[$i]<input type="text" name="value[]" value="$value" />$subpages
 EOT;
     }
 
-    /**
-     * Returns the view of all $pages displaying the attribute $attr.
-     *
-     * @param array  $pages     An array of page indexes.
-     * @param string $attribute A page data attribute name.
-     *
-     * @return string XHTML.
-     */
-    protected function pageList($pages, $attribute)
+    protected function pageList(array $pages, string $attribute): string
     {
         if (empty($pages)) {
             return '';
@@ -282,20 +178,7 @@ EOT;
 EOT;
     }
 
-    /**
-     * Returns the main administration view.
-     *
-     * @param string $attribute An attribute name.
-     * @param string $deleteUrl A URL.
-     * @param string $action    A URL.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the core.
-     * @global array The localization of the plugins.
-     * @global object The CSRF protector.
-     */
-    public function administration($attribute, $deleteUrl, $action)
+    public function administration(string $attribute, string $deleteUrl, string $action): string
     {
         global $tx, $plugin_tx, $_XH_csrfProtection;
 
