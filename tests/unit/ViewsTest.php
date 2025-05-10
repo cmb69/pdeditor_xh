@@ -22,9 +22,6 @@ class ViewsTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $model->expects($this->any())
-            ->method('pluginIconPath')
-            ->will($this->returnValue('foo'));
-        $model->expects($this->any())
             ->method('pageDataAttributes')
             ->will($this->returnValue(array('url', 'description')));
         $model->expects($this->any())

@@ -87,13 +87,6 @@ class ModelTest extends TestCase
             ->will($this->returnValueMap($map));
     }
 
-    public function testPluginIconPath(): void
-    {
-        $expected = $this->pluginsFolder . 'pdeditor/pdeditor.png';
-        $actual = $this->subject->pluginIconPath();
-        $this->assertEquals($expected, $actual);
-    }
-
     public function testIsPagedataUrlUpToDate(): void
     {
         $actual = $this->subject->isPagedataUrlUpToDate(0);

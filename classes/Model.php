@@ -32,13 +32,6 @@ class Model
         $this->pageData = $pageData;
     }
 
-    public function pluginIconPath(): string
-    {
-        global $pth;
-
-        return $pth['folder']['plugins'] . 'pdeditor/pdeditor.png';
-    }
-
     public function isPagedataUrlUpToDate(int $index): bool
     {
         $pageData = $this->pageData->find_page($index);
