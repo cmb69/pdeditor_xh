@@ -13,9 +13,11 @@ $plugin_tx['pdeditor']['warning_delete']="Deleting an attribute may cause malfun
 $plugin_tx['pdeditor']['warning_save']="Modifying the pagedata may cause malfunctions of the system!";
 
 $plugin_tx['pdeditor']['syscheck_title']="System check";
-$plugin_tx['pdeditor']['syscheck_phpversion']="PHP version ≥ %s";
-$plugin_tx['pdeditor']['syscheck_xhversion']="CMSimple_XH version ≥ %s";
-$plugin_tx['pdeditor']['syscheck_extension']="Extension \"%s\" loaded";
-$plugin_tx['pdeditor']['syscheck_writable']="Folder \"%s\" writable";
+$plugin_tx['pdeditor']['syscheck_phpversion']="PHP version ≥ %s: %s";
+$plugin_tx['pdeditor']['syscheck_xhversion']="CMSimple_XH version ≥ %s: %s";
+$plugin_tx['pdeditor']['syscheck_extension']="Extension \"%s\" loaded: %s";
+$plugin_tx['pdeditor']['syscheck_writable']="Folder \"%s\" writable: %s";
+$plugin_tx['pdeditor']['syscheck_bad']="not okay";
+$plugin_tx['pdeditor']['syscheck_good']="okay";
 
 ?>

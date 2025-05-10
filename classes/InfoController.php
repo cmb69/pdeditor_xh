@@ -53,22 +53,42 @@ class InfoController
     {
         $phpVersion = '7.1.0';
         $checks = [];
-        $state = $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) ? 'success' : 'fail';
-        $checks[] = $this->view->message($state, "syscheck_phpversion", $phpVersion);
+        $state = $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion);
+        $checks[] = $this->view->message(
+            $state ? "success" : "fail",
+            "syscheck_phpversion",
+            $phpVersion,
+            $state ? $this->view->plain("syscheck_good") : $this->view->plain("syscheck_bad")
+        );
         foreach (array('pcre', 'spl') as $extension) {
-            $state = $this->systemChecker->checkExtension($extension) ? 'success' : 'fail';
-            $checks[] = $this->view->message($state, "syscheck_extension", $extension);
+            $state = $this->systemChecker->checkExtension($extension);
+            $checks[] = $this->view->message(
+                $state ? "success" : "fail",
+                "syscheck_extension",
+                $extension,
+                $state ? $this->view->plain("syscheck_good") : $this->view->plain("syscheck_bad")
+            );
         }
         $xhVersion = "1.7.0";
-        $state = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion") ? 'success' : 'warning';
-        $checks[] = $this->view->message($state, "syscheck_xhversion", $xhVersion);
+        $state = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion");
+        $checks[] = $this->view->message(
+            $state ? "success" : "fail",
+            "syscheck_xhversion",
+            $xhVersion,
+            $state ? $this->view->plain("syscheck_good") : $this->view->plain("syscheck_bad")
+        );
         $folders = array();
         foreach (array('css/', 'languages/') as $folder) {
             $folders[] = $this->pluginFolder . $folder;
         }
         foreach ($folders as $folder) {
-            $state = $this->systemChecker->checkWritability($folder) ? 'success' : 'warning';
-            $checks[] = $this->view->message($state, "syscheck_writable", $folder);
+            $state = $this->systemChecker->checkWritability($folder);
+            $checks[] = $this->view->message(
+                $state ? "success" : "warning",
+                "syscheck_writable",
+                $folder,
+                $state ? $this->view->plain("syscheck_good") : $this->view->plain("syscheck_bad")
+            );
         }
         return implode("", $checks);
     }

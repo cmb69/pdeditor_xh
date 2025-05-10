@@ -13,9 +13,11 @@ $plugin_tx['pdeditor']['warning_delete']="Das Entfernen eines Attributes kann Fe
 $plugin_tx['pdeditor']['warning_save']="Ändern der Pagedata kann Fehlfunktionen des Systems verursachen!";
 
 $plugin_tx['pdeditor']['syscheck_title']="Systemprüfung";
-$plugin_tx['pdeditor']['syscheck_phpversion']="PHP Version ≥ %s";
-$plugin_tx['pdeditor']['syscheck_xhversion']="CMSimple_XH Version ≥ %s";
-$plugin_tx['pdeditor']['syscheck_extension']="Erweiterung \"%s\" geladen";
-$plugin_tx['pdeditor']['syscheck_writable']="Ordner \"%s\" beschreibbar";
+$plugin_tx['pdeditor']['syscheck_phpversion']="PHP Version ≥ %s: %s";
+$plugin_tx['pdeditor']['syscheck_xhversion']="CMSimple_XH Version ≥ %s: %s";
+$plugin_tx['pdeditor']['syscheck_extension']="Erweiterung \"%s\" geladen: %s";
+$plugin_tx['pdeditor']['syscheck_writable']="Ordner \"%s\" beschreibbar: %s";
+$plugin_tx['pdeditor']['syscheck_bad']="nicht okay";
+$plugin_tx['pdeditor']['syscheck_good']="okay";
 
 ?>
