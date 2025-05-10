@@ -38,6 +38,11 @@ class Model
         $this->pageData = $pageData;
     }
 
+    public function heading(int $index): string
+    {
+        return $this->pages->heading($index);
+    }
+
     public function isPagedataUrlUpToDate(int $index): bool
     {
         $pageData = $this->pageData->find_page($index);

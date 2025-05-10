@@ -74,8 +74,7 @@ EOT;
 
     private function pageListItem(string $attribute, int $i): string
     {
-        global $h;
-
+        $heading = $this->model->heading($i);
         $pageDataAttribute = $this->model->pageDataAttribute($i, $attribute);
         if ($attribute == 'url' && !$this->model->isPagedataUrlUpToDate($i)) {
             $warning = $this->warningIcon();
@@ -86,7 +85,7 @@ EOT;
         $subpages = $this->pageList($this->model->childPages($i), $attribute);
         return <<<EOT
 <li>
-$warning$h[$i]<input type="text" name="value[]" value="$value" />$subpages
+$warning$heading<input type="text" name="value[]" value="$value" />$subpages
 </li>
 EOT;
     }
