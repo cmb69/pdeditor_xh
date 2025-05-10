@@ -60,15 +60,6 @@ class InfoController
             $phpVersion,
             $state ? $this->view->plain("syscheck_good") : $this->view->plain("syscheck_bad")
         );
-        foreach (array('pcre', 'spl') as $extension) {
-            $state = $this->systemChecker->checkExtension($extension);
-            $checks[] = $this->view->message(
-                $state ? "success" : "fail",
-                "syscheck_extension",
-                $extension,
-                $state ? $this->view->plain("syscheck_good") : $this->view->plain("syscheck_bad")
-            );
-        }
         $xhVersion = "1.7.0";
         $state = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion");
         $checks[] = $this->view->message(
