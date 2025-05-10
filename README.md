@@ -1,9 +1,7 @@
 # Pdeditor_XH
 
 Pdeditor_XH facilitates viewing and editing the page data in the back-end
-of CMSimple_XH.  It also provides some diagnostics regarding potential
-desynchronisation of content and pagedata (what is supposed to never happen in
-CMSimple_XH ≥ 1.6).  It is meant as an alternative to editing the pagedata
+of CMSimple_XH.  It is meant as an alternative to editing the pagedata
 sections in content.htm manually, so it should be *used by experienced users only*,
 who know exactly what they are doing.  It is *not a tool for unexperienced users*!
 These should manipulate the pagedata via the interfaces provided by the respective
@@ -63,21 +61,11 @@ The look of Pdeditor_XH can be customized under `Stylesheet`.
 Pdeditor_XH is used exclusively from the back-end.
 Open it via `Plugins` → `Pdeditor` → `Pagedata`.
 
-<img src="https://raw.githubusercontent.com/cmb69/pdeditor_xh/refs/heads/master/help/admin.png" alt="Screenshot of pagedata editor" style="width: 100%">
-
 Directly below the plugin menu you find the attribute selectbox and a button
 to delete the selected attribute with all its values from the pagedata.
-
-The default attribute is `url`, which will trigger a check, if the URLs
-stored in the pagedata correlate to the respective pages in the content.
-If not, a warning icon will be displayed.  Note, that this warning does not
-necessarily mean that there is an error in the pagedata.  It rather points out
-*a possible corruption* of the pagedata file, particularly if *all* pages below
-any page are marked, as shown in the screenshot above.  Actually, the screenshot
-was made on an intentionally corrupted pagedata file.  If you compare the page
-headings and URLs, you see that the pagedata were shifted one page down.  In this
-case you have to check and repair the pagedata file manually or restore the
-latest working backup.
+Note that deleting an attribute may cause malfunctions of the system.
+You may be better off using only the page data cleanup feature
+(`Settings` → `Page Data`) of CMSimple_XH.
 
 After selecting an attribute you can view and edit the values of this
 attribute of all pages.

@@ -23,12 +23,6 @@ class ModelTest extends TestCase
         $this->setUpContents();
 
         $this->subject = new Model($this->pages, $pd_router);
-        uopz_set_return("uenc", fn ($url) => urlencode($url), true);
-    }
-
-    public function tearDown(): void
-    {
-        uopz_unset_return("uenc");
     }
 
     private function setUpConfig(): void
@@ -70,12 +64,6 @@ class ModelTest extends TestCase
         $pd_router->expects($this->any())
             ->method('find_page')
             ->will($this->returnValueMap($map));
-    }
-
-    public function testIsPagedataUrlUpToDate(): void
-    {
-        $actual = $this->subject->isPagedataUrlUpToDate(0);
-        $this->assertTrue($actual);
     }
 
     public function testTopLevelPages(): void

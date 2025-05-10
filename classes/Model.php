@@ -43,12 +43,6 @@ class Model
         return $this->pages->heading($index);
     }
 
-    public function isPagedataUrlUpToDate(int $index): bool
-    {
-        $pageData = $this->pageData->find_page($index);
-        return $pageData['url'] == uenc($this->pages->heading($index));
-    }
-
     /** @return list<int> */
     public function toplevelPages(): array
     {
@@ -72,7 +66,7 @@ class Model
     public function pageDataAttribute(int $index, string $attribute): string
     {
         $pageData = $this->pageData->find_page($index);
-        return $pageData[$attribute];
+        return $pageData[$attribute] ?? "";
     }
 
     /** @param list<string> $values */

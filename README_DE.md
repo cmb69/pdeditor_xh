@@ -1,9 +1,7 @@
 # Pdeditor_XH
 
 Pdeditor_XH ermöglicht das Betrachten und Bearbeiten der Pagedata im
-Backend von CMSimple_XH. Es bietet darüber hinaus eine Diagnose
-bezüglich potentieller Desynchronisierung von Content und Pagedata (was unter
-CMSimple_XH ≥ 1.6 niemals vorkommen sollte). Es ist als eine Alternative zur
+Backend von CMSimple_XH. Es ist als eine Alternative zur
 manuellen Bearbeitung der Pagedata-Abschnitte in content.htm gedacht,
 so dass es nur *von erfahrenen Anwendern verwendet werden sollte*, die genau wissen, was sie tun.
 Es ist *kein Werkzeug für unerfahrene Anwender*! Diese sollten die Pagedata
@@ -68,24 +66,12 @@ Das Aussehen von Pdeditor_XH kann unter `Stylesheet` angepasst werden.
 Pdeditor_XH wird ausschließlich im Administrationsbereich verwendet.
 Gehen Sie zu `Plugins` → `Pdeditor` → `Pagedata`.
 
-<img src="https://raw.githubusercontent.com/cmb69/pdeditor_xh/refs/heads/master/help/admin.png" alt="Screenshot des Pagedata Editors" style="width: 100%">
-
 Direkt unter dem Pluginmenü befindet sich die Attribut-Auswahlliste und ein
 Schalter zum Entfernen des gewählten Attributs und all seiner Werte aus den
 Pagedata.
-
-Das voreingestellte Attribut ist `url`, das eine Prüfung auslöst, ob die
-URLs, die in den Pagedata gespeichert sind, mit denen der entsprechenden Seiten
-im Content übereinstimmen. Wenn nicht, wird ein Warnhinweis angezeigt. Beachten
-Sie, dass diese Warnung nicht unbedingt bedeutet, dass die Pagedata fehlerhaft
-sind, sondern Sie zeigt lediglich *eine mögliche Korruption* der Pagedata
-an, besonders, wenn *alle* Seiten ab einer bestimmten Seiten markiert
-sind, wie in obigem Screenshot gezeigt. Dieser Screenshot wurde tatsächlich mit
-einer absichtlich korrumpierten Pagedata-Datei aufgenommen. Wenn Sie die
-Seitenüberschriften mit den URLs vergleichen, dann sehen Sie, dass die Pagedata
-um eine Seite nach unten verschoben wurden. In diesem Fall müssen Sie die
-Pagedata manuell prüfen und reparieren, oder die letzte korrekte Sicherungskopie
-wieder herstellen.
+Es ist zu beachten, dass das Löschen von Attributen zu Fehlfunktionen des
+Systems führen kann. Daher ist es in der Regel besser, statt dessen eine
+Page-Data-Bereinung (`Einstellungen` → `Page-Data`) durchführen zu lassen.
 
 Nachdem Sie ein Attribut ausgewählt haben, können Sie die Werte dieses
 Attributs aller Seiten ansehen und bearbeiten.

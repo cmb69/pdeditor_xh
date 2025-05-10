@@ -30,7 +30,7 @@
 </head>
 <body>
 <h1 id="pdeditor_xh">Pdeditor_XH</h1>
-<p>Pdeditor_XH facilitates viewing and editing the page data in the back-end of CMSimple_XH. It also provides some diagnostics regarding potential desynchronisation of content and pagedata (what is supposed to never happen in CMSimple_XH ≥ 1.6). It is meant as an alternative to editing the pagedata sections in content.htm manually, so it should be <em>used by experienced users only</em>, who know exactly what they are doing. It is <em>not a tool for unexperienced users</em>! These should manipulate the pagedata via the interfaces provided by the respective plugins only (often a tab above the editor).</p>
+<p>Pdeditor_XH facilitates viewing and editing the page data in the back-end of CMSimple_XH. It is meant as an alternative to editing the pagedata sections in content.htm manually, so it should be <em>used by experienced users only</em>, who know exactly what they are doing. It is <em>not a tool for unexperienced users</em>! These should manipulate the pagedata via the interfaces provided by the respective plugins only (often a tab above the editor).</p>
 <ul>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#download">Download</a></li>
@@ -62,9 +62,7 @@ the options will be displayed when hovering over the help icon with your mouse.-
 <p>The look of Pdeditor_XH can be customized under <code>Stylesheet</code>.</p>
 <h2 id="usage">Usage</h2>
 <p>Pdeditor_XH is used exclusively from the back-end. Open it via <code>Plugins</code> → <code>Pdeditor</code> → <code>Pagedata</code>.</p>
-<p><img src="https://raw.githubusercontent.com/cmb69/pdeditor_xh/refs/heads/master/help/admin.png" alt="Screenshot of pagedata editor" style="width: 100%"></p>
-<p>Directly below the plugin menu you find the attribute selectbox and a button to delete the selected attribute with all its values from the pagedata.</p>
-<p>The default attribute is <code>url</code>, which will trigger a check, if the URLs stored in the pagedata correlate to the respective pages in the content. If not, a warning icon will be displayed. Note, that this warning does not necessarily mean that there is an error in the pagedata. It rather points out <em>a possible corruption</em> of the pagedata file, particularly if <em>all</em> pages below any page are marked, as shown in the screenshot above. Actually, the screenshot was made on an intentionally corrupted pagedata file. If you compare the page headings and URLs, you see that the pagedata were shifted one page down. In this case you have to check and repair the pagedata file manually or restore the latest working backup.</p>
+<p>Directly below the plugin menu you find the attribute selectbox and a button to delete the selected attribute with all its values from the pagedata. Note that deleting an attribute may cause malfunctions of the system. You may be better off using only the page data cleanup feature (<code>Settings</code> → <code>Page Data</code>) of CMSimple_XH.</p>
 <p>After selecting an attribute you can view and edit the values of this attribute of all pages.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>Report bugs and ask for support either on <a href="https://github.com/cmb69/pdeditor_xh/issues">Github</a> or in the <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>

@@ -122,15 +122,10 @@ class MainAdminController
     {
         $heading = $this->model->heading($i);
         $pageDataAttribute = $this->model->pageDataAttribute($i, $attribute);
-        if ($attribute == 'url' && !$this->model->isPagedataUrlUpToDate($i)) {
-            $warning = "\xE2\x9A\xA0 ";
-        } else {
-            $warning = '';
-        }
         $value = $this->view->esc($pageDataAttribute);
         $subpages = $this->pageList($this->model->childPages($i), $attribute);
         $subpages = $subpages ? "$subpages\n" : "";
-        return "<li>\n  $warning $heading<input type=\"text\" name=\"value[]\" value=\"$value\">\n"
+        return "<li>\n  $heading<input type=\"text\" name=\"value[]\" value=\"$value\">\n"
             . "$subpages</li>\n";
     }
 
