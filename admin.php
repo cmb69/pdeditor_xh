@@ -19,14 +19,7 @@
  * along with Pdeditor_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Pdeditor\InfoController;
-use Pdeditor\MainAdminController;
-use Pdeditor\Model;
-use Pdeditor\Views;
-use Plib\SystemChecker;
-use Plib\View;
-use XH\PageDataRouter;
-use XH\Pages;
+use Pdeditor\Dic;
 
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
@@ -39,9 +32,6 @@ define('PDEDITOR_VERSION', '1.0');
  * @var string $action
  * @var string $admin
  * @var string $o
- * @var PageDataRouter $pd_router
- * @var array<string,array<string,string>> $plugin_tx
- * @var array{folder:array<string,string>,file:array<string,string>} $pth
  */
 
 XH_registerStandardPluginMenuItems(true);
@@ -49,21 +39,18 @@ if (XH_wantsPluginAdministration('pdeditor')) {
     $o .= print_plugin_admin('on');
     switch ($admin) {
         case '':
-            $temp = new View($pth["folder"]["plugins"] . "pdeditor/views/", $plugin_tx["pdeditor"]);
-            $o .= (new InfoController($pth["folder"]["plugins"] . "pdeditor/", new SystemChecker(), $temp))();
+            $o .= Dic::infoController()();
             break;
         case 'plugin_main':
-            $j = new Model(new Pages(), $pd_router);
-            $temp = new MainAdminController($j, new Views($j));
             switch ($action) {
                 case 'delete':
-                    $o .= $temp->deleteAttribute();
+                    $o .= Dic::mainAdminController()->deleteAttribute();
                     break;
                 case 'save':
-                    $o .= $temp->save();
+                    $o .= Dic::mainAdminController()->save();
                     break;
                 default:
-                    $o .= $temp->editor();
+                    $o .= Dic::mainAdminController()->editor();
             }
             break;
         default:
