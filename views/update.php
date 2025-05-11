@@ -21,7 +21,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     <p class="xh_warning"><?=$this->text("warning_save", $attribute)?></p>
     <input type="hidden" name="pdeditor_token" value="<?=$this->esc($csrf_token)?>">
     <input type="hidden" name="pdeditor_mtime" value="<?=$this->esc($mtime)?>">
-<?=$this->raw($pageList)?>
+    <?=$this->raw($pageList)?>
     <p class="pdeditor_buttons">
       <button name="pdeditor_do"><?=$this->text("label_save")?></button>
       <button name="pdeditor_do" formaction="<?=$this->esc($cancel)?>"><?=$this->text("label_cancel")?></button>

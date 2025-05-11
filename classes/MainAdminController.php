@@ -101,27 +101,27 @@ class MainAdminController
     }
 
     /** @param list<int> $pages */
-    private function pageList(array $pages, string $attribute): string
+    private function pageList(array $pages, string $attribute, string $indent = "    "): string
     {
         if (empty($pages)) {
             return "";
         }
         $items = "";
         foreach ($pages as $i) {
-            $items .= $this->pageListItem($attribute, $i);
+            $items .= $this->pageListItem($attribute, $i, $indent . "  ");
         }
-        return "<ul>\n  $items\n</ul>\n";
+        return ($indent === "    " ? "" : $indent) . "<ul>\n$items$indent</ul>" . ($indent === "    " ? "\n" : "");
     }
 
-    private function pageListItem(string $attribute, int $i): string
+    private function pageListItem(string $attribute, int $i, string $indent): string
     {
         $heading = $this->model->heading($i);
         $pageDataAttribute = $this->model->pageDataAttribute($i, $attribute);
         $value = $this->view->esc($pageDataAttribute);
-        $subpages = $this->pageList($this->model->childPages($i), $attribute);
+        $subpages = $this->pageList($this->model->childPages($i), $attribute, $indent . "  ");
         $subpages = $subpages ? "$subpages\n" : "";
-        return "<li>\n  $heading<input type=\"text\" name=\"value[]\" value=\"$value\">\n"
-            . "$subpages</li>\n";
+        return "$indent<li>\n$indent  $heading<input type=\"text\" name=\"value[]\" value=\"$value\">\n"
+            . "$subpages$indent</li>\n";
     }
 
     private function doUpdate(Request $request): Response
