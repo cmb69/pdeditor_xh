@@ -51,38 +51,26 @@ class MainAdminController
     {
         switch ($request->get("action")) {
             default:
-                return $this->editor($request);
+                return $this->overview($request);
             case "delete":
                 return $request->post("pdeditor_do") === null
                     ? $this->deleteAttribute($request)
                     : $this->doDeleteAttribute($request);
-            case 'save':
-                return $this->save($request);
+            case "update":
+                return $this->update($request);
         }
     }
 
-    private function editor(Request $request): Response
+    private function overview(Request $request): Response
     {
         if ($request->post("pdeditor_do") !== null) {
             return Response::redirect($request->url()->absolute());
         }
         $attribute = $request->get("pdeditor_attr") ?? "url";
-        $action = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "save")->with("pdeditor_attr", $attribute)->with("edit")->relative();
-        return Response::create($this->administration($attribute, $action))
-            ->withTitle("Pdeditor – {$this->view->text("menu_main")}");
-    }
-
-    private function administration(string $attribute, string $action): string
-    {
-        return $this->view->render("admin", [
+        return Response::create($this->view->render("overview", [
             "attribute" => $attribute,
             "attributes" => $this->attributeList($attribute),
-            "action" => $action,
-            "saveWarning" => addcslashes($this->view->plain("warning_save"), "\n\r\'\"\\"),
-            "csrf_token" => $this->csrfProtector->token(),
-            "pageList" => $this->pageList($this->model->toplevelPages(), $attribute),
-        ]);
+        ]))->withTitle("Pdeditor – {$this->view->text("menu_main")}");
     }
 
     /** @return list<object{name:string,selected:string}> */
@@ -144,7 +132,22 @@ class MainAdminController
         return Response::redirect($url->absolute());
     }
 
-    private function save(Request $request): Response
+    private function update(Request $request): Response
+    {
+        if ($request->post("pdeditor_do") !== null) {
+            return $this->doUpdate($request);
+        }
+        $attribute = $request->get("pdeditor_attr") ?? "url";
+        return Response::create($this->view->render("update", [
+            "action" => $request->url()->with("edit")->relative(),
+            "attribute" => $request->get("pdeditor_attr") ?? "",
+            "csrf_token" => $this->csrfProtector->token(),
+            "pageList" => $this->pageList($this->model->toplevelPages(), $attribute),
+            "cancel" => $request->url()->with("action", "plugin_text")->relative(),
+        ]));
+    }
+
+    private function doUpdate(Request $request): Response
     {
         if ($request->postArray("value") !== null) {
             if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {

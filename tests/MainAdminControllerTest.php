@@ -47,7 +47,7 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
-    public function testShowsAdministrationByDefault(): void
+    public function testShowsOverview(): void
     {
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text",
@@ -94,11 +94,20 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
+    public function testShowsEditor(): void
+    {
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
+        ]);
+        $response = $this->sut()($request);
+        Approvals::verifyHtml($response->output());
+    }
+
     public function testSavingIsCsrfProtected(): void
     {
         $request = new FakeRequest([
-            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=save",
-            "post" => ["value" => []],
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update",
+            "post" => ["pdeditor_do" => "", "value" => []],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString(
@@ -112,8 +121,8 @@ class MainAdminControllerTest extends TestCase
         $this->csrfProtector->method("check")->willReturn(true);
         $this->model->expects($this->once())->method("updatePageData")->with("url", []);
         $request = new FakeRequest([
-            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=save&pdeditor_attr=url",
-            "post" => ["value" => []],
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
+            "post" => ["pdeditor_do" => "", "value" => []],
         ]);
         $response = $this->sut()($request);
         $this->assertSame(
