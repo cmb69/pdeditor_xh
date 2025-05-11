@@ -47,6 +47,16 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
+    public function testOverviewRedirectsOnPost(): void
+    {
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text",
+            "post" => ["pdeditor_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertSame("http://example.com/?pdeditor&admin=plugin_main&action=plugin_text", $response->location());
+    }
+
     public function testShowsOverview(): void
     {
         $request = new FakeRequest([
