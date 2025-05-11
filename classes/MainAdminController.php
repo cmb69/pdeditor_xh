@@ -53,9 +53,7 @@ class MainAdminController
             default:
                 return $this->overview($request);
             case "delete":
-                return $request->post("pdeditor_do") === null
-                    ? $this->deleteAttribute($request)
-                    : $this->doDeleteAttribute($request);
+                return $this->deleteAttribute($request);
             case "update":
                 return $this->update($request);
         }
@@ -144,6 +142,9 @@ class MainAdminController
 
     private function deleteAttribute(Request $request): Response
     {
+        if ($request->post("pdeditor_do") !== null) {
+            return $this->doDeleteAttribute($request);
+        }
         $attribute = $request->get("pdeditor_attr") ?? "";
         return Response::create($this->view->render("delete_confirmation", [
             "url" => $request->url()->with("edit")->relative(),

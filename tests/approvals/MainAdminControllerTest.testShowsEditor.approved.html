@@ -1,7 +1,7 @@
 
 <section class="pdeditor_editor">
   <h1>Edit 'url' attribute</h1>
-  <form id="pdeditor_attributes" action="/?pdeditor&amp;admin=plugin_main&amp;action=update&amp;pdeditor_attr=url&amp;edit" method="post">
+  <form class="pdeditor_attributes" action="/?pdeditor&amp;admin=plugin_main&amp;action=update&amp;pdeditor_attr=url&amp;edit" method="post">
     <p class="xh_warning">Modifying the 'url' attribute may cause malfunctions of the system!</p>
     <input type="hidden" name="pdeditor_token" value="123456789ABCDEF">
 <ul>
@@ -13,7 +13,9 @@
 </li>
 
 </ul>
-    <button name="pdeditor_do">Save</button>
-    <button name="pdeditor_do" formaction="/?pdeditor&amp;admin=plugin_main&amp;action=plugin_text&amp;pdeditor_attr=url">Cancel</button>
+    <p class="pdeditor_buttons">
+      <button name="pdeditor_do">Save</button>
+      <button name="pdeditor_do" formaction="/?pdeditor&amp;admin=plugin_main&amp;action=plugin_text&amp;pdeditor_attr=url">Cancel</button>
+    </p>
   </form>
 </section>
