@@ -88,4 +88,10 @@ class Model
         $this->pageData->removeInterest($attribute);
         return XH_saveContents();
     }
+
+    public function mtime(): int
+    {
+        global $pth;
+        return (int) filemtime($pth["file"]["content"]);
+    }
 }

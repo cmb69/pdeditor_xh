@@ -11,6 +11,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var string $csrf_token
  * @var string $pageList
  * @var string $cancel
+ * @var int $mtime
  */
 ?>
 
@@ -19,6 +20,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
   <form class="pdeditor_attributes" action="<?=$this->esc($action)?>" method="post">
     <p class="xh_warning"><?=$this->text("warning_save", $attribute)?></p>
     <input type="hidden" name="pdeditor_token" value="<?=$this->esc($csrf_token)?>">
+    <input type="hidden" name="pdeditor_mtime" value="<?=$this->esc($mtime)?>">
 <?=$this->raw($pageList)?>
     <p class="pdeditor_buttons">
       <button name="pdeditor_do"><?=$this->text("label_save")?></button>

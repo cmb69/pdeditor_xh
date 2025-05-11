@@ -96,6 +96,7 @@ class MainAdminController
             "csrf_token" => $this->csrfProtector->token(),
             "pageList" => $this->pageList($this->model->toplevelPages(), $attribute),
             "cancel" => $request->url()->with("action", "plugin_text")->relative(),
+            "mtime" => $this->model->mtime(),
         ]))->withTitle($this->view->text("title_edit", $attribute));
     }
 
@@ -130,6 +131,9 @@ class MainAdminController
         }
         if ($request->get("pdeditor_attr") === null || $request->postArray("value") === null) {
             return Response::create($this->view->message("fail", "error_bad_request"));
+        }
+        if ($request->post("pdeditor_mtime") < $this->model->mtime()) {
+            return Response::create($this->view->message("fail", "error_conflict"));
         }
         $attribute = $request->get("pdeditor_attr");
         $values = $request->postArray("value");

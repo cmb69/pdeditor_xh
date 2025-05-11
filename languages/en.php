@@ -14,6 +14,7 @@ $plugin_tx['pdeditor']['label_save']="Save";
 
 $plugin_tx['pdeditor']['error_unauthorized']="You are not authorized to perform this action!";
 $plugin_tx['pdeditor']['error_bad_request']="This request cannot be processed!";
+$plugin_tx['pdeditor']['error_conflict']="The content file has been modified in the meantime!";
 $plugin_tx['pdeditor']['error_update']="The '%s' attribute could not be updated!";
 $plugin_tx['pdeditor']['error_delete']="The '%s' attribute could not be deleted!";
 

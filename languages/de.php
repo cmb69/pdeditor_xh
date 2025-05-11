@@ -14,6 +14,7 @@ $plugin_tx['pdeditor']['label_save']="Speichern";
 
 $plugin_tx['pdeditor']['error_unauthorized']="Sie sind nicht befugt diese Aktion durchzuführen!";
 $plugin_tx['pdeditor']['error_bad_request']="Diese Anfrage kann nicht verarbeitet werden!";
+$plugin_tx['pdeditor']['error_conflict']="Die Inhaltsdatei wurde in der Zwischenzeit geändert!";
 $plugin_tx['pdeditor']['error_update']="Das '%s' Attribut konnte nicht aktualisiert werden!";
 $plugin_tx['pdeditor']['error_delete']="Das '%s' Attribut konnte nicht gelöscht werden!";
 

@@ -33,6 +33,9 @@ class MainAdminControllerTest extends TestCase
         $this->model->expects($this->any())
             ->method("heading")
             ->willReturnMap([[0, 'Welcome'], [1, 'About'], [2, 'Contact']]);
+        $this->model->expects($this->any())
+            ->method("mtime")
+            ->willReturn(strtotime("2025-05-11T11:52:27+00:00"));
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("123456789ABCDEF");
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["pdeditor"]);
@@ -104,13 +107,35 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
+    public function testSavingReportsConflict(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
+            "post" => [
+                "pdeditor_do" => "",
+                "pdeditor_mtime" => (string) strtotime("2025-05-11T11:52:26+00:00"),
+                "value" => []
+            ],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString(
+            "The content file has been modified in the meantime!",
+            $response->output()
+        );
+    }
+
     public function testSavingReportsFailureToUpdate(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
         $this->model->expects($this->once())->method("updatePageData")->with("url", [])->willReturn(false);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
-            "post" => ["pdeditor_do" => "", "value" => []],
+            "post" => [
+                "pdeditor_do" => "",
+                "pdeditor_mtime" => (string) strtotime("2025-05-11T11:52:27+00:00"),
+                "value" => []
+            ],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString(
@@ -125,7 +150,11 @@ class MainAdminControllerTest extends TestCase
         $this->model->expects($this->once())->method("updatePageData")->with("url", [])->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
-            "post" => ["pdeditor_do" => "", "value" => []],
+            "post" => [
+                "pdeditor_do" => "",
+                "pdeditor_mtime" => (string) strtotime("2025-05-11T11:52:27+00:00"),
+                "value" => []
+            ],
         ]);
         $response = $this->sut()($request);
         $this->assertSame(
