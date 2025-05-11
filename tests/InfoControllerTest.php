@@ -30,7 +30,7 @@ class InfoControllerTest extends TestCase
     public function testRendersPluginInfo(): void
     {
         $response = $this->sut()();
-        $this->assertSame("Pdeditor 2.0", $response->title());
+        $this->assertSame("Pdeditor 2.1-dev", $response->title());
         Approvals::verifyHtml($response->output());
     }
 }
