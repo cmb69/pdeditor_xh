@@ -133,7 +133,9 @@ class MainAdminController
         }
         $attribute = $request->get("pdeditor_attr");
         $values = $request->postArray("value");
-        $this->model->updatePageData($attribute, $values);
+        if (!$this->model->updatePageData($attribute, $values)) {
+            return Response::create($this->view->message("fail", "error_update", $attribute));
+        }
         $url = $request->url()->with("action", "plugin_text")->with("pdeditor_attr", $attribute)
             ->without("edit")->with("normal");
         return Response::redirect($url->absolute());
@@ -162,7 +164,9 @@ class MainAdminController
             return Response::create($this->view->message("fail", "error_bad_request"));
         }
         $attribute = $request->get("pdeditor_attr");
-        $this->model->deletePageDataAttribute($attribute);
+        if (!$this->model->deletePageDataAttribute($attribute)) {
+            return Response::create($this->view->message("fail", "error_delete", $attribute));
+        }
         $url = $request->url()->with("action", "plugin_text")->without("edit")->with("normal");
         return Response::redirect($url->absolute());
     }

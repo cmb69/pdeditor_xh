@@ -94,10 +94,25 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
+    public function testSavingReportsFailureToUpdate(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $this->model->expects($this->once())->method("updatePageData")->with("url", [])->willReturn(false);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
+            "post" => ["pdeditor_do" => "", "value" => []],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString(
+            "The 'url' attribute could not be updated!",
+            $response->output()
+        );
+    }
+
     public function testSavingRedirectsAfterUpdatingPageData(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
-        $this->model->expects($this->once())->method("updatePageData")->with("url", []);
+        $this->model->expects($this->once())->method("updatePageData")->with("url", [])->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
             "post" => ["pdeditor_do" => "", "value" => []],
@@ -146,10 +161,25 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
+    public function testDeletingReportsFailureToDelete(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused")->willReturn(false);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
+            "post" => ["pdeditor_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString(
+            "The 'unused' attribute could not be deleted!",
+            $response->output()
+        );
+    }
+
     public function testDeletingRedirectsAfterDeletingPageData(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
-        $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused");
+        $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
             "post" => ["pdeditor_do" => ""],

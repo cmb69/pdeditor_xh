@@ -70,22 +70,22 @@ class Model
     }
 
     /** @param list<string> $values */
-    public function updatePageData(string $attribute, array $values): void
+    public function updatePageData(string $attribute, array $values): bool
     {
         $attributes = $this->pageDataAttributes();
         if (!in_array($attribute, $attributes)) {
-            return;
+            return false;
         }
         $pageData = $this->pageData->find_all();
         foreach ($values as $index => $value) {
             $pageData[$index][$attribute] = $value;
         }
-        $this->pageData->refresh($pageData);
+        return $this->pageData->refresh($pageData);
     }
 
-    public function deletePageDataAttribute(string $attribute): void
+    public function deletePageDataAttribute(string $attribute): bool
     {
         $this->pageData->removeInterest($attribute);
-        XH_saveContents();
+        return XH_saveContents();
     }
 }
