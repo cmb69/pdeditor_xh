@@ -3,13 +3,22 @@
 <form method="get">
   <input type="hidden" name="selected" value="pdeditor">
   <input type="hidden" name="admin" value="plugin_main">
-  <label>
-    <span>Attribute</span>
-    <select name="pdeditor_attr" id="pdeditor_attr">
-      <option selected>url</option>
-      <option >description</option>
-    </select>
-  </label>
-  <button name="action" value="update">Edit</button>
-  <button name="action" value="delete">Delete</button>
+  <ul>
+    <li>
+      <label>
+        <input type="radio" name="pdeditor_attr" value="url" checked>
+        <span>url</span>
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="radio" name="pdeditor_attr" value="description" >
+        <span>description</span>
+      </label>
+    </li>
+  </ul>
+  <p>
+    <button name="action" value="update">Edit</button>
+    <button name="action" value="delete">Delete</button>
+  </p>
 </form>

@@ -7,7 +7,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 /**
  * @var View $this
  * @var string $attribute
- * @var list<object{name:string,selected:string}> $attributes
+ * @var list<object{name:string,checked:string}> $attributes
  */
 ?>
 
@@ -15,14 +15,18 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 <form method="get">
   <input type="hidden" name="selected" value="pdeditor">
   <input type="hidden" name="admin" value="plugin_main">
-  <label>
-    <span><?=$this->text("label_attribute")?></span>
-    <select name="pdeditor_attr" id="pdeditor_attr">
+  <ul>
 <?foreach ($attributes as $attr):?>
-      <option <?=$this->esc($attr->selected)?>><?=$this->esc($attr->name)?></option>
+    <li>
+      <label>
+        <input type="radio" name="pdeditor_attr" value="<?=$this->esc($attr->name)?>" <?=$this->esc($attr->checked)?>>
+        <span><?=$this->esc($attr->name)?></span>
+      </label>
+    </li>
 <?endforeach?>
-    </select>
-  </label>
-  <button name="action" value="update"><?=$this->text("label_edit")?></button>
-  <button name="action" value="delete"><?=$this->text("label_delete")?></button>
+  </ul>
+  <p>
+    <button name="action" value="update"><?=$this->text("label_edit")?></button>
+    <button name="action" value="delete"><?=$this->text("label_delete")?></button>
+  </p>
 </form>

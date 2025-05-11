@@ -73,14 +73,14 @@ class MainAdminController
         ]))->withTitle("Pdeditor – {$this->view->text("menu_main")}");
     }
 
-    /** @return list<object{name:string,selected:string}> */
+    /** @return list<object{name:string,checked:string}> */
     private function attributeList(string $currentAttribute): array
     {
         $items = [];
         foreach ($this->model->pageDataAttributes() as $attribute) {
             $items[] = (object) [
                 "name" => $attribute,
-                "selected" => $attribute === $currentAttribute ? "selected" : "",
+                "checked" => $attribute === $currentAttribute ? "checked" : "",
             ];
         }
         return $items;
