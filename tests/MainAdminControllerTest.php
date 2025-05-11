@@ -3,17 +3,26 @@
 namespace Pdeditor;
 
 use ApprovalTests\Approvals;
+use Pdeditor\Infra\Contents;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Plib\CsrfProtector;
 use Plib\FakeRequest;
 use Plib\View;
+use XH\PageDataRouter;
+use XH\Pages;
 
 class MainAdminControllerTest extends TestCase
 {
-    /** @var Model&MockObject */
-    private $model;
+    /** @var Pages&Stub */
+    private $pages;
+
+    /** @var PageDataRouter&MockObject */
+    private $pageData;
+
+    /** @var Contents&MockObject */
+    private $contents;
 
     /** @var CsrfProtector&Stub */
     private $csrfProtector;
@@ -23,19 +32,37 @@ class MainAdminControllerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->model = $this->createMock(Model::class);
-        $this->model->expects($this->any())
-            ->method('pageDataAttributes')
-            ->will($this->returnValue(array('url', 'description')));
-        $this->model->expects($this->any())
-            ->method('toplevelPages')
-            ->will($this->returnValue(array(0, 2)));
-        $this->model->expects($this->any())
-            ->method("heading")
-            ->willReturnMap([[0, 'Welcome'], [1, 'About'], [2, 'Contact']]);
-        $this->model->expects($this->any())
-            ->method("mtime")
-            ->willReturn(strtotime("2025-05-11T11:52:27+00:00"));
+        $this->pages = $this->createStub(Pages::class);
+        $this->pages->method("heading")->willReturnMap([
+            [0, "Welcome"],
+            [1, "About"],
+            [2, "Contact"],
+        ]);
+        $this->pages->method("level")->willReturnMap([
+            [0, 1],
+            [1, 2],
+            [2, 1],
+        ]);
+        $this->pages->method("toplevels")->willReturn([0, 2]);
+        $this->pages->method("children")->willReturnMap([
+            [0, false, [1]],
+            [1, false, []],
+            [2, false, []],
+        ]);
+        $this->pageData = $this->getMockBuilder(PageDataRouter::class)->disableOriginalConstructor()->getMock();
+        $this->pageData->expects($this->any())->method("storedFields")->willReturn(["url", "description"]);
+        $this->pageData->expects($this->any())->method("find_all")->willReturn([
+            ["url" => "Welcome", "description" => ""],
+            ["url" => "About", "description" => ""],
+            ["url" => "Contact", "description" => ""],
+        ]);
+        $this->pageData->expects($this->any())->method("find_page")->willReturnMap([
+            [0, ["url" => "Welcome", "description" => ""]],
+            [1, ["url" => "About", "description" => ""]],
+            [2, ["url" => "Contact", "description" => ""]],
+        ]);
+        $this->contents = $this->createMock(Contents::class);
+        $this->contents->expects($this->any())->method("mtime")->willReturn(strtotime("2025-05-11T11:52:27+00:00"));
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("123456789ABCDEF");
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["pdeditor"]);
@@ -44,7 +71,7 @@ class MainAdminControllerTest extends TestCase
     private function sut(): MainAdminController
     {
         return new MainAdminController(
-            $this->model,
+            new Model($this->pages, $this->pageData, $this->contents),
             $this->csrfProtector,
             $this->view
         );
@@ -125,10 +152,29 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
-    public function testSavingReportsFailureToUpdate(): void
+    public function testSavingReportsFailureToUpdateNonExistingAttribute(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
-        $this->model->expects($this->once())->method("updatePageData")->with("url", [])->willReturn(false);
+        $this->pageData->expects($this->never())->method("refresh");
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=nope",
+            "post" => [
+                "pdeditor_do" => "",
+                "pdeditor_mtime" => (string) strtotime("2025-05-11T11:52:27+00:00"),
+                "value" => []
+            ],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString(
+            "The 'nope' attribute could not be updated!",
+            $response->output()
+        );
+    }
+
+    public function testSavingReportsFailureToSave(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $this->pageData->expects($this->once())->method("refresh")->willReturn(false);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
             "post" => [
@@ -147,13 +193,17 @@ class MainAdminControllerTest extends TestCase
     public function testSavingRedirectsAfterUpdatingPageData(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
-        $this->model->expects($this->once())->method("updatePageData")->with("url", [])->willReturn(true);
+        $this->pageData->expects($this->once())->method("refresh")->with([
+            ["url" => "one", "description" => ""],
+            ["url" => "two", "description" => ""],
+            ["url" => "three", "description" => ""],
+        ])->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
             "post" => [
                 "pdeditor_do" => "",
                 "pdeditor_mtime" => (string) strtotime("2025-05-11T11:52:27+00:00"),
-                "value" => []
+                "value" => ["one", "two", "three"],
             ],
         ]);
         $response = $this->sut()($request);
@@ -203,7 +253,7 @@ class MainAdminControllerTest extends TestCase
     public function testDeletingReportsFailureToDelete(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
-        $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused")->willReturn(false);
+        $this->contents->expects($this->once())->method("save")->willReturn(false);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
             "post" => ["pdeditor_do" => ""],
@@ -218,7 +268,8 @@ class MainAdminControllerTest extends TestCase
     public function testDeletingRedirectsAfterDeletingPageData(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
-        $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused")->willReturn(true);
+        $this->pageData->expects($this->once())->method("removeInterest")->with("unused");
+        $this->contents->expects($this->once())->method("save")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
             "post" => ["pdeditor_do" => ""],
