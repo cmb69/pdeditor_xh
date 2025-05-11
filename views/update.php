@@ -16,11 +16,13 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 <section class="pdeditor_editor">
   <h1><?=$this->text("title_edit", $attribute)?></h1>
-  <form id="pdeditor_attributes" action="<?=$this->esc($action)?>" method="post">
+  <form class="pdeditor_attributes" action="<?=$this->esc($action)?>" method="post">
     <p class="xh_warning"><?=$this->text("warning_save", $attribute)?></p>
     <input type="hidden" name="pdeditor_token" value="<?=$this->esc($csrf_token)?>">
 <?=$this->raw($pageList)?>
-    <button name="pdeditor_do"><?=$this->text("label_save")?></button>
-    <button name="pdeditor_do" formaction="<?=$this->esc($cancel)?>"><?=$this->text("label_cancel")?></button>
+    <p class="pdeditor_buttons">
+      <button name="pdeditor_do"><?=$this->text("label_save")?></button>
+      <button name="pdeditor_do" formaction="<?=$this->esc($cancel)?>"><?=$this->text("label_cancel")?></button>
+    </p>
   </form>
 </section>

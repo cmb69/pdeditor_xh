@@ -1,45 +1,52 @@
-/*
- * Page data editor
- */
+/* general */
 
-#pdeditor_attributes {
+section p.pdeditor_buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 1em 0;
+}
+
+/* attribute overview */
+
+section.pdeditor_overview {}
+
+section.pdeditor_overview ul {
+    list-style: none;
+}
+
+/* attribute editor */
+
+section.pdeditor_editor {}
+
+section.pdeditor_editor form.pdeditor_attributes {
     margin: 2em 0;
 }
-#pdeditor_attributes ul {
+section.pdeditor_editor form.pdeditor_attributes ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-#pdeditor_attributes > ul {
+section.pdeditor_editor form.pdeditor_attributes > ul {
     margin: 1em 0;
 }
-#pdeditor_attributes li {
+section.pdeditor_editor form.pdeditor_attributes li {
     position: relative;
     margin: 0;
     padding: 5px 0 0 0;
 }
-#pdeditor_attributes ul ul {
+section.pdeditor_editor form.pdeditor_attributes ul ul {
     margin-left: 20px;
 }
-#pdeditor_attributes ul input {
+section.pdeditor_editor form.pdeditor_attributes ul input {
     position: absolute;
     right: 0px;
     width: 300px;
 }
 
-/*
- * Info view
- */
+/* delete confirmation */
 
-.pdeditor_logo {
-    float: left;
-    width: 128px;
-    height: 128px;
-    margin-right: 16px
-}
-.pdeditor_license {
-    text-align: justify;
-}
-.pdeditor_system_check {
-    list-style: none;
-}
+section.pdeditor_delete_confirmation {}
+
+/* plugin info */
+
+section.pdeditor_info {}

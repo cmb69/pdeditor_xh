@@ -26,7 +26,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       </li>
 <?endforeach?>
     </ul>
-    <p>
+    <p class="pdeditor_buttons">
       <button name="action" value="update"><?=$this->text("label_edit")?></button>
       <button name="action" value="delete"><?=$this->text("label_delete")?></button>
     </p>

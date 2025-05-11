@@ -18,7 +18,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
   <p class="xh_warning"><?=$this->text("warning_delete", $attribute)?></p>
   <form id="pdeditor_delete" action="<?=$this->esc($url)?>" method="post">
     <input type="hidden" name="pdeditor_token" value="<?=$this->esc($csrf_token)?>">
-    <p>
+    <p class="pdeditor_buttons">
       <button name="pdeditor_do"><?=$this->text("label_delete")?></button>
       <button name="pdeditor_do" formaction="<?=$this->esc($cancel)?>"><?=$this->text("label_cancel")?></button>
     </p>
