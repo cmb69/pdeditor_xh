@@ -128,7 +128,7 @@ class MainAdminControllerTest extends TestCase
         ]);
         $response = $this->sut()($request);
         $this->assertSame(
-            "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text&normal",
+            "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text&pdeditor_attr=unused&normal",
             $response->location()
         );
     }

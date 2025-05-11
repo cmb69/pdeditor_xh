@@ -135,8 +135,8 @@ class MainAdminController
         } else {
             $attribute = "";
         }
-        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->with("normal");
+        $url = $request->url()->with("action", "plugin_text")->with("pdeditor_attr", $attribute)
+            ->without("edit")->with("normal");
         return Response::redirect($url->absolute());
     }
 
@@ -161,8 +161,7 @@ class MainAdminController
         }
         $attribute = $request->get("pdeditor_attr") ?? "";
         $this->model->deletePageDataAttribute($attribute);
-        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "plugin_text")->with("normal");
+        $url = $request->url()->with("action", "plugin_text")->without("edit")->with("normal");
         return Response::redirect($url->absolute());
     }
 }
