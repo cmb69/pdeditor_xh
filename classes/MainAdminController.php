@@ -86,6 +86,21 @@ class MainAdminController
         return $items;
     }
 
+    private function update(Request $request): Response
+    {
+        if ($request->post("pdeditor_do") !== null) {
+            return $this->doUpdate($request);
+        }
+        $attribute = $request->get("pdeditor_attr") ?? "url";
+        return Response::create($this->view->render("update", [
+            "action" => $request->url()->with("edit")->relative(),
+            "attribute" => $request->get("pdeditor_attr") ?? "",
+            "csrf_token" => $this->csrfProtector->token(),
+            "pageList" => $this->pageList($this->model->toplevelPages(), $attribute),
+            "cancel" => $request->url()->with("action", "plugin_text")->relative(),
+        ]));
+    }
+
     /** @param list<int> $pages */
     private function pageList(array $pages, string $attribute): string
     {
@@ -110,6 +125,23 @@ class MainAdminController
             . "$subpages</li>\n";
     }
 
+    private function doUpdate(Request $request): Response
+    {
+        if ($request->postArray("value") !== null) {
+            if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
+                return Response::create($this->view->message("error", "error_unauthorized"));
+            }
+            $attribute = $request->get("pdeditor_attr") ?? "";
+            $values = $request->postArray("value");
+            $this->model->updatePageData($attribute, $values);
+        } else {
+            $attribute = "";
+        }
+        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
+            ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->with("normal");
+        return Response::redirect($url->absolute());
+    }
+
     private function deleteAttribute(Request $request): Response
     {
         return Response::create($this->view->render("delete_confirmation", [
@@ -129,38 +161,6 @@ class MainAdminController
         $this->model->deletePageDataAttribute($attribute);
         $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "plugin_text")->with("normal");
-        return Response::redirect($url->absolute());
-    }
-
-    private function update(Request $request): Response
-    {
-        if ($request->post("pdeditor_do") !== null) {
-            return $this->doUpdate($request);
-        }
-        $attribute = $request->get("pdeditor_attr") ?? "url";
-        return Response::create($this->view->render("update", [
-            "action" => $request->url()->with("edit")->relative(),
-            "attribute" => $request->get("pdeditor_attr") ?? "",
-            "csrf_token" => $this->csrfProtector->token(),
-            "pageList" => $this->pageList($this->model->toplevelPages(), $attribute),
-            "cancel" => $request->url()->with("action", "plugin_text")->relative(),
-        ]));
-    }
-
-    private function doUpdate(Request $request): Response
-    {
-        if ($request->postArray("value") !== null) {
-            if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-                return Response::create($this->view->message("error", "error_unauthorized"));
-            }
-            $attribute = $request->get("pdeditor_attr") ?? "";
-            $values = $request->postArray("value");
-            $this->model->updatePageData($attribute, $values);
-        } else {
-            $attribute = "";
-        }
-        $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "plugin_text")->with("pdeditor_attr", $attribute)->with("normal");
         return Response::redirect($url->absolute());
     }
 }
