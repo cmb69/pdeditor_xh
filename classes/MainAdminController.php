@@ -125,16 +125,15 @@ class MainAdminController
 
     private function doUpdate(Request $request): Response
     {
-        if ($request->postArray("value") !== null) {
-            if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-                return Response::create($this->view->message("error", "error_unauthorized"));
-            }
-            $attribute = $request->get("pdeditor_attr") ?? "";
-            $values = $request->postArray("value");
-            $this->model->updatePageData($attribute, $values);
-        } else {
-            $attribute = "";
+        if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
+            return Response::create($this->view->message("fail", "error_unauthorized"));
         }
+        if ($request->get("pdeditor_attr") === null || $request->postArray("value") === null) {
+            return Response::create($this->view->message("fail", "error_bad_request"));
+        }
+        $attribute = $request->get("pdeditor_attr");
+        $values = $request->postArray("value");
+        $this->model->updatePageData($attribute, $values);
         $url = $request->url()->with("action", "plugin_text")->with("pdeditor_attr", $attribute)
             ->without("edit")->with("normal");
         return Response::redirect($url->absolute());
@@ -157,9 +156,12 @@ class MainAdminController
     private function doDeleteAttribute(Request $request): Response
     {
         if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
-            return Response::create($this->view->message("error", "error_unauthorized"));
+            return Response::create($this->view->message("fail", "error_unauthorized"));
         }
-        $attribute = $request->get("pdeditor_attr") ?? "";
+        if ($request->get("pdeditor_attr") === null) {
+            return Response::create($this->view->message("fail", "error_bad_request"));
+        }
+        $attribute = $request->get("pdeditor_attr");
         $this->model->deletePageDataAttribute($attribute);
         $url = $request->url()->with("action", "plugin_text")->without("edit")->with("normal");
         return Response::redirect($url->absolute());

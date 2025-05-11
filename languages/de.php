@@ -13,6 +13,7 @@ $plugin_tx['pdeditor']['label_edit']="Bearbeiten";
 $plugin_tx['pdeditor']['label_save']="Speichern";
 
 $plugin_tx['pdeditor']['error_unauthorized']="Sie sind nicht befugt diese Aktion durchzuführen!";
+$plugin_tx['pdeditor']['error_bad_request']="Diese Anfrage kann nicht verarbeitet werden!";
 
 $plugin_tx['pdeditor']['warning_delete']="Löschen des '%s' Attributes kann Fehlfunktionen des Systems verursachen!";
 $plugin_tx['pdeditor']['warning_save']="Ändern des '%s' Attributes kann Fehlfunktionen des Systems verursachen!";

@@ -80,6 +80,20 @@ class MainAdminControllerTest extends TestCase
         );
     }
 
+    public function testSavingReportsInvalidRequest(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update",
+            "post" => ["pdeditor_do" => "", "value" => []],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString(
+            "This request cannot be processed!",
+            $response->output()
+        );
+    }
+
     public function testSavingRedirectsAfterUpdatingPageData(): void
     {
         $this->csrfProtector->method("check")->willReturn(true);
@@ -114,6 +128,20 @@ class MainAdminControllerTest extends TestCase
         $response = $this->sut()($request);
         $this->assertStringContainsString(
             "You are not authorized to perform this action!",
+            $response->output()
+        );
+    }
+
+    public function testDeletingReportsInvalidRequest(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete",
+            "post" => ["pdeditor_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString(
+            "This request cannot be processed!",
             $response->output()
         );
     }
