@@ -2,6 +2,10 @@
 
 $plugin_tx['pdeditor']['menu_main']="Pagedata";
 
+$plugin_tx['pdeditor']['title_attributes']="Page data attributes";
+$plugin_tx['pdeditor']['title_delete']="Delete '%s' attribute";
+$plugin_tx['pdeditor']['title_edit']="Edit '%s' attribute";
+
 $plugin_tx['pdeditor']['label_attribute']="Attribute";
 $plugin_tx['pdeditor']['label_cancel']="Cancel";
 $plugin_tx['pdeditor']['label_delete']="Delete";

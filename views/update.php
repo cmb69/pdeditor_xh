@@ -14,7 +14,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<h1>Pdeditor – <?=$this->text("menu_main")?></h1>
+<h1><?=$this->text("title_edit", $attribute)?></h1>
 <form id="pdeditor_attributes" action="<?=$this->esc($action)?>" method="post">
   <p class="xh_warning"><?=$this->text("warning_save", $attribute)?></p>
   <input type="hidden" name="pdeditor_token" value="<?=$this->esc($csrf_token)?>">

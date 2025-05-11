@@ -11,7 +11,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<h1>Pdeditor – <?=$this->text("menu_main")?></h1>
+<h1><?=$this->text("title_attributes")?></h1>
 <form method="get">
   <input type="hidden" name="selected" value="pdeditor">
   <input type="hidden" name="admin" value="plugin_main">

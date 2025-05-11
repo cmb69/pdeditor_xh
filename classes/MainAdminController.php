@@ -70,7 +70,7 @@ class MainAdminController
         return Response::create($this->view->render("overview", [
             "attribute" => $attribute,
             "attributes" => $this->attributeList($attribute),
-        ]))->withTitle("Pdeditor – {$this->view->text("menu_main")}");
+        ]))->withTitle($this->view->text("title_attributes"));
     }
 
     /** @return list<object{name:string,checked:string}> */
@@ -94,11 +94,11 @@ class MainAdminController
         $attribute = $request->get("pdeditor_attr") ?? "url";
         return Response::create($this->view->render("update", [
             "action" => $request->url()->with("edit")->relative(),
-            "attribute" => $request->get("pdeditor_attr") ?? "",
+            "attribute" => $attribute,
             "csrf_token" => $this->csrfProtector->token(),
             "pageList" => $this->pageList($this->model->toplevelPages(), $attribute),
             "cancel" => $request->url()->with("action", "plugin_text")->relative(),
-        ]));
+        ]))->withTitle($this->view->text("title_edit", $attribute));
     }
 
     /** @param list<int> $pages */
@@ -144,12 +144,13 @@ class MainAdminController
 
     private function deleteAttribute(Request $request): Response
     {
+        $attribute = $request->get("pdeditor_attr") ?? "";
         return Response::create($this->view->render("delete_confirmation", [
             "url" => $request->url()->with("edit")->relative(),
-            "attribute" => $request->get("pdeditor_attr") ?? "",
+            "attribute" => $attribute,
             "csrf_token" => $this->csrfProtector->token(),
             "cancel" => $request->url()->with("action", "plugin_text")->relative(),
-        ]));
+        ]))->withTitle($this->view->text("title_delete", $attribute));
     }
 
     private function doDeleteAttribute(Request $request): Response

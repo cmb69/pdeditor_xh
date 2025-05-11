@@ -53,7 +53,7 @@ class MainAdminControllerTest extends TestCase
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=plugin_text",
         ]);
         $response = $this->sut()($request);
-        $this->assertSame("Pdeditor – Pagedata", $response->title());
+        $this->assertSame("Page data attributes", $response->title());
         Approvals::verifyHtml($response->output());
     }
 
@@ -63,6 +63,7 @@ class MainAdminControllerTest extends TestCase
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=update&pdeditor_attr=url",
         ]);
         $response = $this->sut()($request);
+        $this->assertSame("Edit 'url' attribute", $response->title());
         Approvals::verifyHtml($response->output());
     }
 
@@ -100,6 +101,7 @@ class MainAdminControllerTest extends TestCase
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
         ]);
         $response = $this->sut()($request);
+        $this->assertSame("Delete 'unused' attribute", $response->title());
         Approvals::verifyHtml($response->output());
     }
 
