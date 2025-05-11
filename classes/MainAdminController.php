@@ -52,8 +52,10 @@ class MainAdminController
         switch ($request->get("action")) {
             default:
                 return $this->editor($request);
-            case 'delete':
-                return $this->deleteAttribute($request);
+            case "delete":
+                return $request->post("pdeditor_do") === null
+                    ? $this->deleteAttribute($request)
+                    : $this->doDeleteAttribute($request);
             case 'save':
                 return $this->save($request);
         }
@@ -61,22 +63,21 @@ class MainAdminController
 
     private function editor(Request $request): Response
     {
+        if ($request->post("pdeditor_do") !== null) {
+            return Response::redirect($request->url()->absolute());
+        }
         $attribute = $request->get("pdeditor_attr") ?? "url";
-        $deleteUrl = $request->url()->page("pdeditor")->with("admin", "plugin_main")
-            ->with("action", "delete")->with("pdeditor_attr", $attribute)->with("edit")->relative();
         $action = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "save")->with("pdeditor_attr", $attribute)->with("edit")->relative();
-        return Response::create($this->administration($attribute, $deleteUrl, $action))
+        return Response::create($this->administration($attribute, $action))
             ->withTitle("Pdeditor – {$this->view->text("menu_main")}");
     }
 
-    private function administration(string $attribute, string $deleteUrl, string $action): string
+    private function administration(string $attribute, string $action): string
     {
         return $this->view->render("admin", [
             "attribute" => $attribute,
             "attributes" => $this->attributeList($attribute),
-            "deleteUrl" => $deleteUrl,
-            "deleteWarning" => addcslashes($this->view->plain("warning_delete"), "\n\r\'\"\\"),
             "action" => $action,
             "saveWarning" => addcslashes($this->view->plain("warning_save"), "\n\r\'\"\\"),
             "csrf_token" => $this->csrfProtector->token(),
@@ -123,6 +124,16 @@ class MainAdminController
 
     private function deleteAttribute(Request $request): Response
     {
+        return Response::create($this->view->render("delete_confirmation", [
+            "url" => $request->url()->with("edit")->relative(),
+            "attribute" => $request->get("pdeditor_attr") ?? "",
+            "csrf_token" => $this->csrfProtector->token(),
+            "cancel" => $request->url()->with("action", "plugin_text")->relative(),
+        ]));
+    }
+
+    private function doDeleteAttribute(Request $request): Response
+    {
         if (!$this->csrfProtector->check($request->post("pdeditor_token"))) {
             return Response::create($this->view->message("error", "error_unauthorized"));
         }
@@ -130,7 +141,7 @@ class MainAdminController
         $this->model->deletePageDataAttribute($attribute);
         $url = $request->url()->page("pdeditor")->with("admin", "plugin_main")
             ->with("action", "plugin_text")->with("normal");
-            return Response::redirect($url->absolute());
+        return Response::redirect($url->absolute());
     }
 
     private function save(Request $request): Response

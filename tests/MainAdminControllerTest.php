@@ -57,10 +57,20 @@ class MainAdminControllerTest extends TestCase
         Approvals::verifyHtml($response->output());
     }
 
+    public function testShowsDeleteConfirmation(): void
+    {
+        $request = new FakeRequest([
+            "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
+        ]);
+        $response = $this->sut()($request);
+        Approvals::verifyHtml($response->output());
+    }
+
     public function testDeletingIsCsrfProtected(): void
     {
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
+            "post" => ["pdeditor_do" => ""],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString(
@@ -75,7 +85,7 @@ class MainAdminControllerTest extends TestCase
         $this->model->expects($this->once())->method("deletePageDataAttribute")->with("unused");
         $request = new FakeRequest([
             "url" => "http://example.com/?pdeditor&admin=plugin_main&action=delete&pdeditor_attr=unused",
-            "post" => ["value" => []],
+            "post" => ["pdeditor_do" => ""],
         ]);
         $response = $this->sut()($request);
         $this->assertSame(
