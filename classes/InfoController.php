@@ -45,13 +45,14 @@ class InfoController
 
     public function __invoke(): Response
     {
-        return Response::create("<h1>Pdeditor {$this->view->esc(Dic::VERSION)}</h1>\n"
-            . "<h2>{$this->view->text("syscheck_title")}</h2>\n"
-            . $this->systemChecks())
-            ->withTitle("Pdeditor {$this->view->esc(Dic::VERSION)}");
+        return Response::create($this->view->render("info", [
+            "version" => Dic::VERSION,
+            "checks" => $this->systemChecks(),
+        ]))->withTitle("Pdeditor {$this->view->esc(Dic::VERSION)}");
     }
 
-    private function systemChecks(): string
+    /** @return list<string> */
+    private function systemChecks(): array
     {
         $phpVersion = '7.1.0';
         $checks = [];
@@ -83,6 +84,6 @@ class InfoController
                 $state ? $this->view->plain("syscheck_good") : $this->view->plain("syscheck_bad")
             );
         }
-        return implode("", $checks);
+        return $checks;
     }
 }
