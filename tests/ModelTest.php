@@ -14,36 +14,14 @@ class ModelTest extends TestCase
     /** @var Pages&Stub */
     private $pages;
 
+    /** @var PageDataRouter&MockObject */
+    private $pageData;
+
     /** @var Contents&MockObject */
     private $contents;
 
-    /** @var Model */
-    private $subject;
-
     public function setUp(): void
     {
-        global $pd_router;
-
-        $this->setUpConfig();
-        $this->setUpContents();
-        $this->contents = $this->createMock(Contents::class);
-
-        $this->subject = new Model($this->pages, $pd_router, $this->contents);
-    }
-
-    private function setUpConfig(): void
-    {
-        global $cf;
-
-        $cf = array(
-            'menu' => array('levelcatch' => '10')
-        );
-    }
-
-    private function setUpContents(): void
-    {
-        global $pd_router;
-
         $this->pages = $this->createStub(Pages::class);
         $this->pages->method("heading")->willReturnMap([
             [0, "Welcome"],
@@ -61,58 +39,45 @@ class ModelTest extends TestCase
             [1, false, []],
             [2, false, []],
         ]);
-        $pd_router = $this->getMockBuilder(PageDataRouter::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $map = array(
-            array(0, array('url' => 'Welcome'))
-        );
-        $pd_router->expects($this->any())
-            ->method('find_page')
-            ->will($this->returnValueMap($map));
+        $this->pageData = $this->getMockBuilder(PageDataRouter::class)->disableOriginalConstructor()->getMock();
+        $this->pageData->expects($this->any())->method("find_page")->willReturnMap([
+            [0, ["url" => "Welcome"]],
+        ]);
+        $this->contents = $this->createMock(Contents::class);
+    }
+
+    private function sut(): Model
+    {
+        return new Model($this->pages, $this->pageData, $this->contents);
     }
 
     public function testTopLevelPages(): void
     {
-        $expected = array(0, 2);
-        $actual = $this->subject->toplevelPages();
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals([0, 2], $this->sut()->toplevelPages());
     }
 
     public function testChildPages(): void
     {
-        $expected = array(1);
-        $actual = $this->subject->childPages(0);
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals([1], $this->sut()->childPages(0));
     }
 
     public function testPageDataAttributes(): void
     {
-        global $pd_router;
-
-        $pd_router->expects($this->any())
-            ->method('storedFields')
-            ->will($this->returnValue(array('bar', 'foo')));
-        $expected = array('bar', 'foo');
-        $actual = $this->subject->pageDataAttributes();
-        $this->assertEquals($expected, $actual);
+        $this->pageData->expects($this->any())->method("storedFields")->willReturn(["bar", "foo"]);
+        $actual = $this->sut()->pageDataAttributes();
+        $this->assertEquals(["bar", "foo"], $actual);
     }
 
     public function testPageDataAttribute(): void
     {
-        $expected = 'Welcome';
-        $actual = $this->subject->pageDataAttribute(0, 'url');
-        $this->assertEquals($expected, $actual);
+        $actual = $this->sut()->pageDataAttribute(0, "url");
+        $this->assertEquals("Welcome", $actual);
     }
 
     public function testDeletePageDataAttribute(): void
     {
-        global $pd_router;
-
-        $attribute = 'foo';
-        $pd_router->expects($this->once())
-            ->method('removeInterest')
-            ->with($this->equalTo($attribute));
-        $this->subject->deletePageDataAttribute($attribute);
+        $attribute = "foo";
+        $this->pageData->expects($this->once())->method("removeInterest")->with($this->equalTo($attribute));
+        $this->sut()->deletePageDataAttribute($attribute);
     }
 }
