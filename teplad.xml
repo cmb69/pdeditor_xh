@@ -45,11 +45,11 @@
   <!-- the name of the Plugin -->
   <name type="plugin">Pdeditor_XH</name>
   <!-- Date this xml-file was updated, yyyy.mm.dd -->
-  <date_update>2021.01.23</date_update>
+  <date_update>2025.05.11</date_update>
   <!-- version of Plugin -->
   <version>2.0</version>
   <!-- date of publication, yyyy.mm.dd -->
-  <date_version>2015.04.10</date_version>
+  <date_version>2025.05.11</date_version>
   <!-- the name of the programmer -->
   <coder>Christoph M. Becker</coder>
   <!-- Categories must be written in lower case. More than one possible, separated by comma without spaces. -->
