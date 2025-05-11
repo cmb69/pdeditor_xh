@@ -21,6 +21,7 @@
 
 namespace Pdeditor;
 
+use Pdeditor\Infra\Contents;
 use Plib\CsrfProtector;
 use Plib\SystemChecker;
 use Plib\View;
@@ -49,7 +50,13 @@ class Dic
     private static function model(): Model
     {
         global $pd_router;
-        return new Model(new Pages(), $pd_router);
+        return new Model(new Pages(), $pd_router, self::contents());
+    }
+
+    private static function contents(): Contents
+    {
+        global $pth;
+        return new Contents($pth["file"]["content"]);
     }
 
     private static function view(): View

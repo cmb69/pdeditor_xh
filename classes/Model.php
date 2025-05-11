@@ -21,6 +21,7 @@
 
 namespace Pdeditor;
 
+use Pdeditor\Infra\Contents;
 use XH\PageDataRouter;
 use XH\Pages;
 
@@ -32,10 +33,14 @@ class Model
     /** @var PageDataRouter */
     private $pageData;
 
-    public function __construct(Pages $pages, PageDataRouter $pageData)
+    /** @var Contents */
+    private $contents;
+
+    public function __construct(Pages $pages, PageDataRouter $pageData, Contents $contents)
     {
         $this->pages = $pages;
         $this->pageData = $pageData;
+        $this->contents = $contents;
     }
 
     public function heading(int $index): string
@@ -86,12 +91,11 @@ class Model
     public function deletePageDataAttribute(string $attribute): bool
     {
         $this->pageData->removeInterest($attribute);
-        return XH_saveContents();
+        return $this->contents->save();
     }
 
     public function mtime(): int
     {
-        global $pth;
-        return (int) filemtime($pth["file"]["content"]);
+        return $this->contents->mtime();
     }
 }

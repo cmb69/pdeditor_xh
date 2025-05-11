@@ -2,6 +2,8 @@
 
 namespace Pdeditor;
 
+use Pdeditor\Infra\Contents;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use XH\PageDataRouter;
@@ -12,6 +14,9 @@ class ModelTest extends TestCase
     /** @var Pages&Stub */
     private $pages;
 
+    /** @var Contents&MockObject */
+    private $contents;
+
     /** @var Model */
     private $subject;
 
@@ -21,8 +26,9 @@ class ModelTest extends TestCase
 
         $this->setUpConfig();
         $this->setUpContents();
+        $this->contents = $this->createMock(Contents::class);
 
-        $this->subject = new Model($this->pages, $pd_router);
+        $this->subject = new Model($this->pages, $pd_router, $this->contents);
     }
 
     private function setUpConfig(): void

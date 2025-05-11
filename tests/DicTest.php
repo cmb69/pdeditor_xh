@@ -10,7 +10,7 @@ class DicTest extends TestCase
     public function setUp(): void
     {
         global $pth, $plugin_tx, $c, $pd_router;
-        $pth = ["folder" => ["plugins" => ""]];
+        $pth = ["folder" => ["plugins" => ""], "file" => ["content" => ""]];
         $plugin_tx = ["pdeditor" => []];
         $c = [];
         $pd_router = $this->createStub(PageDataRouter::class);
